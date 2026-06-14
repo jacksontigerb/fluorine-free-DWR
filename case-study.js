@@ -3,7 +3,7 @@
    GSAP + ScrollTrigger drive reveals and the sticky process highlight when
    available. Without GSAP, or under reduced motion, everything is shown
    instantly (no hidden content). No-JS is handled by CSS (reveal stays visible).
-   The liquid guide droplet (below) is independent of GSAP.
+   The liquid guide droplet (below) is its own scroll-driven system.
    ========================================================================== */
 (function () {
   "use strict";
@@ -79,48 +79,53 @@
     steps.forEach(function (s) { io.observe(s); });
   })(); } catch (e) { /* non-critical */ }
 
-  /* ---------- liquid guide droplet ----------
-     A single premium water droplet that travels a DESIGNED, scroll-driven path down the
-     page, like a bead of water finding an interesting route down glass. The authored path
-     is the primary motion; Matter.js is used only as a secondary accent, for the little
-     splash bodies that bounce off the live on-screen cards. The droplet is drawn
-     procedurally on canvas (no image asset): a slightly asymmetric, breathing liquid blob
-     with layered glass shading. Skipped on narrow screens and reduced motion. */
-  try { (function liquidGuide() {
+  /* ======================================================================
+     LIQUID GUIDE DROPLET
+     A single premium water bead travels down the page on glass. Its descent is
+     a smoothed "journey" scalar coupled to scroll (not gravity); laterally it
+     weaves toward the live on-screen cards/figures/notes/headings. It lands on
+     an element's top edge, settles, rolls off, and continues to the next, and
+     calms to a rest when you stop scrolling. Matter.js is used only locally, for
+     the few micro-droplets thrown on a meaningful impact. Rendered procedurally
+     (no image): an asymmetric, breathing glass bead. Off on narrow screens and
+     reduced motion.
+     ====================================================================== */
+  try { (function liquidGuideDroplet() {
     var canvas = $("#rain-canvas");
     if (!canvas || reduce || window.innerWidth < 1024) return;
 
-    /* ---- tunable config ---- */
+    /* ---- tuning ---- */
     var CONFIG = {
-      pathSideAmplitude: 0.26,   // how far it drifts sideways (fraction of usable half-width)
-      pathCurveStrength: 1.15,   // weave frequency between content waypoints
-      pathLookAhead: 0.014,      // scroll-progress look-ahead used for the directional lean
-      scrollSmoothing: 0.10,     // scroll-progress easing (lower = more lag / float)
-      dropletSize: 13,           // base radius in px
-      dropletOpacity: 0.9,
-      wobbleAmount: 0.07,        // shape-breathing magnitude (fraction of radius)
-      wobbleSpeed: 0.0021,       // shape-breathing speed (per ms)
-      impactSquish: 0.5,         // squish strength on contact
-      edgePauseMs: 260           // (reserved) edge-cling feel near card tops
+      pathCurviness: 0.0055,           // weave frequency along the descent
+      pathSideTravel: 30,              // weave amplitude in px
+      anchorAttraction: 0.085,         // how strongly x eases toward the guide / ledge
+      scrollProgressSmoothing: 0.16,   // scroll-velocity smoothing (lower = floatier)
+      dropletRadius: 14,               // bead size in px
+      dropletOpacity: 0.92,
+      contactPauseMs: 240,             // how long it settles/rolls on a ledge
+      edgeRollSpeed: 1.7,              // px/frame slide while rolling off an edge
+      impactBounce: 0.5,               // squash strength on contact
+      impactRippleThreshold: 520,      // min scroll speed (px/s) to throw a splash
+      idleDrift: 0.12,                 // tiny motion when idle
+      maxShapeStretch: 1.5             // cap on velocity stretch
     };
-    /* which elements the path is biased toward and the drop reacts to */
-    var TARGET_SELECTOR = "figure, .exhibit-stage, .method, .cs-stage, .cs-note, .metric";
-    var PATH_SELECTOR = "figure, .exhibit-stage, .method, .cs-stage, .cs-note, .metric, .cs-h2";
+    var ANCHOR_SELECTOR = "figure, .exhibit-stage, .method, .cs-stage, .cs-note, .metric, .cs-h2, .cs-h3, blockquote, .pull";
+    var DESCENT_PER_VH = 2.4;          // viewport-heights of scroll per full top->bottom pass
 
     var hasMatter = typeof Matter !== "undefined";
-    var Engine, World, Bodies, Body, engine, colliders = [];
+    var Engine, World, Bodies, Body, engine;
+    if (hasMatter) { Engine = Matter.Engine; World = Matter.World; Bodies = Matter.Bodies; Body = Matter.Body; engine = Engine.create(); engine.gravity.y = 1; }
+
     var ctx = canvas.getContext("2d");
-    var W = 0, H = 0, docH = 0, dpr = Math.min(2, window.devicePixelRatio || 1);
-    var path = [], targets = [], splashes = [];
-    var pSmooth = 0, curX = 0, curY = 0, lastDrawY = 0, offX = 0, squish = 0;
+    var W = 0, H = 0, dpr = Math.min(2, window.devicePixelRatio || 1);
+    var ledges = [], guide = [];                 // guide = centerline [{y,x}] in viewport space
+    var splashes = [];
+    var lastScrollY = window.scrollY, lastT = performance.now(), scrollVel = 0, energy = 0, active = false, dScroll = 0;
+    var journey = 0, holdUntil = 0, reenter = false, lastLandAt = -9999, lastLandY = -9999;
+    var d = { x: 0, y: 0, px: 0, py: 0, alpha: 0, squash: 0, state: "idle", landedY: 0, rollDir: 1 };
     var raf = 0, running = false;
     function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
     function lerp(a, b, t) { return a + (b - a) * t; }
-
-    if (hasMatter) {
-      Engine = Matter.Engine; World = Matter.World; Bodies = Matter.Bodies; Body = Matter.Body;
-      engine = Engine.create(); engine.gravity.y = 1;
-    }
 
     function size() {
       W = window.innerWidth; H = window.innerHeight;
@@ -129,179 +134,215 @@
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 
-    /* ---- authored path: a smooth lateral curve x(y) over the document, biased toward content ---- */
-    function catmull1D(p0, p1, p2, p3, t) {
-      var t2 = t * t, t3 = t2 * t;
-      return 0.5 * ((2 * p1) + (-p0 + p2) * t + (2 * p0 - 5 * p1 + 4 * p2 - p3) * t2 + (-p0 + 3 * p1 - 3 * p2 + p3) * t3);
-    }
-    function buildPath() {
-      docH = Math.max(document.documentElement.scrollHeight, H + 1);
-      var margin = 96, half = (W - margin * 2) / 2, midX = W / 2;
-      var wps = [{ y: 0, x: midX - half * 0.55 }];   // enter just left of centre, up top
-      $$(PATH_SELECTOR).map(function (el) {
+    /* ---- 1. anchors from live, visible DOM ---- */
+    function collectElementAnchors() {
+      var pad = 26, out = [];
+      $$(ANCHOR_SELECTOR).forEach(function (el) {
         var r = el.getBoundingClientRect();
-        return { top: r.top + window.scrollY, cx: r.left + r.width / 2 };
-      }).filter(function (o) { return o.top > 24 && o.top < docH - 24; })
-        .sort(function (a, b) { return a.top - b.top; })
-        .forEach(function (o, i) {
-          var weave = Math.sin(i * CONFIG.pathCurveStrength) * half * CONFIG.pathSideAmplitude;
-          wps.push({ y: o.top, x: clamp(lerp(midX + weave, o.cx, 0.42), margin, W - margin) });
-        });
-      wps.push({ y: docH, x: midX + half * 0.45 });
-      wps.sort(function (a, b) { return a.y - b.y; });
-      /* densely sample a 1-D Catmull-Rom x(y) */
-      path = [];
-      var steps = 700;
-      for (var s = 0; s <= steps; s++) {
-        var yy = docH * s / steps;
-        var i = 0; while (i < wps.length - 2 && yy > wps[i + 1].y) i++;
-        var p1 = wps[i], p2 = wps[i + 1] || p1, p0 = wps[i - 1] || p1, p3 = wps[i + 2] || p2;
-        var t = clamp((yy - p1.y) / Math.max(1, p2.y - p1.y), 0, 1);
-        path.push(catmull1D(p0.x, p1.x, p2.x, p3.x, t));
+        if (r.width < 60 || r.bottom < -60 || r.top > H + 140) return;
+        out.push({ x0: r.left + pad, x1: r.right - pad, cx: r.left + r.width / 2, y: r.top });
+      });
+      out.sort(function (a, b) { return a.y - b.y; });
+      return out;
+    }
+
+    /* ---- 2. build a smooth lateral guide x(y) over the viewport from the anchors ---- */
+    function buildScrollPath() {
+      ledges = collectElementAnchors();
+      var midX = W / 2, half = (W - 180) / 2;
+      var pts = [{ y: -40, x: midX - half * 0.4 }];
+      ledges.forEach(function (l, i) {
+        var side = (i % 2 ? 1 : -1);
+        pts.push({ y: l.y, x: clamp(lerp(midX + side * half * 0.5, l.cx, 0.5), 70, W - 70) });
+      });
+      pts.push({ y: H + 40, x: midX + half * 0.4 });
+      pts.sort(function (a, b) { return a.y - b.y; });
+      guide = pts;
+    }
+    function guideX(y) {
+      if (guide.length < 2) return W / 2;
+      var i = 0; while (i < guide.length - 2 && y > guide[i + 1].y) i++;
+      var p0 = guide[i - 1] || guide[i], p1 = guide[i], p2 = guide[i + 1] || p1, p3 = guide[i + 2] || p2;
+      var t = clamp((y - p1.y) / Math.max(1, p2.y - p1.y), 0, 1), t2 = t * t, t3 = t2 * t;
+      return 0.5 * ((2 * p1.x) + (-p0.x + p2.x) * t + (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * t2 + (-p0.x + 3 * p1.x - 3 * p2.x + p3.x) * t3);
+    }
+
+    /* ---- 3. sample the designed path at a normalized progress (0 top -> 1 bottom) ---- */
+    function samplePathAtProgress(p) {
+      var y = lerp(H * 0.12, H * 0.86, p);
+      return { x: guideX(y) + Math.sin(y * CONFIG.pathCurviness) * CONFIG.pathSideTravel, y: y };
+    }
+
+    /* ---- 4. scroll model: journey advances with scroll, freezes while settling ---- */
+    function updateScrollProgressModel(now, dt) {
+      var sy = window.scrollY;
+      dScroll = sy - lastScrollY; lastScrollY = sy;
+      scrollVel += ((dScroll / dt * 1000) - scrollVel) * CONFIG.scrollProgressSmoothing;
+      energy = clamp(Math.abs(scrollVel) / 700, 0, 1.4);
+      active = Math.abs(scrollVel) > 22;
+      reenter = false;
+      if (now > holdUntil) {
+        journey += dScroll / (H * DESCENT_PER_VH);
+        if (journey > 1) { journey -= 1; reenter = true; }
+        if (journey < 0) journey += 1;
       }
     }
-    function xAtY(y) { return path[clamp(Math.round(y / docH * (path.length - 1)), 0, path.length - 1)]; }
 
-    function buildColliders() {
-      targets = $$(TARGET_SELECTOR);
-      if (!hasMatter) return;
-      colliders.forEach(function (c) { World.remove(engine.world, c.body); });
-      colliders = targets.map(function (el) {
-        var r = el.getBoundingClientRect();
-        var b = Bodies.rectangle(-9999, -9999, Math.max(50, r.width), 12, { isStatic: true, restitution: 0.32, friction: 0.3 });
-        World.add(engine.world, b);
-        return { el: el, body: b };
-      });
-    }
+    /* ---- 5. state machine: path-follow / impact / settling / edge-roll / idle ---- */
+    function updateDropletState(now) {
+      var s = samplePathAtProgress(journey);
+      var tx = s.x, ty = s.y;
 
-    function splash(x, y, n) {
-      splashes.push({ ring: true, x: x, y: y, r: 3, life: 1 });
-      for (var i = 0; i < n; i++) {
-        if (hasMatter) {
-          var a = -Math.PI / 2 + (Math.random() - 0.5) * 1.5, sp = 1.8 + Math.random() * 3.2;
-          var b = Bodies.circle(x, y, 1.2 + Math.random() * 1.3, { restitution: 0.4, frictionAir: 0.02, density: 0.001 });
-          Body.setVelocity(b, { x: Math.cos(a) * sp, y: Math.sin(a) * sp });
-          World.add(engine.world, b); splashes.push({ body: b, life: 1 });
+      if (now < holdUntil) {
+        // on a ledge: first settle, then roll off the nearer edge
+        ty = d.landedY;
+        var phase = 1 - (holdUntil - now) / CONFIG.contactPauseMs;   // 0..1 through the pause
+        if (phase < 0.4) { d.state = "settling"; tx = d.x; }
+        else { d.state = "edge-roll"; tx = d.x + d.rollDir * CONFIG.edgeRollSpeed * (0.5 + energy); }
+      } else if (!active) {
+        d.state = "idle";
+        tx = lerp(d.x, s.x, 0.04) + Math.sin(now * 0.0012) * CONFIG.idleDrift;
+        ty = d.y + Math.sin(now * 0.0016) * CONFIG.idleDrift;   // cling / drift minimally
+      } else {
+        d.state = "path-follow";
+        // landing test: a visible ledge near the descending bead and under it
+        // (cooldown + position guard so it never re-lands on the same ledge in a loop)
+        if (dScroll > 0 && now - lastLandAt > CONFIG.contactPauseMs + 320) {
+          for (var i = 0; i < ledges.length; i++) {
+            var l = ledges[i];
+            if (tx > l.x0 && tx < l.x1 && ty >= l.y - 12 && ty <= l.y + 14 && Math.abs(l.y - lastLandY) > 30) {
+              d.state = "impact";
+              d.landedY = l.y;
+              d.rollDir = (tx - l.x0 < l.x1 - tx) ? -1 : 1;       // roll toward nearer edge
+              holdUntil = now + CONFIG.contactPauseMs;
+              lastLandAt = now; lastLandY = l.y;
+              d.squash = CONFIG.impactBounce;
+              if (Math.abs(scrollVel) > CONFIG.impactRippleThreshold) emitContactRipple(tx, l.y, energy);
+              ty = l.y;
+              break;
+            }
+          }
         }
       }
+      d._tx = clamp(tx, 60, W - 60); d._ty = ty;
     }
 
-    /* ---- procedural liquid rendering ---- */
-    function blob(s, wob) {
-      var topY = -s * 1.28, botY = s * 1.05, rx = s * 0.84;
+    /* ---- 6. local physics: easing lag, wobble, squash decay, re-entry ---- */
+    function applyLocalPhysicsOffsets(now) {
+      if (reenter) { d.y = d._ty; d.x = d._tx; d.alpha = 0; }    // wrapped to top: teleport + fade in
+      var exLag = d.state === "path-follow" ? (0.4 + energy * 0.6) : 1;
+      d.px = d.x; d.py = d.y;
+      d.x += (d._tx - d.x) * CONFIG.anchorAttraction * (0.6 + energy);
+      d.y += (d._ty - d.y) * 0.14 * exLag;
+      d.squash *= 0.86; if (d.squash < 0.01) d.squash = 0;
+      d.alpha += (1 - d.alpha) * 0.1;
+      if (hasMatter) Engine.update(engine, 1000 / 60);
+    }
+
+    /* ---- splash: rare, only on meaningful contact ---- */
+    function emitContactRipple(x, y, e) {
+      splashes.push({ ring: true, x: x, y: y, r: 4, life: 1 });
+      var n = clamp(Math.round(4 + e * 6), 4, 12);
+      for (var i = 0; i < n && hasMatter; i++) {
+        var a = -Math.PI / 2 + (Math.random() - 0.5) * 1.4, sp = 1.6 + Math.random() * (2 + e * 2);
+        var b = Bodies.circle(x, y - 2, 1.1 + Math.random() * 1.2, { restitution: 0.35, frictionAir: 0.02, density: 0.001 });
+        Body.setVelocity(b, { x: Math.cos(a) * sp, y: Math.sin(a) * sp });
+        World.add(engine.world, b); splashes.push({ body: b, life: 1 });
+      }
+    }
+
+    /* ---- 7. procedural liquid rendering: asymmetric breathing glass bead ---- */
+    function beadPath(s, w) {
+      var topY = -s * 1.1, botY = s * 1.12, rx = s * 0.96;
       ctx.beginPath();
       ctx.moveTo(0, topY);
-      ctx.bezierCurveTo(rx * 0.55, topY + s * 0.34, rx * (1.0 + wob.a), -s * 0.06, rx * (0.97 + wob.b), s * 0.28);
-      ctx.bezierCurveTo(rx * 0.93, s * 0.72, rx * 0.48, botY, 0, botY);
-      ctx.bezierCurveTo(-rx * 0.48, botY, -rx * 0.93, s * 0.72, -rx * (0.97 + wob.c), s * 0.28);
-      ctx.bezierCurveTo(-rx * (1.0 + wob.d), -s * 0.06, -rx * 0.55, topY + s * 0.34, 0, topY);
+      ctx.bezierCurveTo(rx * 0.62, topY + s * 0.16, rx * (1.0 + w.a), -s * 0.34, rx * (1.0 + w.b), s * 0.06);
+      ctx.bezierCurveTo(rx * 1.0, s * 0.52, rx * 0.6, botY, 0, botY);
+      ctx.bezierCurveTo(-rx * 0.6, botY, -rx * 1.0, s * 0.52, -rx * (1.0 + w.c), s * 0.06);
+      ctx.bezierCurveTo(-rx * (1.0 + w.d), -s * 0.34, -rx * 0.62, topY + s * 0.16, 0, topY);
       ctx.closePath();
     }
-    function drawDroplet(x, y, lean) {
-      var t = performance.now(), s = CONFIG.dropletSize, wa = CONFIG.wobbleAmount, ws = CONFIG.wobbleSpeed;
-      var wob = {
-        a: Math.sin(t * ws) * wa, b: Math.sin(t * ws * 1.3 + 1) * wa,
-        c: Math.sin(t * ws * 0.8 + 2) * wa, d: Math.sin(t * ws * 1.1 + 3) * wa
-      };
+    function renderDroplet(ctx, drop) {
+      var s = CONFIG.dropletRadius, t = performance.now(), wa = 0.06;
+      var w = { a: Math.sin(t * 0.0022) * wa, b: Math.sin(t * 0.0027 + 1.7) * wa, c: Math.sin(t * 0.0019 + 3.1) * wa, d: Math.sin(t * 0.0024 + 4.6) * wa };
+      var vx = drop.x - drop.px, vy = drop.y - drop.py, v = Math.sqrt(vx * vx + vy * vy);
+      var st = clamp(1 + v * 0.02, 1, CONFIG.maxShapeStretch);
+      var sy = st * (1 - drop.squash * 0.5), sx = (1 / st) * (1 + drop.squash * 0.42);
       ctx.save();
-      ctx.globalAlpha = CONFIG.dropletOpacity;
-      ctx.translate(x, y);
-      ctx.rotate(lean);
-      ctx.scale(1 + squish * 0.5, 1 - squish * 0.45);   // contact squish + lean
-      /* soft glow under the body */
-      var gl = ctx.createRadialGradient(0, 0, s * 0.2, 0, 0, s * 2.0);
-      gl.addColorStop(0, "rgba(186,219,237,0.16)"); gl.addColorStop(1, "rgba(186,219,237,0)");
-      ctx.fillStyle = gl; blob(s * 1.5, { a: 0, b: 0, c: 0, d: 0 }); ctx.fill();
-      /* translucent glass body */
-      blob(s, wob);
-      var g = ctx.createRadialGradient(-s * 0.3, -s * 0.45, s * 0.1, s * 0.05, s * 0.18, s * 1.5);
-      g.addColorStop(0, "rgba(245,251,255,0.80)");
-      g.addColorStop(0.36, "rgba(208,233,245,0.56)");
-      g.addColorStop(0.78, "rgba(170,206,227,0.42)");
-      g.addColorStop(1, "rgba(150,189,213,0.36)");
+      ctx.globalAlpha = drop.alpha * CONFIG.dropletOpacity;
+      ctx.translate(drop.x, drop.y);
+      ctx.rotate(clamp(vx * 0.03, -0.3, 0.3));
+      ctx.scale(sx, sy);
+      // ambient glow
+      var glow = ctx.createRadialGradient(0, 0, s * 0.3, 0, 0, s * 2.2);
+      glow.addColorStop(0, "rgba(150,200,225,0.13)"); glow.addColorStop(1, "rgba(150,200,225,0)");
+      ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(0, 0, s * 2.2, 0, 6.2832); ctx.fill();
+      // glass body
+      beadPath(s, w);
+      var g = ctx.createRadialGradient(-s * 0.34, -s * 0.4, s * 0.1, s * 0.12, s * 0.26, s * 1.5);
+      g.addColorStop(0, "rgba(247,252,255,0.78)");
+      g.addColorStop(0.4, "rgba(214,236,247,0.6)");
+      g.addColorStop(0.82, "rgba(150,193,217,0.5)");
+      g.addColorStop(1, "rgba(120,166,194,0.52)");
       ctx.fillStyle = g;
-      ctx.shadowColor = "rgba(58,98,124,0.20)"; ctx.shadowBlur = s * 0.7; ctx.shadowOffsetY = s * 0.26;
-      ctx.fill();
-      ctx.shadowColor = "transparent";
-      /* inner layers, clipped to the body */
-      ctx.save();
-      blob(s, wob); ctx.clip();
-      ctx.beginPath(); ctx.ellipse(0, s * 0.52, s * 0.66, s * 0.44, 0, 0, Math.PI * 2);   // lower volume shadow
-      ctx.fillStyle = "rgba(64,110,140,0.10)"; ctx.fill();
-      ctx.beginPath(); ctx.ellipse(s * 0.08, s * 0.3, s * 0.46, s * 0.28, 0, 0, Math.PI * 2); // refraction
-      ctx.fillStyle = "rgba(255,255,255,0.16)"; ctx.fill();
-      ctx.beginPath(); ctx.ellipse(-s * 0.34, -s * 0.32, s * 0.19, s * 0.32, -0.3, 0, Math.PI * 2); // highlight
-      ctx.fillStyle = "rgba(255,255,255,0.72)"; ctx.fill();
+      ctx.shadowColor = "rgba(54,96,122,0.26)"; ctx.shadowBlur = s * 0.6; ctx.shadowOffsetY = s * 0.3;
+      ctx.fill(); ctx.shadowColor = "transparent";
+      // inner shading, clipped to body
+      ctx.save(); beadPath(s, w); ctx.clip();
+      var bot = ctx.createLinearGradient(0, -s * 0.2, 0, s * 1.2);
+      bot.addColorStop(0, "rgba(58,102,132,0)"); bot.addColorStop(1, "rgba(58,102,132,0.16)");
+      ctx.fillStyle = bot; ctx.fillRect(-s * 1.6, -s * 1.6, s * 3.2, s * 3.2);
+      var refr = ctx.createRadialGradient(s * 0.06, s * 0.5, s * 0.05, s * 0.06, s * 0.5, s * 0.72);
+      refr.addColorStop(0, "rgba(255,255,255,0.3)"); refr.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.fillStyle = refr; ctx.beginPath(); ctx.arc(s * 0.06, s * 0.5, s * 0.72, 0, 6.2832); ctx.fill();
       ctx.restore();
+      // specular highlights
+      ctx.beginPath(); ctx.ellipse(-s * 0.32, -s * 0.32, s * 0.17, s * 0.27, -0.4, 0, 6.2832);
+      ctx.fillStyle = "rgba(255,255,255,0.85)"; ctx.fill();
+      ctx.beginPath(); ctx.arc(s * 0.2, -s * 0.04, s * 0.07, 0, 6.2832);
+      ctx.fillStyle = "rgba(255,255,255,0.5)"; ctx.fill();
       ctx.restore();
     }
 
-    function frame() {
-      var sy = window.scrollY;
-      var maxScroll = Math.max(1, (document.documentElement.scrollHeight || docH) - H);
-      var p = clamp(sy / maxScroll, 0, 1);
-      pSmooth += (p - pSmooth) * CONFIG.scrollSmoothing;
-      var docY = pSmooth * docH;
-      var baseX = xAtY(docY);
-      var aheadX = xAtY(clamp(pSmooth + CONFIG.pathLookAhead, 0, 1) * docH);
-      var lean = clamp((aheadX - baseX) * 0.012, -0.32, 0.32);
-      var tx = baseX + offX, ty = docY - sy;
-      curX += (tx - curX) * 0.35;
-      curY += (ty - curY) * 0.42;
-
-      /* live colliders + secondary physics step (splash bodies) */
-      for (var i = 0; i < targets.length; i++) {
-        var r = targets[i].getBoundingClientRect();
-        if (hasMatter && colliders[i]) {
-          if (r.width > 0 && r.bottom > -30 && r.top < H + 30) Body.setPosition(colliders[i].body, { x: r.left + r.width / 2, y: r.top });
-          else Body.setPosition(colliders[i].body, { x: -9999, y: -9999 });
-        }
-        /* light reaction: crossing a visible card top -> squish, splash, slide off nearest edge */
-        if (r.width > 0 && curX > r.left + 4 && curX < r.right - 4 &&
-            lastDrawY < r.top && curY >= r.top && curY < r.top + 16) {
-          squish = CONFIG.impactSquish;
-          splash(curX, r.top, 8);
-          offX += (curX - r.left < r.right - curX ? -1 : 1) * 18;
+    function drawSplashes() {
+      for (var i = splashes.length - 1; i >= 0; i--) {
+        var p = splashes[i];
+        if (p.ring) {
+          p.r += 1.0; p.life -= 0.05;
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.2832);
+          ctx.strokeStyle = "rgba(150,195,220," + Math.max(0, p.life * 0.5) + ")"; ctx.lineWidth = 1.3; ctx.stroke();
+          if (p.life <= 0) splashes.splice(i, 1);
+        } else if (p.body) {
+          p.life -= 0.022;
+          ctx.beginPath(); ctx.arc(p.body.position.x, p.body.position.y, p.body.circleRadius, 0, 6.2832);
+          ctx.fillStyle = "rgba(168,204,225," + Math.max(0, Math.min(0.8, p.life)) + ")"; ctx.fill();
+          if (p.life <= 0 || p.body.position.y > H + 50) { if (hasMatter) World.remove(engine.world, p.body); splashes.splice(i, 1); }
         }
       }
-      if (hasMatter) Engine.update(engine, 1000 / 60);
-      offX += (0 - offX) * 0.06;
-      squish *= 0.85; if (squish < 0.01) squish = 0;
-      lastDrawY = curY;
+    }
 
-      /* render */
+    /* ---- 8. main loop ---- */
+    function animate() {
+      var now = performance.now(), dt = clamp(now - lastT, 8, 40); lastT = now;
+      updateScrollProgressModel(now, dt);
+      buildScrollPath();
+      updateDropletState(now);
+      applyLocalPhysicsOffsets(now);
       ctx.clearRect(0, 0, W, H);
-      for (var s = splashes.length - 1; s >= 0; s--) {
-        var q = splashes[s];
-        if (q.ring) {
-          q.r += 1.0; q.life -= 0.05;
-          ctx.beginPath(); ctx.arc(q.x, q.y, q.r, 0, Math.PI * 2);
-          ctx.strokeStyle = "rgba(150,195,220," + Math.max(0, q.life * 0.5) + ")"; ctx.lineWidth = 1.3; ctx.stroke();
-          if (q.life <= 0) splashes.splice(s, 1);
-        } else if (q.body) {
-          q.life -= 0.02;
-          ctx.beginPath(); ctx.arc(q.body.position.x, q.body.position.y, q.body.circleRadius, 0, Math.PI * 2);
-          ctx.fillStyle = "rgba(170,205,226," + Math.max(0, Math.min(0.8, q.life)) + ")"; ctx.fill();
-          if (q.life <= 0 || q.body.position.y > H + 50) { if (hasMatter) World.remove(engine.world, q.body); splashes.splice(s, 1); }
-        }
-      }
-      if (curY > -50 && curY < H + 50) drawDroplet(curX, curY, lean);
-      raf = requestAnimationFrame(frame);
+      drawSplashes();
+      if (d.y > -60 && d.y < H + 60) renderDroplet(ctx, d);
+      raf = requestAnimationFrame(animate);
     }
-    function start() { if (!running) { running = true; raf = requestAnimationFrame(frame); } }
+    function start() { if (!running) { running = true; lastT = performance.now(); lastScrollY = window.scrollY; raf = requestAnimationFrame(animate); } }
     function stop() { running = false; cancelAnimationFrame(raf); }
 
-    size(); buildPath(); buildColliders();
-    pSmooth = clamp(window.scrollY / Math.max(1, (document.documentElement.scrollHeight || docH) - H), 0, 1);
-    curX = xAtY(pSmooth * docH); curY = pSmooth * docH - window.scrollY; lastDrawY = curY;
+    size(); buildScrollPath();
+    var s0 = samplePathAtProgress(0); d.x = d.px = s0.x; d.y = d.py = s0.y;
     start();
-
     var rt;
-    function rebuild() { clearTimeout(rt); rt = setTimeout(function () { size(); buildPath(); buildColliders(); }, 200); }
-    window.addEventListener("resize", rebuild);
-    window.addEventListener("orientationchange", rebuild);
-    /* layout settles after fonts/images: refresh the path a couple of times */
-    setTimeout(buildPath, 600); setTimeout(buildPath, 1600);
+    function onResize() { clearTimeout(rt); rt = setTimeout(size, 180); }
+    window.addEventListener("resize", onResize);
+    window.addEventListener("orientationchange", onResize);
     document.addEventListener("visibilitychange", function () { if (document.hidden) stop(); else start(); });
   })(); } catch (e) { /* non-critical */ }
 
