@@ -1,5 +1,5 @@
 /* ==========================================================================
-   DWR Decoded — case-study layer (home page only)
+   Fluorine-Free DWR - case-study layer (home page only)
    Loads AFTER styles.css; everything here is scoped to body[data-page="home"]
    so finisterre.html and data.html keep their existing look untouched.
 
@@ -193,11 +193,32 @@ body[data-page="home"] .btn:hover { background: var(--sage-deep); }
 .cs-scrollcue span { width: 1px; height: 34px; background: linear-gradient(var(--ink-faint), transparent); }
 
 /* ---------- progress bar ---------- */
-.cs-progress {
-  position: fixed; top: 0; left: 0; height: 2px; width: 100%;
-  transform: scaleX(0); transform-origin: 0 50%;
-  background: var(--sage); z-index: 30;
+/* ---------- falling raindrop scroll indicator ---------- */
+.rain-rail {
+  position: fixed; right: clamp(14px, 2.4vw, 30px);
+  top: calc(var(--nav-h, 64px) + 26px); bottom: 34px;
+  width: 22px; z-index: 25; pointer-events: none;
 }
+.rain-rail .rain-track {
+  position: absolute; left: 50%; top: 0; bottom: 0; width: 2px;
+  transform: translateX(-50%);
+  background: repeating-linear-gradient(var(--line) 0 5px, transparent 5px 12px);
+  opacity: .7;
+}
+.rain-rail .raindrop {
+  position: absolute; left: 50%; top: 0;
+  transform: translate(-50%, 0);
+  filter: drop-shadow(0 4px 5px rgba(53,106,140,.28));
+  will-change: top;
+}
+.rain-rail .raindrop svg { display: block; }
+@media (max-width: 760px) { .rain-rail { display: none; } }
+@media (prefers-reduced-motion: reduce) { .rain-rail { display: none; } }
+
+/* ---------- figure intro (gives Fig 01 context before you reach it) ---------- */
+.cs-fig-intro { text-align: center; margin-top: clamp(2.5rem, 6vh, 4rem); }
+.cs-fig-intro p { color: var(--ink-soft); font-size: 1.05rem; line-height: 1.6; max-width: 52ch; margin: 0 auto; }
+.cs-fig-intro .cs-kicker { margin-bottom: .7rem; }
 
 /* ---------- figure exhibits ---------- */
 .exhibit {

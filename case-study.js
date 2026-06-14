@@ -1,5 +1,5 @@
 /* ==========================================================================
-   DWR Decoded — case study (home) motion + interaction.
+   Fluorine-Free DWR - case study (home) motion + interaction.
    GSAP + ScrollTrigger drive reveals, the progress bar and the sticky
    process highlight when available. Without GSAP, or under reduced motion,
    everything is shown instantly (no hidden content). No raw scroll handlers
@@ -79,19 +79,28 @@
     steps.forEach(function (s) { io.observe(s); });
   })(); } catch (e) { /* non-critical */ }
 
+  /* ---------- falling raindrop scroll indicator (works with or without GSAP) ---------- */
+  try { (function raindrop() {
+    var rail = $("#rain-rail"), drop = $("#raindrop");
+    if (!rail || !drop || reduce) return;
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      var travel = Math.max(0, rail.clientHeight - drop.offsetHeight);
+      drop.style.top = (p * travel) + "px";
+    }
+    function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", update);
+    update();
+  })(); } catch (e) { /* non-critical */ }
+
   /* ---------- fallback path: no GSAP or reduced motion → reveal everything ---------- */
   if (!hasGSAP || reduce) { revealAll(); return; }
 
   gsap.registerPlugin(ScrollTrigger);
-
-  /* ---------- scroll progress bar ---------- */
-  var bar = $("#cs-progress");
-  if (bar) {
-    gsap.to(bar, {
-      scaleX: 1, ease: "none",
-      scrollTrigger: { start: 0, end: "max", scrub: 0.3 }
-    });
-  }
 
   /* ---------- hero entrance ---------- */
   var heroBits = $$(".cs-hero .reveal");
