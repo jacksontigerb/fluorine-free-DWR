@@ -174,8 +174,8 @@ body[data-page="home"] em,
 }
 .cs-chip b { color: var(--accent-deep); font-weight: 600; }
 .cs-hero-cta { display: flex; justify-content: center; gap: 1.25rem; flex-wrap: wrap; margin-top: 2rem; align-items: center; }
-body[data-page="home"] .btn { background: var(--sage); border-radius: 999px; font-weight: 540; }
-body[data-page="home"] .btn:hover { background: var(--sage-deep); }
+body[data-page="home"] .btn { background: var(--sage); color: #fff; border-radius: 999px; font-weight: 540; }
+body[data-page="home"] .btn:hover { background: var(--sage-deep); color: #fff; }
 .cs-quiet { font-weight: 500; color: var(--ink-soft); }
 .cs-quiet:hover { color: var(--sage-deep); }
 

@@ -79,58 +79,35 @@
     steps.forEach(function (s) { io.observe(s); });
   })(); } catch (e) { /* non-critical */ }
 
-  /* ---------- falling raindrop that follows a river path through the page ----------
-     A realistic droplet runs down a smooth curve threaded through the headings and
-     figures. It stretches with scroll speed, points its tail uphill as it falls, and
-     splashes a ripple each time it passes a landmark. The wet trail fills in behind it.
-     Works with or without GSAP; skipped on narrow screens and reduced motion. */
-  try { (function rainRiver() {
+  /* ---------- falling raindrop with physics ----------
+     A big, glassy drop falls down the page over the content. Scroll drives how far it
+     has fallen; within each gap it accelerates under "gravity", then lands on the top of
+     the next heading or figure, squashes and bounces, throws a small splash, and falls on.
+     Skipped on narrow screens and reduced motion. */
+  try { (function rainDrop() {
     var host = $("#rain-river");
     if (!host || reduce || window.innerWidth < 1024) return;
 
     var NS = "http://www.w3.org/2000/svg";
-    var svg, basePath, wetPath, ripples, drop, dropInner;
-    var totalLen = 0, anchors = [], curLen = 0, lastLen = 0, target = 0, animating = false;
+    var svg, ripples, drop, gStretch, gBounce;
+    var marks = [], segs = [], totalSpan = 0;
+    var cx = 0, cy = 0, lastY = 0, animating = false, curSeg = -1;
     function px(n) { return Math.round(n * 100) / 100; }
+    function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+    function easeIn(t) { return t * t; }            /* accelerate (fall) */
+    function smooth(t) { return t * t * (3 - 2 * t); } /* ease the sideways drift */
 
-    function collectAnchors() {
+    function collect() {
       var W = document.documentElement.clientWidth;
       var els = $$(".cs-hero h1, .cs-h2, .exhibit, .cs-note");
-      var pts = [];
+      var arr = [];
       els.forEach(function (el, i) {
         var r = el.getBoundingClientRect();
-        pts.push({ x: W * (i % 2 === 0 ? 0.30 : 0.70), y: r.top + window.scrollY + r.height / 2 });
+        arr.push({ x: clamp(r.left + r.width / 2 + ((i * 53) % 40 - 20), 70, W - 70), y: r.top + window.scrollY });
       });
-      pts.sort(function (a, b) { return a.y - b.y; });
-      if (pts.length) {
-        pts.unshift({ x: W * 0.5, y: Math.max(0, pts[0].y - 150) });
-        pts.push({ x: W * 0.5, y: pts[pts.length - 1].y + 220 });
-      }
-      return pts;
-    }
-
-    function catmull(pts) {
-      if (pts.length < 2) return "";
-      var d = "M " + px(pts[0].x) + " " + px(pts[0].y);
-      for (var i = 0; i < pts.length - 1; i++) {
-        var p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
-        d += " C " + px(p1.x + (p2.x - p0.x) / 6) + " " + px(p1.y + (p2.y - p0.y) / 6) +
-             " " + px(p2.x - (p3.x - p1.x) / 6) + " " + px(p2.y - (p3.y - p1.y) / 6) +
-             " " + px(p2.x) + " " + px(p2.y);
-      }
-      return d;
-    }
-
-    function ripple(x, y) {
-      var c = document.createElementNS(NS, "circle");
-      c.setAttribute("cx", x); c.setAttribute("cy", y); c.setAttribute("r", "2");
-      c.setAttribute("fill", "none"); c.setAttribute("stroke", "#5e9dc0"); c.setAttribute("stroke-width", "1.4");
-      ripples.appendChild(c);
-      try {
-        var a = c.animate([{ r: 2, opacity: 0.65 }, { r: 24, opacity: 0 }],
-          { duration: 700, easing: "cubic-bezier(.2,.6,.2,1)" });
-        a.onfinish = function () { c.remove(); };
-      } catch (e) { setTimeout(function () { c.remove(); }, 750); }
+      arr.sort(function (a, b) { return a.y - b.y; });
+      if (arr.length) arr.unshift({ x: arr[0].x, y: Math.max(0, arr[0].y - 170) });
+      return arr;
     }
 
     function build() {
@@ -138,75 +115,101 @@
       var W = document.documentElement.clientWidth;
       var H = document.documentElement.scrollHeight;
       host.style.height = H + "px";
-      anchors = collectAnchors();
+      marks = collect();
+      segs = []; totalSpan = 0;
+      for (var i = 0; i < marks.length - 1; i++) {
+        var span = Math.max(1, marks[i + 1].y - marks[i].y);
+        segs.push({ x0: marks[i].x, y0: marks[i].y, x1: marks[i + 1].x, y1: marks[i + 1].y, span: span, start: totalSpan });
+        totalSpan += span;
+      }
       svg = document.createElementNS(NS, "svg");
       svg.setAttribute("width", W); svg.setAttribute("height", H);
-      svg.setAttribute("viewBox", "0 0 " + W + " " + H);
-      svg.setAttribute("preserveAspectRatio", "none");
+      svg.setAttribute("viewBox", "0 0 " + W + " " + H); svg.setAttribute("preserveAspectRatio", "none");
       svg.style.cssText = "position:absolute;top:0;left:0;width:100%;height:100%;";
-      svg.innerHTML = '<defs><radialGradient id="cs-dropg" cx="38%" cy="30%" r="75%">' +
-        '<stop offset="0%" stop-color="#ffffff"/><stop offset="30%" stop-color="#cdeaf7"/>' +
-        '<stop offset="100%" stop-color="#5e9dc0"/></radialGradient></defs>';
-      var d = catmull(anchors);
-      basePath = document.createElementNS(NS, "path");
-      basePath.setAttribute("d", d); basePath.setAttribute("fill", "none");
-      basePath.setAttribute("stroke", "#9cc4dc"); basePath.setAttribute("stroke-width", "2");
-      basePath.setAttribute("stroke-linecap", "round"); basePath.setAttribute("opacity", "0.16");
-      svg.appendChild(basePath);
-      wetPath = basePath.cloneNode(false);
-      wetPath.setAttribute("stroke", "#5e9dc0"); wetPath.setAttribute("stroke-width", "2.4");
-      wetPath.setAttribute("opacity", "0.4");
-      svg.appendChild(wetPath);
+      svg.innerHTML = '<defs><radialGradient id="cs-dropg" cx="36%" cy="28%" r="78%">' +
+        '<stop offset="0%" stop-color="#ffffff"/><stop offset="26%" stop-color="#cdeaf7"/>' +
+        '<stop offset="100%" stop-color="#4f90b4"/></radialGradient></defs>';
       ripples = document.createElementNS(NS, "g"); svg.appendChild(ripples);
       drop = document.createElementNS(NS, "g");
-      drop.style.filter = "drop-shadow(0 3px 4px rgba(53,106,140,.35))";
-      dropInner = document.createElementNS(NS, "g");
+      drop.style.filter = "drop-shadow(0 4px 5px rgba(53,106,140,.40))";
+      gStretch = document.createElementNS(NS, "g");
+      gBounce = document.createElementNS(NS, "g");
       var tear = document.createElementNS(NS, "path");
-      tear.setAttribute("d", "M0 -11 C 6 -3 8 5 0 11 C -8 5 -6 -3 0 -11 Z");
-      tear.setAttribute("fill", "url(#cs-dropg)"); tear.setAttribute("stroke", "#356a8c"); tear.setAttribute("stroke-width", "0.8");
+      tear.setAttribute("d", "M0 -15 C 9 -4 11 7 0 15 C -11 7 -9 -4 0 -15 Z");
+      tear.setAttribute("fill", "url(#cs-dropg)"); tear.setAttribute("stroke", "#356a8c"); tear.setAttribute("stroke-width", "1");
       var hi = document.createElementNS(NS, "ellipse");
-      hi.setAttribute("cx", "-2.4"); hi.setAttribute("cy", "2.5"); hi.setAttribute("rx", "1.9"); hi.setAttribute("ry", "3.2");
-      hi.setAttribute("fill", "#ffffff"); hi.setAttribute("opacity", "0.6");
-      dropInner.appendChild(tear); dropInner.appendChild(hi); drop.appendChild(dropInner);
-      svg.appendChild(drop);
+      hi.setAttribute("cx", "-3.2"); hi.setAttribute("cy", "3"); hi.setAttribute("rx", "2.6"); hi.setAttribute("ry", "4.4");
+      hi.setAttribute("fill", "#ffffff"); hi.setAttribute("opacity", "0.65");
+      gBounce.appendChild(tear); gBounce.appendChild(hi);
+      gStretch.appendChild(gBounce); drop.appendChild(gStretch); svg.appendChild(drop);
       host.appendChild(svg);
-
-      totalLen = basePath.getTotalLength();
-      wetPath.style.strokeDasharray = totalLen;
-      anchors.forEach(function (a) {
-        var best = 0, bd = 1e12;
-        for (var s = 0; s <= 150; s++) {
-          var L = totalLen * s / 150, p = basePath.getPointAtLength(L);
-          var dx = p.x - a.x, dy = p.y - a.y, dd = dx * dx + dy * dy;
-          if (dd < bd) { bd = dd; best = L; }
-        }
-        a._len = best; a._done = false;
-      });
-      curLen = lastLen = target = 0;
+      curSeg = -1; cx = marks[0].x; cy = marks[0].y; lastY = cy;
       render(true);
     }
 
+    function ripple(x, y) {
+      var c = document.createElementNS(NS, "circle");
+      c.setAttribute("cx", x); c.setAttribute("cy", y); c.setAttribute("r", "3");
+      c.setAttribute("fill", "none"); c.setAttribute("stroke", "#5e9dc0"); c.setAttribute("stroke-width", "1.6");
+      ripples.appendChild(c);
+      try { c.animate([{ r: 3, opacity: .7 }, { r: 30, opacity: 0 }], { duration: 760, easing: "cubic-bezier(.2,.6,.2,1)" }).onfinish = function () { c.remove(); }; }
+      catch (e) { setTimeout(function () { c.remove(); }, 800); }
+      for (var k = 0; k < 3; k++) (function (k) {
+        var s = document.createElementNS(NS, "circle");
+        var dx = (k - 1) * 11 + (Math.random() * 6 - 3);
+        s.setAttribute("cx", x); s.setAttribute("cy", y); s.setAttribute("r", (1.6 + Math.random()).toFixed(1));
+        s.setAttribute("fill", "#7fb4d2"); ripples.appendChild(s);
+        try {
+          s.animate([
+            { transform: "translate(0px,0px)", opacity: .9 },
+            { transform: "translate(" + dx + "px,-15px)", opacity: .9, offset: .5 },
+            { transform: "translate(" + (dx * 1.5) + "px,7px)", opacity: 0 }
+          ], { duration: 560, easing: "cubic-bezier(.3,.1,.5,1)" }).onfinish = function () { s.remove(); };
+        } catch (e) { s.remove(); }
+      })(k);
+    }
+
+    function bounce() {
+      if (!gBounce.animate) return;
+      try {
+        gBounce.animate([
+          { transform: "scaleY(1) scaleX(1)" },
+          { transform: "scaleY(.55) scaleX(1.5)", offset: .18 },
+          { transform: "scaleY(1.18) scaleX(.88)", offset: .5 },
+          { transform: "scaleY(.94) scaleX(1.05)", offset: .74 },
+          { transform: "scaleY(1) scaleX(1)" }
+        ], { duration: 520, easing: "cubic-bezier(.3,.7,.4,1)" });
+      } catch (e) { }
+    }
+
+    function segFor(dist) { var i = 0; while (i < segs.length - 1 && dist > segs[i].start + segs[i].span) i++; return i; }
+
     function render(snap) {
+      if (!segs.length) return;
       var max = document.documentElement.scrollHeight - window.innerHeight;
-      target = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) * totalLen : 0;
-      curLen += (target - curLen) * (snap ? 1 : 0.16);
-      var p = basePath.getPointAtLength(curLen);
-      var p2 = basePath.getPointAtLength(Math.min(totalLen, curLen + 1));
-      var ang = Math.atan2(p2.y - p.y, p2.x - p.x) * 180 / Math.PI - 90;
-      var speed = Math.abs(curLen - lastLen); lastLen = curLen;
-      var stretch = Math.min(2.3, 1 + speed * 0.05);
-      drop.setAttribute("transform", "translate(" + px(p.x) + "," + px(p.y) + ") rotate(" + px(ang) + ")");
-      dropInner.setAttribute("transform", "scale(" + px(1 / Math.sqrt(stretch)) + "," + px(stretch) + ")");
-      wetPath.style.strokeDashoffset = (totalLen - curLen);
-      anchors.forEach(function (a) {
-        if (!a._done && curLen >= a._len && curLen > 2) { a._done = true; ripple(a.x, a.y); }
-        else if (a._done && curLen < a._len - 60) { a._done = false; }
-      });
+      var dist = (max > 0 ? clamp(window.scrollY / max, 0, 1) : 0) * totalSpan;
+      var i = segFor(dist), s = segs[i];
+      var t = clamp((dist - s.start) / s.span, 0, 1);
+      var ny = s.y0 + (s.y1 - s.y0) * easeIn(t);
+      var nx = s.x0 + (s.x1 - s.x0) * smooth(t) + Math.sin(t * Math.PI) * ((i % 2) ? -26 : 26);
+      cx += (nx - cx) * (snap ? 1 : 0.25);
+      cy += (ny - cy) * (snap ? 1 : 0.25);
+      var stretch = clamp(1 + Math.abs(cy - lastY) * 0.045, 1, 2.4); lastY = cy;
+      drop.setAttribute("transform", "translate(" + px(cx) + "," + px(cy) + ")");
+      gStretch.setAttribute("transform", "scale(" + px(1 / Math.sqrt(stretch)) + "," + px(stretch) + ")");
+      if (i !== curSeg) {
+        if (i > curSeg && curSeg >= 0) { ripple(marks[i].x, marks[i].y); bounce(); }
+        curSeg = i;
+      }
     }
 
     function loop() {
       render(false);
-      if (Math.abs(target - curLen) > 0.4) { requestAnimationFrame(loop); } else { animating = false; }
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var dist = (max > 0 ? clamp(window.scrollY / max, 0, 1) : 0) * totalSpan;
+      var s = segs[segFor(dist)], t = clamp((dist - s.start) / s.span, 0, 1);
+      var ny = s.y0 + (s.y1 - s.y0) * easeIn(t);
+      if (Math.abs(ny - cy) > 0.4) requestAnimationFrame(loop); else animating = false;
     }
     function kick() { if (!animating) { animating = true; requestAnimationFrame(loop); } }
 
