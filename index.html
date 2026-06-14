@@ -42,8 +42,8 @@
 <body data-page="home">
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <!-- falling-raindrop "river": full-page SVG built + animated by case-study.js -->
-  <div class="rain-river" id="rain-river" aria-hidden="true"></div>
+  <!-- raindrop physics canvas (Matter.js); drawn + simulated by case-study.js -->
+  <canvas class="rain-canvas" id="rain-canvas" aria-hidden="true"></canvas>
 
   <nav class="site-nav" aria-label="Site">
     <div class="wrap">
@@ -422,6 +422,7 @@
 
   <script src="assets/vendor/gsap.min.js"></script>
   <script src="assets/vendor/ScrollTrigger.min.js"></script>
+  <script src="assets/vendor/matter.min.js"></script>
   <script src="case-study.js"></script>
 </body>
 </html>

@@ -187,14 +187,14 @@ body[data-page="home"] .btn:hover { background: var(--sage-deep); color: #fff; }
 }
 .cs-scrollcue span { width: 1px; height: 34px; background: linear-gradient(var(--ink-faint), transparent); }
 
-/* ---------- falling raindrop "river" (full-page overlay) ---------- */
-.rain-river {
-  position: absolute; top: 0; left: 0; width: 100%;
+/* ---------- raindrop physics canvas (fixed, viewport-sized) ---------- */
+.rain-canvas {
+  position: fixed; inset: 0;
+  width: 100vw; height: 100vh;
   pointer-events: none; z-index: 6;
 }
-.rain-river svg { overflow: visible; }
-@media (max-width: 1023px) { .rain-river { display: none; } }
-@media (prefers-reduced-motion: reduce) { .rain-river { display: none; } }
+@media (max-width: 1023px) { .rain-canvas { display: none; } }
+@media (prefers-reduced-motion: reduce) { .rain-canvas { display: none; } }
 
 /* ---------- figure intro (gives Fig 01 context before you reach it) ---------- */
 .cs-fig-intro { text-align: center; margin-top: clamp(2.5rem, 6vh, 4rem); }
