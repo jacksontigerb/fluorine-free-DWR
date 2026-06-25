@@ -1,428 +1,182 @@
 <!DOCTYPE html>
 <!-- ============================================================
-  Fluorine-Free DWR - home (research narrative), editorial build
-
-  A centered, editorial walk-through of a fluorine-free durable
-  water-repellent (DWR) coating research project: anatase TiO2
-  nanoparticles in a siloxane-stearyl acrylate network, applied to
-  cotton by dip-pad-cure. Framed as an open research question, not a
-  finished result.
-
-  HOUSE STYLE: no em dashes anywhere (commas / full stops instead);
-  compounds use plain hyphens (Cassie-Baxter, siloxane-stearyl, dip-pad-cure).
-
-  PRE-PUBLISH CHECKLIST:
-  1. Supervisor sign-off on every public number/claim (see TODO-DATA).
-  2. Replace TODO-EMAIL (here + finisterre.html) with a real address.
-  3. Fill og:url + og:image once the live URL is settled, then make the QR.
-
-  FIGURES ship as self-contained SVG so the page is complete offline.
-  "BIORENDER SWAP" comments mark where a BioRender PNG export can replace a panel.
-  Styles: case-study.css (home only). Motion: case-study.js (GSAP optional,
-  reduced-motion + no-JS safe).
+  Fluorine-Free DWR - single page (PFAS / Coating / Finisterre / Lab)
+  Clean text hero, minimal line diagrams, autoplay drop video.
+  HOUSE STYLE: no em dashes. No final numbers; results are to come.
+  PRE-PUBLISH: replace TODO-EMAIL, set og:url + og:image, make QR.
 ============================================================ -->
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Fluorine-Free Water-Repellent Cotton · UCL Masters Research</title>
-  <meta name="description" content="A UCL masters research project asking whether cotton can be made water-repellent without fluorine, using anatase TiO2 nanoparticles in a siloxane-stearyl acrylate network. The question, the chemistry, and the evidence so far." />
-  <meta property="og:title" content="Fluorine-Free Water-Repellent Cotton · UCL Masters Research" />
-  <meta property="og:description" content="Can cotton repel water without forever chemicals? A UCL masters research project, explained." />
+  <title>Fluorine-Free Superhydrophobic Coatings for Outdoor Textiles · UCL Masters Research</title>
+  <meta name="description" content="A UCL masters research project developing fluorine-free superhydrophobic coatings for outdoor textiles, replacing PFAS with a stearyl acrylate polymer and modified titanium dioxide on cotton." />
+  <meta property="og:title" content="Fluorine-Free Superhydrophobic Coatings for Outdoor Textiles" />
+  <meta property="og:description" content="A UCL masters research project replacing PFAS in water-repellent textiles." />
   <meta property="og:type" content="website" />
-  <!-- TODO at publish: <meta property="og:url" content="..."> and <meta property="og:image" content="..."> -->
-  <meta name="theme-color" content="#f6f4ef" />
+  <!-- TODO at publish: og:url + og:image -->
+  <meta name="theme-color" content="#f6f3ec" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 28'%3E%3Cpath d='M12 2C12 2 4 12.5 4 18a8 8 0 0 0 16 0C20 12.5 12 2 12 2Z' fill='%230e6e5c'/%3E%3C/svg%3E" />
   <link rel="preload" href="assets/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="assets/fonts/geist-var.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="case-study.css" />
   <script>document.documentElement.className += " js";</script>
 </head>
-<body data-page="home">
-  <a class="skip-link" href="#main">Skip to content</a>
+<body id="top">
+  <a class="skip" href="#concept">Skip to content</a>
 
-  <!-- raindrop physics canvas (Matter.js); drawn + simulated by case-study.js -->
-  <canvas class="rain-canvas" id="rain-canvas" aria-hidden="true"></canvas>
-
-  <nav class="site-nav" aria-label="Site">
-    <div class="wrap">
-      <a class="wordmark" href="index.html" aria-label="Fluorine-Free DWR, home">
-        <svg viewBox="0 0 24 28" aria-hidden="true"><path d="M12 2C12 2 4 12.5 4 18a8 8 0 0 0 16 0C20 12.5 12 2 12 2Z" fill="#0e6e5c"/></svg>
-        <span>Fluorine-Free DWR</span>
-      </a>
-      <ul class="nav-links">
-        <li><a href="#concept">Concept</a></li>
-        <li><a href="#chemistry">Chemistry</a></li>
-        <li><a href="#methods">Methods</a></li>
-        <li><a href="data.html">Lab notebook</a></li>
-        <li><a href="finisterre.html">Finisterre</a></li>
-      </ul>
+  <header class="nav" id="nav">
+    <div class="nav-in">
+      <a class="brand" href="#top">Fluorine-Free <b>DWR</b></a>
+      <nav aria-label="Sections">
+        <a href="#concept">PFAS</a>
+        <a href="#making">The coating</a>
+        <a href="#finisterre">Finisterre</a>
+        <a href="#lab">Lab</a>
+      </nav>
     </div>
-  </nav>
+  </header>
 
-  <main id="main">
+  <main>
 
     <!-- ===================== HERO ===================== -->
-    <header class="cs-hero">
-      <div class="cs-col">
-        <p class="cs-kicker reveal">UCL Masters · Advanced Materials Science</p>
-        <h1 class="reveal">Can cotton repel water without the <em>forever chemicals</em>?</h1>
-        <p class="cs-lede reveal">A masters research project testing whether anatase&nbsp;TiO₂ nanoparticles, dispersed in a siloxane-stearyl&nbsp;acrylate network and padded onto ordinary cotton, can make water bead and roll away with no fluorine involved.</p>
-        <div class="cs-meta-row reveal">
-          <span class="cs-chip"><b>Roughness</b> · anatase TiO₂</span>
-          <span class="cs-chip"><b>Low energy</b> · siloxane-stearyl acrylate</span>
-          <span class="cs-chip"><b>Substrate</b> · cotton</span>
-          <span class="cs-chip"><b>Route</b> · dip-pad-cure</span>
+    <section class="hero" aria-label="Introduction">
+      <div class="hero-in">
+        <h1 class="hero-title">Fluorine-Free Superhydrophobic Coatings for Outdoor Textiles</h1>
+        <p class="hero-sub">A UCL masters research project</p>
+        <p class="hero-lede">Getting cotton to shed water like PFAS does, without the fluorine.</p>
+        <div class="hero-cta">
+          <a class="btn" href="#concept">The problem</a>
+          <a class="btn ghost" href="#making">My coating</a>
         </div>
-        <div class="cs-hero-cta reveal">
-          <a class="btn" href="data.html">See the experiment</a>
-          <a class="cs-quiet" href="#why">or read the background below ↓</a>
-        </div>
-      </div>
-
-      <!-- short setup so Fig 01 has context before you reach it -->
-      <div class="cs-col cs-fig-intro reveal">
-        <p class="cs-kicker" style="justify-content:center;">The goal</p>
-        <p>Before any chemistry, this is what success looks like. A drop that sits up as a near sphere and runs straight off, instead of soaking into the cotton.</p>
-      </div>
-
-      <!-- ===== Fig 01 - a drop in the Cassie-Baxter state ===== -->
-      <figure class="exhibit reveal">
-        <div class="exhibit-stage" data-fig="Fig. 01">
-          <div class="exhibit-mat">
-            <svg class="dwr-svg" viewBox="0 0 880 420" role="img" aria-label="A near-spherical water droplet resting on a rough, fibrous coated surface. The droplet sits on the tops of textured fibres with air trapped beneath it, and the contact angle theta between the droplet edge and the surface is greater than 150 degrees.">
-              <line x1="80" y1="330" x2="800" y2="330" stroke="#c9c3b5" stroke-width="1.5"/>
-              <g fill="#eef0ea" stroke="#9aa39c" stroke-width="1.4">
-                <circle cx="190" cy="330" r="26"/><circle cx="250" cy="330" r="22"/>
-                <circle cx="310" cy="330" r="27"/><circle cx="372" cy="330" r="21"/>
-                <circle cx="432" cy="330" r="26"/><circle cx="494" cy="330" r="23"/>
-                <circle cx="556" cy="330" r="27"/><circle cx="618" cy="330" r="22"/>
-                <circle cx="678" cy="330" r="25"/>
-              </g>
-              <g fill="#cdd4cb">
-                <circle cx="182" cy="312" r="4"/><circle cx="198" cy="316" r="3.4"/>
-                <circle cx="306" cy="310" r="4"/><circle cx="320" cy="316" r="3.2"/>
-                <circle cx="428" cy="312" r="3.8"/><circle cx="552" cy="310" r="4"/>
-                <circle cx="566" cy="316" r="3.2"/><circle cx="676" cy="312" r="3.6"/>
-              </g>
-              <text class="tiny" x="280" y="356" text-anchor="middle">air</text>
-              <text class="tiny" x="465" y="356" text-anchor="middle">air</text>
-              <text class="tiny" x="588" y="356" text-anchor="middle">air</text>
-              <circle cx="434" cy="222" r="116" fill="#cfe3ee" stroke="#356a8c" stroke-width="2.2"/>
-              <ellipse cx="398" cy="186" rx="34" ry="22" fill="#ffffff" opacity=".5"/>
-              <path d="M 318 318 A 120 120 0 0 1 372 226" fill="none" stroke="#a05a39" stroke-width="1.8"/>
-              <text class="eq" x="250" y="280" fill="#804227">θ &gt; 150°</text>
-              <line x1="318" y1="330" x2="318" y2="318" stroke="#a05a39" stroke-width="1.4"/>
-              <text class="lbl" x="700" y="150">a sphere, not a stain</text>
-            </svg>
-          </div>
-        </div>
-        <figcaption>
-          <span class="fig-lead">Water meets the coated fabric as a near sphere, perched on air.</span>
-          Roughness from the nanoparticles traps air beneath the drop while the low energy organic layer resists wetting. Together they hold the droplet in a Cassie-Baxter state, so it beads and rolls instead of soaking in.
-          <span class="fig-src">Schematic, this work</span>
-        </figcaption>
-      </figure>
-
-      <p class="cs-scrollcue reveal" aria-hidden="true">Scroll<span></span></p>
-    </header>
-
-    <!-- ===================== 1 · WHY IT MATTERS ===================== -->
-    <section class="cs-section centered tint-clay" id="why">
-      <div class="cs-col cs-prose">
-        <p class="cs-kicker reveal">01 · Why fluorine-free</p>
-        <h2 class="cs-h2 reveal">For decades, staying dry meant <em>forever chemicals</em>.</h2>
-        <p class="reveal">Durable water repellency, the finish that makes rain bead off a jacket, was built for half a century on fluorocarbons. Their CF₃ tips give the lowest surface energy known, so they shed both water and oil. The trouble is that the carbon-to-fluorine bond barely breaks down in nature. <strong>These are the PFAS, the “forever chemicals,”</strong> and regulators are now phasing them out of textiles.</p>
-        <p class="pull reveal">The performance was never the problem. The persistence was.</p>
-        <p class="reveal">So the research question is simple to state. Can a coating match that water repellency, survive real use, and leave nothing behind that lasts for centuries? This project tests one route to a yes. It is built on two ideas that are ordinary on their own, but useful once combined and bonded onto cotton, <strong>with no fluorinated chains anywhere</strong>.</p>
       </div>
     </section>
 
-    <!-- ===================== 2 · THE CONCEPT ===================== -->
-    <section class="cs-section" id="concept">
-      <div class="cs-wide" style="text-align:center;">
-        <p class="cs-kicker reveal" style="justify-content:center;">02 · The concept</p>
-        <h2 class="cs-h2 reveal">Two components decide how a drop behaves: <em>roughness</em> and <em>surface energy</em>.</h2>
-        <p class="cs-lede reveal" style="margin-inline:auto;">Whether water spreads or beads comes down to the contact angle. Lower the surface energy and add roughness at the right scale, and a droplet can move from wetting the fabric to riding on a cushion of trapped air.</p>
-      </div>
-
-      <!-- ===== Fig 02 - wetting states (zoomable) ===== -->
-      <figure class="exhibit reveal">
-        <div class="exhibit-stage is-zoomable" data-fig="Fig. 02" tabindex="0" role="button" aria-label="Expand wetting-states diagram">
-          <div class="exhibit-mat">
-            <svg class="dwr-svg" viewBox="0 0 900 360" role="img" aria-label="Three wetting states compared. Left: a smooth surface gives a moderate contact angle, the Young state. Centre: a rough surface fully wetted underneath the drop, the Wenzel state, giving a higher angle. Right: a rough surface with air trapped beneath the drop, the Cassie-Baxter state, giving the highest contact angle and a near-spherical drop.">
-              <g>
-                <line x1="40" y1="250" x2="270" y2="250" stroke="#c9c3b5" stroke-width="1.5"/>
-                <path d="M 110 250 a 70 70 0 1 1 90 0 Z" fill="#cfe3ee" stroke="#356a8c" stroke-width="2" transform="translate(0,-6)"/>
-                <text class="tiny" x="155" y="300" text-anchor="middle">smooth</text>
-                <text class="lbl" x="155" y="60" text-anchor="middle">Young</text>
-                <text x="155" y="82" text-anchor="middle">θ ≈ 100°</text>
-              </g>
-              <g>
-                <g fill="#eef0ea" stroke="#9aa39c" stroke-width="1.3">
-                  <circle cx="350" cy="250" r="13"/><circle cx="382" cy="250" r="13"/><circle cx="414" cy="250" r="13"/>
-                  <circle cx="446" cy="250" r="13"/><circle cx="478" cy="250" r="13"/><circle cx="510" cy="250" r="13"/>
-                </g>
-                <path d="M 392 252 a 62 62 0 1 1 78 0 Z" fill="#bcd6e6" stroke="#356a8c" stroke-width="2" transform="translate(0,-12)"/>
-                <g fill="#bcd6e6"><rect x="364" y="244" width="12" height="14"/><rect x="396" y="244" width="12" height="14"/><rect x="428" y="244" width="12" height="14"/></g>
-                <text class="tiny" x="431" y="300" text-anchor="middle">rough, wetted</text>
-                <text class="lbl" x="431" y="60" text-anchor="middle">Wenzel</text>
-                <text x="431" y="82" text-anchor="middle">θ* higher</text>
-              </g>
-              <g>
-                <g fill="#eef0ea" stroke="#9aa39c" stroke-width="1.3">
-                  <circle cx="630" cy="250" r="13"/><circle cx="662" cy="250" r="13"/><circle cx="694" cy="250" r="13"/>
-                  <circle cx="726" cy="250" r="13"/><circle cx="758" cy="250" r="13"/><circle cx="790" cy="250" r="13"/>
-                </g>
-                <circle cx="710" cy="170" r="66" fill="#cfe3ee" stroke="#356a8c" stroke-width="2.2"/>
-                <ellipse cx="690" cy="150" rx="18" ry="12" fill="#fff" opacity=".5"/>
-                <text class="tiny" x="678" y="244" text-anchor="middle">air</text>
-                <text class="tiny" x="742" y="244" text-anchor="middle">air</text>
-                <text class="tiny" x="710" y="300" text-anchor="middle">rough, air-trapped</text>
-                <text class="lbl" x="710" y="60" text-anchor="middle" fill="#0a5546">Cassie-Baxter</text>
-                <text x="710" y="82" text-anchor="middle" fill="#0a5546">θ* &gt; 150°, the goal</text>
-              </g>
-              <text class="eq" x="450" y="338" text-anchor="middle">cos θ* = f (cos θ + 1) − 1</text>
-            </svg>
-          </div>
-          <span class="exhibit-zoomhint">⤢ click to enlarge</span>
+    <!-- ===================== PFAS + SUPERHYDROPHOBIC ===================== -->
+    <section class="section" id="concept">
+      <div class="wrap">
+        <p class="eyebrow reveal">The problem</p>
+        <h2 class="big reveal">Almost every waterproof relies on PFAS.</h2>
+        <div class="lead-cols">
+          <p class="reveal">The finish that makes rain bead off a jacket is almost always PFAS. Nothing else repels water and oil quite as well, so the outdoor industry has used it for years.</p>
+          <p class="reveal">The catch is that they barely break down. They build up in the environment and in us, and they're being phased out of textiles. I'm trying to match how well they work, with no fluorine at all.</p>
         </div>
-        <figcaption>
-          <span class="fig-lead">The target is the Cassie-Baxter state, a drop resting on a mix of solid tips and trapped air.</span>
-          On a smooth low energy surface (Young) water still partly wets. Roughen it and either water floods the texture (Wenzel) or, if the surface energy is low enough, it bridges across the peaks and rests on air (Cassie-Baxter). The fraction of solid contact, <em>f</em>, is what the coating is built to keep small.
-          <span class="fig-src">Schematic, this work</span>
-        </figcaption>
-      </figure>
-    </section>
-
-    <!-- ===================== 3 · CHEMISTRY & MATERIALS ===================== -->
-    <section class="cs-section tint-sage" id="chemistry">
-      <div class="cs-wide" style="text-align:center;">
-        <p class="cs-kicker reveal" style="justify-content:center;">03 · Chemistry &amp; materials</p>
-        <h2 class="cs-h2 reveal">One coating, doing <em>both</em> jobs at once.</h2>
-        <p class="cs-lede reveal" style="margin-inline:auto;">The anatase TiO₂ nanoparticles supply the roughness. The siloxane-stearyl acrylate network supplies the low energy skin and binds the whole thing to the fibre.</p>
-      </div>
-
-      <!-- ===== Fig 03 - coating architecture (zoomable) =====
-           BIORENDER SWAP candidate: build a molecular-architecture figure from
-           "Cross-linked polymer 2", "Fatty acid (saturated)" (stearyl C18 tails),
-           a TiO2 nanoparticle, and a cotton fibre. Export to
-           assets/img/biorender/coating-architecture.png and replace the <svg> with an <img>. -->
-      <figure class="exhibit reveal">
-        <div class="exhibit-stage is-zoomable" data-fig="Fig. 03" tabindex="0" role="button" aria-label="Expand coating-architecture diagram">
-          <div class="exhibit-mat">
-            <svg class="dwr-svg" viewBox="0 0 900 420" role="img" aria-label="Cross-section of a cotton fibre carrying the coating. The fibre surface is studded with anatase titanium dioxide nanoparticles, embedded in a siloxane backbone network (silicon-oxygen-silicon). Long stearyl C18 hydrocarbon tails point outward from the network, forming a low-surface-energy comb that water cannot easily wet.">
-              <path d="M 40 360 Q 450 300 860 360 L 860 420 L 40 420 Z" fill="#efece3" stroke="#c9c3b5" stroke-width="1.5"/>
-              <text class="tiny" x="80" y="404">cotton fibre</text>
-              <path d="M 90 320 q 40 -26 80 0 t 80 0 t 80 0 t 80 0 t 80 0 t 80 0 t 80 0 t 80 0" fill="none" stroke="#0e6e5c" stroke-width="2.4"/>
-              <text class="lbl" x="120" y="300" fill="#0a5546">Si-O-Si network</text>
-              <g>
-                <circle cx="210" cy="300" r="26" fill="#dfe6e0" stroke="#0a5546" stroke-width="2"/>
-                <circle cx="430" cy="300" r="30" fill="#dfe6e0" stroke="#0a5546" stroke-width="2"/>
-                <circle cx="660" cy="300" r="24" fill="#dfe6e0" stroke="#0a5546" stroke-width="2"/>
-                <g fill="#b9c4ba"><circle cx="200" cy="288" r="4"/><circle cx="222" cy="292" r="3.4"/><circle cx="214" cy="312" r="3"/>
-                  <circle cx="420" cy="286" r="4.4"/><circle cx="444" cy="294" r="3.6"/><circle cx="430" cy="316" r="3.2"/>
-                  <circle cx="652" cy="290" r="3.8"/><circle cx="672" cy="296" r="3.2"/></g>
-                <text class="tiny" x="430" y="304" text-anchor="middle" fill="#0a5546">TiO₂</text>
-                <text class="tiny" x="430" y="318" text-anchor="middle" fill="#0a5546">anatase</text>
-              </g>
-              <g stroke="#a05a39" stroke-width="2" fill="none">
-                <polyline points="150,300 158,278 150,256 158,234 150,212"/>
-                <polyline points="270,296 278,274 270,252 278,230 270,208"/>
-                <polyline points="350,300 358,278 350,256 358,234 350,212"/>
-                <polyline points="510,296 518,274 510,252 518,230 510,208"/>
-                <polyline points="590,300 598,278 590,256 598,234 590,212"/>
-                <polyline points="730,300 738,278 730,256 738,234 730,212"/>
-                <polyline points="800,302 808,280 800,258 808,236 800,214"/>
-              </g>
-              <text class="lbl" x="620" y="150" fill="#804227">stearyl C₁₈ tails</text>
-              <text class="tiny" x="620" y="170">low surface energy, CH₃ rich</text>
-              <circle cx="430" cy="120" r="40" fill="#cfe3ee" stroke="#356a8c" stroke-width="2"/>
-              <path d="M 430 168 l -7 16 l 14 0 Z" fill="#cfe3ee" stroke="#356a8c" stroke-width="2"/>
-              <text x="430" y="70" text-anchor="middle">water kept out</text>
-            </svg>
-          </div>
-          <span class="exhibit-zoomhint">⤢ click to enlarge</span>
-        </div>
-        <figcaption>
-          <span class="fig-lead">Roughness and low surface energy come from the same coating, not two treatments.</span>
-          Anatase TiO₂ nanoparticles build micro and nano scale texture on each fibre. The acrylate polymerises into a network that locks them down, while the siloxane backbone and outward facing stearyl (C₁₈) chains present a methyl rich, low energy surface. Bonding to cotton’s hydroxyl groups is what should make it durable rather than a film that rinses away.
-          <span class="fig-src">Schematic, this work (a BioRender export can replace this panel)</span>
-        </figcaption>
-      </figure>
-
-      <div class="cs-col cs-prose" style="margin-top: clamp(2rem,5vh,3rem);">
-        <p class="reveal"><strong>Why these ingredients.</strong> Anatase is the well characterised, photoactive form of TiO₂ and gives controllable nanoparticle roughness. The siloxane segments contribute a flexible, naturally low energy backbone. The long stearyl side chains pack into a hydrophobic outer layer. The acrylate chemistry crosslinks it all into a continuous network that grips the cellulose surface. No fluorine is involved at any step.</p>
       </div>
     </section>
 
-    <!-- ===================== 4 · FABRICATION (sticky, interactive) ===================== -->
-    <section class="cs-section" id="process">
-      <div class="cs-wide" style="text-align:center; margin-bottom: clamp(2rem,5vh,3rem);">
-        <p class="cs-kicker reveal" style="justify-content:center;">04 · Fabrication</p>
-        <h2 class="cs-h2 reveal">Three steps: <em>dip, pad, cure</em>.</h2>
-        <p class="cs-lede reveal" style="margin-inline:auto;">A textile scale route. It uses the same dip, pad and cure sequence as industrial finishing, so the chemistry has a credible path out of the lab.</p>
+    <!-- ===================== THE COATING ===================== -->
+    <section class="section" id="making">
+      <div class="wrap">
+        <p class="eyebrow reveal">The coating</p>
+        <h2 class="big reveal">How I make it.</h2>
+        <p class="lede reveal" style="margin-top:1.2rem;">It comes together in three parts, none of them fluorinated.</p>
+        <div class="parts">
+          <p class="reveal"><strong>The polymer.</strong> Long carbon chains from stearyl acrylate give a surface water doesn't want to wet. A little PDMS silicone keeps the fabric soft, and an epoxy group with a blocked-isocyanate crosslinker locks it onto the cotton so it survives a wash.</p>
+          <p class="reveal"><strong>The roughness.</strong> Anatase titanium dioxide nanoparticles add the fine texture that lifts a droplet onto a cushion of trapped air. That's what takes it from water-repellent to superhydrophobic.</p>
+          <p class="reveal"><strong>The particle tweak.</strong> Bare anatase clumps together, so I treat it with a silane (VTMS) to help it spread evenly through the polymer and hold up better in sunlight.</p>
+        </div>
+        <p class="reveal" style="margin-top:1.4rem;max-width:54ch;">I make the polymer as a waterborne emulsion, mix in the particles, and put it on cotton by dip, pad and cure.</p>
       </div>
 
-      <div class="cs-sticky">
-        <div class="sticky-fig">
-          <figure class="exhibit">
-            <div class="exhibit-stage" data-fig="Fig. 04">
-              <div class="exhibit-mat">
-                <svg class="dwr-svg" id="proc-svg" viewBox="0 0 440 360" role="img" aria-label="The dip-pad-cure process. Stage one: cotton is immersed in the nanoparticle dispersion. Stage two: it passes through padding rollers that squeeze it to an even wet pickup. Stage three: it is cured in an oven so the network forms and bonds to the fibre.">
-                  <path d="M 30 70 L 30 230 Q 30 250 60 250 L 410 250" fill="none" stroke="#c9c3b5" stroke-width="2" stroke-dasharray="2 6"/>
-                  <g class="stage" data-stage="1">
-                    <rect x="55" y="180" width="120" height="90" rx="8" fill="#e6edf2" stroke="#356a8c" stroke-width="2"/>
-                    <path d="M 60 210 q 28 -10 56 0 t 56 0" fill="none" stroke="#356a8c" stroke-width="1.6"/>
-                    <circle cx="90" cy="232" r="4" fill="#9aa39c"/><circle cx="120" cy="244" r="4" fill="#9aa39c"/><circle cx="150" cy="230" r="4" fill="#9aa39c"/>
-                    <text class="tiny" x="115" y="292" text-anchor="middle">TiO₂ dispersion</text>
-                  </g>
-                  <g class="stage" data-stage="2">
-                    <circle cx="230" cy="225" r="26" fill="#eef0ea" stroke="#0a5546" stroke-width="2"/>
-                    <circle cx="230" cy="280" r="26" fill="#eef0ea" stroke="#0a5546" stroke-width="2"/>
-                    <line x1="204" y1="252" x2="256" y2="252" stroke="#0a5546" stroke-width="2"/>
-                    <text class="tiny" x="230" y="330" text-anchor="middle">nip rollers, even pickup</text>
-                  </g>
-                  <g class="stage" data-stage="3">
-                    <rect x="300" y="190" width="110" height="80" rx="8" fill="#f2e8e0" stroke="#a05a39" stroke-width="2"/>
-                    <path d="M 322 250 q -8 -14 0 -26 q 8 -12 0 -24" fill="none" stroke="#a05a39" stroke-width="1.6"/>
-                    <path d="M 355 250 q -8 -14 0 -26 q 8 -12 0 -24" fill="none" stroke="#a05a39" stroke-width="1.6"/>
-                    <path d="M 388 250 q -8 -14 0 -26 q 8 -12 0 -24" fill="none" stroke="#a05a39" stroke-width="1.6"/>
-                    <text class="tiny" x="355" y="292" text-anchor="middle">cure, network forms</text>
-                  </g>
-                  <text class="lbl" x="220" y="40" text-anchor="middle">coated cotton</text>
-                </svg>
-              </div>
-            </div>
+      <div class="wrap">
+        <figure class="diagram wide reveal">
+          <img src="assets/img/diagram-dippadcure.svg" alt="Three steps: dip, the cotton is soaked in the dispersion; pad, rollers squeeze it to an even pickup; cure, heat sets the coating and bonds it to the fibre." />
+        </figure>
+        <ol class="steps">
+          <li class="reveal"><span class="num">01</span><h4>Dip</h4><p>Cotton is soaked in the dispersion.</p></li>
+          <li class="reveal"><span class="num">02</span><h4>Pad</h4><p>Rollers squeeze it to an even pickup.</p></li>
+          <li class="reveal"><span class="num">03</span><h4>Cure</h4><p>Heat sets the coating and bonds it to the fibre.</p></li>
+        </ol>
+      </div>
+
+      <div class="wrap">
+        <div class="ba reveal">
+          <figure>
+            <img src="assets/img/sem-tio2-unmodified.jpg" width="1300" height="975" loading="lazy" alt="Scanning electron micrograph of untreated titanium dioxide at 4000x: large, shard-like clumps." />
+            <figcaption><span class="tag">Untreated</span> clumps into shards</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/img/sem-tio2-modified.jpg" width="1300" height="975" loading="lazy" alt="Scanning electron micrograph of silane-treated titanium dioxide at 4000x: finer particles spread more evenly." />
+            <figcaption><span class="tag">Treated</span> spreads more evenly</figcaption>
           </figure>
         </div>
+        <p class="reveal" style="margin-top:1rem;font-size:.96rem;color:var(--ink-2);max-width:70ch;"><strong>Why the silane helps.</strong> Left to itself, the titanium dioxide coagulates into big shard-like clumps. After the silane treatment the particles are finer and sit more evenly, which is what I want spread through the coating. Both at 4000&#215; on the SEM.</p>
+      </div>
+    </section>
 
-        <div class="sticky-steps">
-          <div class="cs-stage reveal" data-stage="1">
-            <span class="step-tag">Step 1, Dip</span>
-            <h3 class="cs-h3">Immerse in the dispersion</h3>
-            <p>Cotton is submerged in a waterborne dispersion of anatase TiO₂ and the siloxane-stearyl acrylate components, so the chemistry reaches into the weave and onto every fibre surface.</p>
+    <!-- ===================== FINISTERRE ===================== -->
+    <section id="finisterre" aria-label="The Finisterre collaboration">
+
+      <div class="vband">
+        <video class="vband-vid" id="dropVid" muted loop playsinline preload="auto" poster="assets/video/drop-poster.jpg" aria-label="Slow motion of a water droplet meeting coated fabric and beading up instead of soaking in.">
+          <source src="assets/video/drop.webm" type="video/webm" />
+          <source src="assets/video/drop.mp4" type="video/mp4" />
+        </video>
+        <div class="vband-scrim"></div>
+        <div class="vband-cap">
+          <p class="eyebrow light">Finisterre</p>
+          <h2 class="big light">Testing it on real fabric.</h2>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="wrap">
+          <h3 class="mid reveal">Their fabric first, then my coating on it.</h3>
+          <p class="reveal" style="max-width:60ch;">I work with Finisterre, the Cornish outdoor brand. I start by characterising their own fabric, including how their current DWR finish behaves, so I have a proper baseline. Then I put my coating on the same fabric and compare against an untreated control, so any change is genuinely down to what I have made.</p>
+        </div>
+
+        <div class="wrap">
+          <div class="ba">
+            <figure class="reveal">
+              <img src="assets/img/droplet-untreated.jpg" width="1300" height="731" loading="lazy" alt="A water droplet sunk into untreated Finisterre fabric as a low, flat dome." />
+              <figcaption><span class="tag">Untreated</span> the drop soaks in</figcaption>
+            </figure>
+            <figure class="reveal">
+              <img src="assets/img/droplet-coated.jpg" width="1300" height="731" loading="lazy" alt="A water droplet beading up as a near sphere on Finisterre's DWR-finished fabric." />
+              <figcaption><span class="tag">Finisterre's DWR</span> the drop beads</figcaption>
+            </figure>
           </div>
-          <div class="cs-stage reveal" data-stage="2">
-            <span class="step-tag">Step 2, Pad</span>
-            <h3 class="cs-h3">Squeeze to an even pickup</h3>
-            <p>Passing through nip rollers sets a uniform, controlled wet pickup. This is what keeps the coating reproducible rather than blotchy, and it is the step that scales to a finishing line.</p>
-          </div>
-          <div class="cs-stage reveal" data-stage="3">
-            <span class="step-tag">Step 3, Cure</span>
-            <h3 class="cs-h3">Heat to lock it on</h3>
-            <p>A thermal cure drives off the water and forms the network, crosslinking the matrix and bonding it to the fibre, so the texture and the low energy skin survive handling and washing rather than rinsing away.</p>
+          <p class="reveal" style="margin-top:1rem;font-size:.96rem;color:var(--ink-2);max-width:70ch;">Finisterre's own fabric, before and after their DWR finish. This is the baseline I measure against before my coating goes on.</p>
+        </div>
+
+        <div class="wrap narrow">
+          <div class="status reveal">
+            <p><b>Where things stand.</b> The first coated swatches bead water just by looking at them, which is encouraging. The measurements that actually decide it, and the wash tests, are still to come.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ===================== 5 · CHARACTERISATION & METHODS ===================== -->
-    <section class="cs-section tint-powder" id="methods">
-      <div class="cs-wide" style="text-align:center;">
-        <p class="cs-kicker reveal" style="justify-content:center;">05 · Characterisation</p>
-        <h2 class="cs-h2 reveal">How the coating is <em>interrogated</em>.</h2>
-        <p class="cs-lede reveal" style="margin-inline:auto;">Performance is measured directly. Structure and chemistry are pinned down with a standard materials toolkit. Each method answers one question.</p>
+    <!-- ===================== LAB (results to come) ===================== -->
+    <section class="section" id="lab">
+      <div class="wrap">
+        <p class="eyebrow reveal">In the lab</p>
+        <h2 class="big reveal">Lab results to come.</h2>
+        <p class="lede reveal" style="margin-top:1.2rem;">The coating's made and on fabric. Now comes the testing that turns "it beads" into something I can stand behind. Here's what each test is for.</p>
       </div>
 
-      <div class="cs-wide">
-        <div class="cs-methods">
-          <div class="method group-wet reveal"><span class="m-tag">Wetting</span><h3>Water contact angle</h3><p>The headline number: how spherical a static droplet sits. Higher means more repellent.</p></div>
-          <div class="method group-wet reveal"><span class="m-tag">Wetting</span><h3>Contact-angle hysteresis</h3><p>The gap between advancing and receding angles. Low hysteresis means a drop barely pins to the surface.</p></div>
-          <div class="method group-wet reveal"><span class="m-tag">Wetting</span><h3>Roll-off angle</h3><p>The tilt at which a drop slides off. A low roll-off angle is the practical sign of self-cleaning behaviour.</p></div>
-          <div class="method group-dur reveal"><span class="m-tag">Durability</span><h3>Abrasion</h3><p>Mechanical rubbing to probe whether repellency survives wear, the real test of a bonded coating against a loose film.</p></div>
-          <div class="method group-struct reveal"><span class="m-tag">Morphology</span><h3>SEM</h3><p>Electron microscopy images the hierarchical roughness the nanoparticles build on each fibre.</p></div>
-          <div class="method group-struct reveal"><span class="m-tag">Surface chemistry</span><h3>XPS</h3><p>X-ray photoelectron spectroscopy reads the elements at the outermost surface, confirming Si, Ti and the absence of fluorine.</p></div>
-          <div class="method group-struct reveal"><span class="m-tag">Bonding</span><h3>ATR-FTIR</h3><p>Infrared spectra identify the chemical groups present and track how the network forms on curing.</p></div>
-          <div class="method group-struct reveal"><span class="m-tag">Crystallinity</span><h3>XRD</h3><p>X-ray diffraction confirms the TiO₂ is the anatase phase and gauges particle crystallinity.</p></div>
-          <div class="method group-struct reveal"><span class="m-tag">Thermal</span><h3>TGA</h3><p>Thermogravimetry quantifies organic content and the coating’s thermal stability by mass loss on heating.</p></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===================== 6 · RESULTS ===================== -->
-    <section class="cs-section" id="results">
-      <div class="cs-wide" style="text-align:center;">
-        <p class="cs-kicker reveal" style="justify-content:center;">06 · Results &amp; performance</p>
-        <h2 class="cs-h2 reveal">The morphology you can <em>see</em>, and the numbers it should give.</h2>
-      </div>
-
-      <!-- ===== Fig 05 - real SEM ===== -->
-      <figure class="exhibit reveal">
-        <div class="exhibit-stage is-zoomable" data-fig="Fig. 05" tabindex="0" role="button" aria-label="Expand SEM micrograph">
-          <img src="assets/img/t2-sem-x4k.jpg" width="880" height="660"
-               alt="Scanning electron micrograph of the T2 coating at 4,000x magnification: a rough, particulate network of titania and silica covering the fibre surface, with a 10 micrometre scale bar." loading="lazy" />
-          <span class="exhibit-zoomhint">⤢ click to enlarge</span>
-        </div>
-        <figcaption>
-          <span class="fig-lead">The coating is visibly rough at the right scale.</span>
-          A scanning electron micrograph of the coated fabric shows a dense, particulate titania and silica network across the fibre, the hierarchical texture that traps air beneath a droplet. This is the structural evidence behind the wetting behaviour.
-          <span class="fig-src">SEM, 4,000×, this work</span>
-        </figcaption>
-      </figure>
-
-      <!-- TODO-DATA: replace the design targets below with measured values once
-           characterisation is complete and supervisor sign-off is given. The
-           "target" / "pending" labels are deliberate until then. -->
-      <div class="cs-wide">
-        <div class="cs-metrics">
-          <div class="metric reveal">
-            <span class="m-val">&gt; 150<sup>°</sup></span>
-            <span class="m-unit">static contact angle θ<sub>w</sub></span>
-            <small>Ideal target, matching the superhydrophobic benchmark in Zhang et al. A result of 130° and above still counts as a strong pass for a 10-week project. <span class="m-pending">measured value pending</span></small>
-          </div>
-          <div class="metric reveal">
-            <span class="m-val">&lt; 10<sup>°</sup></span>
-            <span class="m-unit">roll-off angle</span>
-            <small>Design target, drops shed under a slight tilt. <span class="m-pending">measured value pending</span></small>
-          </div>
-          <div class="metric reveal">
-            <span class="m-val">low</span>
-            <span class="m-unit">contact-angle hysteresis</span>
-            <small>Design target, little pinning between advancing and receding angles. <span class="m-pending">measured value pending</span></small>
-          </div>
-        </div>
-        <div class="cs-note reveal">
-          <p><b>An honest status.</b> The figures above are the project’s design targets, not a results table yet. Wetting, abrasion and the full characterisation set are being collected now. Measured values, spectra and caveats will live in the <a href="data.html">lab notebook</a>, and nothing is published here without supervisor sign-off.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===================== 7 · SIGNIFICANCE ===================== -->
-    <section class="cs-section tint-aqua" id="significance">
-      <div class="cs-col cs-prose cs-closing">
-        <p class="cs-kicker reveal" style="justify-content:center;">07 · Significance</p>
-        <h2 class="cs-h2 reveal">A coating that performs, then <em>disappears responsibly</em>.</h2>
-        <p class="cs-lede reveal">If a fluorine-free finish can match PFAS repellency and survive real wear, the case for forever chemicals in textiles gets much weaker. That is the wider stake here: high performance technical textiles that do not outlast the planet.</p>
-        <p class="reveal">The next phase puts the chemistry on real outdoor fabrics from <strong>Finisterre</strong>, the Cornish brand, with the full characterisation set applied to each. The science is being kept in the open, methods, spectra and honest caveats included.</p>
-        <div class="cs-hero-cta reveal" style="margin-top:2rem;">
-          <a class="btn" href="finisterre.html">See the Finisterre work</a>
-          <a class="cs-quiet" href="data.html">or open the lab notebook ↓</a>
-        </div>
+      <div class="wrap">
+        <ul class="methods">
+          <li class="reveal"><span class="m-tag">Wetting</span><h4>Contact angle</h4><p>How spherical a droplet sits. I'm aiming above 150&#176;.</p></li>
+          <li class="reveal"><span class="m-tag">Shedding</span><h4>Spray and roll-off</h4><p>Whether water runs straight off a tilted surface.</p></li>
+          <li class="reveal"><span class="m-tag">Durability</span><h4>Abrasion and wash</h4><p>The one that really counts: does it last through rubbing and washing?</p></li>
+          <li class="reveal"><span class="m-tag">Structure</span><h4>SEM, FTIR, XRD, TGA</h4><p>Checking the roughness, the chemistry and crystal form, and that there's no fluorine.</p></li>
+        </ul>
+        <p class="reveal" style="margin-top:1.6rem;color:var(--ink-2);max-width:54ch;">Results will go up here as they come in. Nothing's final, and no numbers go public until my supervisor's signed them off.</p>
       </div>
     </section>
 
   </main>
 
-  <footer class="site-footer">
+  <footer class="foot">
     <div class="wrap">
-      <p class="foot-mark" aria-hidden="true">Fluorine-Free Water-Repellent Cotton</p>
-      <p style="max-width: 62ch;">The public write-up of a masters research project at UCL Advanced Materials Science: rebuilding durable water repellency on cotton without PFAS, and testing it on real outdoor fabrics. Built and maintained by Jackson Brocklebank.</p>
-      <p>Questions about the chemistry or the data? <a href="mailto:TODO-EMAIL@ucl.ac.uk">Get in touch</a></p>
-      <p class="foot-meta">© 2026 Jackson Brocklebank · UCL Advanced Materials Science</p>
+      <p class="foot-mark">Fluorine-Free Superhydrophobic Coatings</p>
+      <p>A UCL masters project replacing PFAS in water-repellent textiles, tested on real outdoor fabrics. By Jackson Brocklebank.</p>
+      <p><a href="mailto:jackson.brocklebank.25@ucl.ac.uk">Get in touch</a></p>
+      <p class="foot-meta">&#169; 2026 Jackson Brocklebank &#183; UCL Advanced Materials Science</p>
     </div>
   </footer>
 
-  <!-- lightbox for zoomable exhibits -->
-  <div class="cs-lightbox" id="cs-lightbox" role="dialog" aria-modal="true" aria-label="Enlarged figure">
-    <button class="cs-lightbox-close" id="cs-lightbox-close" aria-label="Close">✕</button>
-    <div class="cs-lightbox-inner" id="cs-lightbox-inner"></div>
-  </div>
-
-  <script src="assets/vendor/gsap.min.js"></script>
-  <script src="assets/vendor/ScrollTrigger.min.js"></script>
-  <script src="assets/vendor/matter.min.js"></script>
-  <script src="case-study.js"></script>
+  <script src="site.js"></script>
 </body>
 </html>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 250" role="img" aria-label="The coating is applied in three steps. One, dip: cotton is immersed in the waterborne dispersion. Two, pad: it passes through rollers that squeeze it to an even wet pickup. Three, cure: heat forms the network and bonds it to the fibre.">
+<style>text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}.lbl{font-size:15px;fill:#5b564a}.tag{font-size:12.5px;fill:#5b564a;letter-spacing:.04em}.ang{font-size:16px;fill:#a05a39;font-weight:600}.num{font-size:12px;fill:#0e6e5c;font-family:ui-monospace,Menlo,monospace}</style>
+<g stroke="#0e6e5c" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M 92 92 L 92 150 Q 92 164 106 164 L 154 164 Q 168 164 168 150 L 168 92"/>
+<line x1="98" y1="126" x2="162" y2="126" stroke-width="1.4" opacity=".7"/>
+<rect x="124" y="70" width="12" height="74" rx="6"/>
+</g>
+<text class="num" x="130" y="200" text-anchor="middle">01</text>
+<text class="lbl" x="130" y="222" text-anchor="middle">Dip</text>
+<path d="M 232 120 l 22 0 m -7 -6 l 7 6 l -7 6" fill="none" stroke="#c9c3b5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<g stroke="#0e6e5c" stroke-width="2" fill="none" stroke-linecap="round">
+<circle cx="380" cy="98" r="24"/><circle cx="380" cy="150" r="24"/>
+<line x1="330" y1="124" x2="430" y2="124" stroke-width="2"/>
+</g>
+<text class="num" x="380" y="200" text-anchor="middle">02</text>
+<text class="lbl" x="380" y="222" text-anchor="middle">Pad</text>
+<path d="M 482 120 l 22 0 m -7 -6 l 7 6 l -7 6" fill="none" stroke="#c9c3b5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<g stroke="#a05a39" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<rect x="586" y="150" width="92" height="14" rx="5"/>
+<path d="M 606 138 q 7 -10 0 -20 q -7 -10 0 -20" stroke-width="1.7"/>
+<path d="M 632 138 q 7 -10 0 -20 q -7 -10 0 -20" stroke-width="1.7"/>
+<path d="M 658 138 q 7 -10 0 -20 q -7 -10 0 -20" stroke-width="1.7"/>
+</g>
+<text class="num" x="632" y="200" text-anchor="middle">03</text>
+<text class="lbl" x="632" y="222" text-anchor="middle">Cure</text>
+</svg>
