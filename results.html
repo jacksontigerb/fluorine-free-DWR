@@ -10,22 +10,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Results · Fluorine-Free Superhydrophobic Coatings · UCL Masters Research</title>
   <meta name="description" content="Preliminary lab results for a fluorine-free superhydrophobic coating on cotton and Finisterre fabric: contact angle, roll-off, SEM-EDX composition, and FTIR chemistry." />
+  <meta property="og:title" content="Results &#183; Fluorine-Free DWR" />
+  <meta property="og:description" content="Preliminary lab results: contact angle, roll-off, SEM-EDX composition and FTIR chemistry." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://jacksontigerb.github.io/fluorine-free-DWR/results.html" />
+  <meta property="og:image" content="https://jacksontigerb.github.io/fluorine-free-DWR/assets/img/droplet-coated.jpg" />
   <meta name="theme-color" content="#f6f3ec" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 28'%3E%3Cpath d='M12 2C12 2 4 12.5 4 18a8 8 0 0 0 16 0C20 12.5 12 2 12 2Z' fill='%230e6e5c'/%3E%3C/svg%3E" />
   <link rel="preload" href="assets/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="assets/fonts/geist-var.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="styles.css?v=2026-06-26b" />
+  <link rel="stylesheet" href="styles.css?v=2026-07-05" />
   <script>document.documentElement.className += " js";</script>
 
   <style>
     /* ---- results-page-only additions (tokens from styles.css) ---- */
-    .rhead{padding:calc(var(--nav-h) + clamp(2.5rem,7vh,5rem)) 0 clamp(2rem,5vh,3.5rem);
-      border-bottom:1px solid var(--line);}
-    .backlink{font-family:var(--mono);font-size:.74rem;letter-spacing:.1em;
-      text-transform:uppercase;color:var(--teal-deep);text-decoration:none;
-      display:inline-flex;align-items:center;gap:.4rem;margin-bottom:1.4rem;}
-    .backlink:hover{color:var(--ink);}
-    .rhead .lede{max-width:52ch;margin-top:1.2rem;}
 
     /* figure rhythm on this page */
     .fig-block{margin-top:clamp(2.5rem,6vh,4.5rem);}
@@ -72,7 +70,7 @@
       <nav aria-label="Sections">
         <a href="index.html#concept">PFAS</a>
         <a href="index.html#making">The coating</a>
-        <a href="index.html#finisterre">Finisterre</a>
+        <a href="finisterre.html">Finisterre</a>
         <a href="results.html" class="active">Results</a>
       </nav>
     </div>
@@ -87,6 +85,7 @@
         <p class="eyebrow">In the lab · Preliminary</p>
         <h1 class="big">The results, so far.</h1>
         <p class="lede">The coating is made and on fabric. Here is what the measurements say, including the parts that still need work. Nothing here is final, and no figure is signed off yet.</p>
+        <p class="src" style="margin-top:1.1rem;">Last updated 5 July 2026 &#183; all values preliminary</p>
         <div class="jump" aria-label="Jump to">
           <a href="#samples">Samples</a>
           <a href="#repellency">Repellency</a>
@@ -115,7 +114,7 @@
       </div>
       <div class="wrap fig-block">
         <figure class="figure reveal">
-          <div class="frame"><img src="assets/figures/fig14_sample_map.png" loading="lazy" alt="Reference table of every sample code, its substrate, coating and titanium dioxide type." /></div>
+          <div class="frame"><img src="assets/figures/fig14_sample_map.png" width="3044" height="1305" loading="lazy" decoding="async" alt="Reference table of every sample code, its substrate, coating and titanium dioxide type." /></div>
           <figcaption><span class="lead">The full sample key.</span> Substrate (C cotton, F Finisterre), coating, and particle type for every code used on this page. Three replicate swatches each.
             <span class="src">Source: sample map, n = 3 per code</span>
           </figcaption>
@@ -132,7 +131,7 @@
       </div>
       <div class="wrap fig-block">
         <figure class="figure reveal">
-          <div class="frame"><img src="assets/figures/fig02_wca.png" loading="lazy" alt="Water contact angle versus time for each sample, with initial angle per sample. Coatings hold around 130 degrees; uncoated Finisterre wets." /></div>
+          <div class="frame"><img src="assets/figures/fig02_wca.png" width="3163" height="1265" loading="lazy" decoding="async" alt="Water contact angle versus time for each sample, with initial angle per sample. Coatings hold around 130 degrees; uncoated Finisterre wets." /></div>
           <figcaption><span class="lead">Contact angle, coatings versus controls.</span> All three cotton coatings sit at <b>132 to 135&#176;</b>, clustering within a few degrees of each other. Finisterre's commercial DWR sits at about <b>132&#176;</b>, so on this measure my coatings sit right alongside it. Emulsion-only on Finisterre (F-A1) is lower at about <b>107&#176;</b>. Uncoated Finisterre wets out, its contact angle collapsing as the drop soaks in.
             <span class="src">Source: fig02, sessile drop, RMSE-gated mean, 2 to 10 s window, n = 3</span>
           </figcaption>
@@ -154,7 +153,7 @@
       <div class="wrap fig-block">
         <figure class="figure reveal">
           <span class="prelim">Preliminary</span>
-          <div class="frame"><img src="assets/figures/fig03_rolloff.png" loading="lazy" alt="Roll-off angle before wash with a small droplet versus after wash with a larger droplet. Only the commercial DWR sheds small droplets." /></div>
+          <div class="frame"><img src="assets/figures/fig03_rolloff.png" width="2866" height="1219" loading="lazy" decoding="async" alt="Roll-off angle before wash with a small droplet versus after wash with a larger droplet. Only the commercial DWR sheds small droplets." /></div>
           <figcaption><span class="lead">Roll-off, before and after a wash.</span> With a small droplet, <b>only the commercial F-DWR rolled at all</b> (around 57&#176; on average). Every one of my fluorine-free coatings pinned the drop in place, even tilted to the 90&#176; limit. After a wash and with a larger droplet, all of them shed, and the commercial finish is still the best.
             <span class="src">Source: fig03, RollOff_angles.csv, 1 to 2 Jul 2026, n = 3</span>
           </figcaption>
@@ -191,7 +190,7 @@
       </div>
       <div class="wrap fig-block">
         <figure class="figure reveal">
-          <div class="frame"><img src="assets/figures/fig07_edx_quant.png" loading="lazy" alt="Titanium and silicon tracer bars plus full elemental composition per sample from SEM-EDX." /></div>
+          <div class="frame"><img src="assets/figures/fig07_edx_quant.png" width="3400" height="1382" loading="lazy" decoding="async" alt="Titanium and silicon tracer bars plus full elemental composition per sample from SEM-EDX." /></div>
           <figcaption><span class="lead">Titanium and silicon, the two tracers.</span> On cotton, titanium is near zero on the uncoated and emulsion-only samples, then rises to <b>28%</b> on the bare-anatase C-B3 and <b>8.8%</b> on the silane-treated C-C3. Silicon is zero uncoated and <b>1.7 to 2.9%</b> across the coatings, highest on C-C3 where the silane shell adds its own silicon. The commercial F-DWR is EDX-light, about 0.2% titanium and no silicon, a different chemistry to mine. These are single-area scans, so read them as showing what is present rather than a precise loading.
             <span class="src">Source: fig07, SEM-EDX at x2000, mass-normalised %</span>
           </figcaption>
@@ -199,7 +198,7 @@
       </div>
       <div class="wrap fig-block">
         <figure class="figure reveal">
-          <div class="frame"><img src="assets/figures/fig08_edx_maps.png" loading="lazy" alt="SEM greyscale images with colour elemental overlays showing where titanium and silicon sit on the fibres." /></div>
+          <div class="frame"><img src="assets/figures/fig08_edx_maps.jpg" width="2400" height="878" loading="lazy" decoding="async" alt="SEM greyscale images with colour elemental overlays showing where titanium and silicon sit on the fibres." /></div>
           <figcaption><span class="lead">And where it sits.</span> Elemental maps put the titanium and silicon across the coated fibres rather than in isolated clumps, which is what I want for an even coating.
             <span class="src">Source: fig08, SEM-EDX elemental maps (B3, C3, F-A1)</span>
           </figcaption>
@@ -216,7 +215,7 @@
       </div>
       <div class="wrap fig-block">
         <figure class="figure reveal">
-          <div class="frame"><img src="assets/figures/fig04_ftir_textiles.png" loading="lazy" alt="Stacked ATR-FTIR spectra of the cotton and Finisterre sample series." /></div>
+          <div class="frame"><img src="assets/figures/fig04_ftir_textiles.png" width="3348" height="1395" loading="lazy" decoding="async" alt="Stacked ATR-FTIR spectra of the cotton and Finisterre sample series." /></div>
           <figcaption><span class="lead">Coating on the fibre.</span> The carbon-hydrogen bands grow with coating, and a siloxane (Si-O-Si) network shows up clearest on Finisterre, where cotton's cellulose does not mask it. This method is semi-quantitative, so it confirms the coating chemistry but cannot on its own separate bare from silane-treated anatase.
             <span class="src">Source: fig04, ATR-FTIR, replicate means</span>
           </figcaption>
@@ -224,7 +223,7 @@
       </div>
       <div class="wrap fig-block">
         <figure class="figure reveal">
-          <div class="frame"><img src="assets/figures/fig05_ftir_tio2.png" loading="lazy" alt="ATR-FTIR of the T0 to T3 titanium dioxide grafting series with a normalised organic window." /></div>
+          <div class="frame"><img src="assets/figures/fig05_ftir_tio2.png" width="3329" height="1454" loading="lazy" decoding="async" alt="ATR-FTIR of the T0 to T3 titanium dioxide grafting series with a normalised organic window." /></div>
           <figcaption><span class="lead">Signs the silane grafted.</span> Bare anatase is flat through the organic region, while the silane-treated powders pick up carbon-hydrogen and siloxane bands. The signal is weak, but it is the clearest grafting evidence I have, and it is why I chose the vented-reflux batch (T2) to carry into the C3 coating.
             <span class="src">Source: fig05, ATR-FTIR of TiO2 powders, T0 to T3</span>
           </figcaption>
@@ -242,32 +241,32 @@
       <div class="wrap">
         <div class="fig-grid">
           <figure class="figure reveal">
-            <div class="frame"><img src="assets/figures/fig09_xrf.png" loading="lazy" alt="XRF survey spectra per sample; the titanium signal tracks added titanium dioxide." /></div>
+            <div class="frame"><img src="assets/figures/fig09_xrf.png" width="3133" height="1011" loading="lazy" decoding="async" alt="XRF survey spectra per sample; the titanium signal tracks added titanium dioxide." /></div>
             <figcaption><span class="lead">XRF corroborates the titanium.</span> An independent read that titanium tracks the added titanium dioxide on cotton. On Finisterre it is confounded, because the fibre already contains a titanium dioxide delustrant.
               <span class="src">Source: fig09, benchtop XRF</span>
             </figcaption>
           </figure>
           <figure class="figure reveal">
-            <div class="frame"><img src="assets/figures/fig12_sem_tio2.png" loading="lazy" alt="SEM of bare versus silane-modified anatase titanium dioxide powder morphology." /></div>
+            <div class="frame"><img src="assets/figures/fig12_sem_tio2.jpg" width="2400" height="1123" loading="lazy" decoding="async" alt="SEM of bare versus silane-modified anatase titanium dioxide powder morphology." /></div>
             <figcaption><span class="lead">Bare versus treated particles.</span> Under the SEM the silane-treated anatase looks finer and more even than the bare powder, which clumps into shards. This is the morphology behind the T2 choice.
               <span class="src">Source: fig12, SEM of TiO2 powders</span>
             </figcaption>
           </figure>
           <figure class="figure reveal">
-            <div class="frame"><img src="assets/figures/fig11_sem_textiles_x2000.png" loading="lazy" alt="High magnification SEM of the coating on Finisterre fibre." /></div>
+            <div class="frame"><img src="assets/figures/fig11_sem_textiles_x2000.jpg" width="2400" height="829" loading="lazy" decoding="async" alt="High magnification SEM of the coating on Finisterre fibre." /></div>
             <figcaption><span class="lead">The coating on the fibre.</span> High-magnification SEM of the coated Finisterre fabric, showing the coating's texture on the fibre surface.
               <span class="src">Source: fig11, SEM at x2000</span>
             </figcaption>
           </figure>
           <figure class="figure reveal">
-            <div class="frame"><img src="assets/figures/fig01_wet_pickup_addon.png" loading="lazy" alt="Wet pickup after padding and dry mass add-on after cure, per sample." /></div>
+            <div class="frame"><img src="assets/figures/fig01_wet_pickup_addon.png" width="2747" height="1161" loading="lazy" decoding="async" alt="Wet pickup after padding and dry mass add-on after cure, per sample." /></div>
             <figcaption><span class="lead">Comparable loadings.</span> Wet pickup after padding and dry mass gain after cure, confirming the coatings went on at controlled, comparable amounts so the comparison is fair.
               <span class="src">Source: fig01, wet pickup and dry add-on</span>
             </figcaption>
           </figure>
         </div>
         <figure class="figure reveal fig-block">
-          <div class="frame"><img src="assets/figures/fig13_tga.png" loading="lazy" alt="Thermogravimetric mass-loss curves for the titanium dioxide powder series." /></div>
+          <div class="frame"><img src="assets/figures/fig13_tga.png" width="3133" height="1262" loading="lazy" decoding="async" alt="Thermogravimetric mass-loss curves for the titanium dioxide powder series." /></div>
           <figcaption><span class="lead">A small thermal signal.</span> Thermogravimetry shows only a weak organic mass loss (around half a percent) on the treated powders, consistent with a thin grafted silane layer rather than bulk material.
             <span class="src">Source: fig13, TGA of TiO2 powders</span>
           </figcaption>
@@ -276,7 +275,7 @@
     </section>
 
     <!-- ===================== WHAT'S NEXT ===================== -->
-    <section class="section narrow-wrap" id="next" style="border-top:1px solid var(--line);">
+    <section class="section" id="next" style="border-top:1px solid var(--line);">
       <div class="wrap narrow">
         <p class="eyebrow reveal">What's next</p>
         <h2 class="mid reveal">The part that actually decides it.</h2>
