@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<!-- ============================================================
+  Fluorine-Free DWR - RESULTS (click-in page from the Lab section)
+  Reuses styles.css + site.js. Real data, honest framing.
+  HOUSE STYLE: no em dashes. Numbers are preliminary, not final.
+============================================================ -->
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Results · Fluorine-Free Superhydrophobic Coatings · UCL Masters Research</title>
+  <meta name="description" content="Preliminary lab results for a fluorine-free superhydrophobic coating on cotton and Finisterre fabric: contact angle, roll-off, SEM-EDX composition, and FTIR chemistry." />
+  <meta name="theme-color" content="#f6f3ec" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 28'%3E%3Cpath d='M12 2C12 2 4 12.5 4 18a8 8 0 0 0 16 0C20 12.5 12 2 12 2Z' fill='%230e6e5c'/%3E%3C/svg%3E" />
+  <link rel="preload" href="assets/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/geist-var.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="styles.css?v=2026-06-26b" />
+  <script>document.documentElement.className += " js";</script>
+
+  <style>
+    /* ---- results-page-only additions (tokens from styles.css) ---- */
+    .rhead{padding:calc(var(--nav-h) + clamp(2.5rem,7vh,5rem)) 0 clamp(2rem,5vh,3.5rem);
+      border-bottom:1px solid var(--line);}
+    .backlink{font-family:var(--mono);font-size:.74rem;letter-spacing:.1em;
+      text-transform:uppercase;color:var(--teal-deep);text-decoration:none;
+      display:inline-flex;align-items:center;gap:.4rem;margin-bottom:1.4rem;}
+    .backlink:hover{color:var(--ink);}
+    .rhead .lede{max-width:52ch;margin-top:1.2rem;}
+
+    /* figure rhythm on this page */
+    .fig-block{margin-top:clamp(2.5rem,6vh,4.5rem);}
+    .fig-block:first-of-type{margin-top:2rem;}
+
+    /* two-up smaller figures for the deeper section */
+    .fig-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.4rem,4vw,2.6rem);
+      margin-top:2rem;}
+    @media (max-width:820px){.fig-grid{grid-template-columns:1fr;}}
+
+    /* results data table */
+    .rtable-wrap{overflow-x:auto;margin-top:1.6rem;
+      border:1px solid var(--line);border-radius:14px;background:#fff;}
+    table.rtable{border-collapse:collapse;width:100%;font-size:.92rem;min-width:440px;}
+    .rtable th,.rtable td{text-align:left;padding:.7rem 1rem;border-bottom:1px solid var(--line);}
+    .rtable thead th{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;
+      text-transform:uppercase;color:var(--teal-deep);background:var(--paper-2);}
+    .rtable tbody tr:last-child td{border-bottom:none;}
+    .rtable td.num{font-family:var(--mono);}
+    .rtable .best td{background:var(--teal-tint);}
+    .rtable .best td:first-child{font-weight:600;}
+    .rtable caption{caption-side:bottom;text-align:left;font-size:.82rem;
+      color:var(--ink-2);padding:.8rem 1rem;font-family:var(--mono);}
+
+    /* key takeaways list */
+    .takeaways{list-style:none;margin:1.6rem 0 0;padding:0;display:grid;gap:.9rem;max-width:64ch;}
+    .takeaways li{padding-left:1.1rem;border-left:2px solid var(--teal);color:var(--ink-2);}
+    .takeaways b{color:var(--ink);}
+
+    /* jump chips */
+    .jump{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.8rem;}
+    .jump a{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;
+      text-transform:uppercase;text-decoration:none;color:var(--teal-deep);
+      border:1px solid rgba(14,110,92,.35);border-radius:999px;padding:.4rem .8rem;}
+    .jump a:hover{background:var(--teal-tint);}
+  </style>
+</head>
+<body id="top">
+  <a class="skip" href="#repellency">Skip to content</a>
+
+  <header class="nav" id="nav">
+    <div class="nav-in">
+      <a class="brand" href="index.html">Fluorine-Free <b>DWR</b></a>
+      <nav aria-label="Sections">
+        <a href="index.html#concept">PFAS</a>
+        <a href="index.html#making">The coating</a>
+        <a href="index.html#finisterre">Finisterre</a>
+        <a href="results.html" class="active">Results</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ===================== HEADER ===================== -->
+    <section class="rhead">
+      <div class="wrap">
+        <a class="backlink" href="index.html#lab">&larr; Back to the project</a>
+        <p class="eyebrow">In the lab · Preliminary</p>
+        <h1 class="big">The results, so far.</h1>
+        <p class="lede">The coating is made and on fabric. Here is what the measurements say, including the parts that still need work. Nothing here is final, and no figure is signed off yet.</p>
+        <div class="jump" aria-label="Jump to">
+          <a href="#samples">Samples</a>
+          <a href="#repellency">Repellency</a>
+          <a href="#shedding">Shedding</a>
+          <a href="#composition">Composition</a>
+          <a href="#chemistry">Chemistry</a>
+          <a href="#deeper">Digging deeper</a>
+          <a href="#next">What's next</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SAMPLES ===================== -->
+    <section class="section" id="samples">
+      <div class="wrap">
+        <p class="eyebrow reveal">The samples</p>
+        <h2 class="mid reveal">Seven coatings, two fabrics.</h2>
+        <p class="reveal">Everything is compared on the same footing: plain cotton and Finisterre's own fabric, each with an uncoated control, my emulsion on its own, and the emulsion loaded with titanium dioxide. Finisterre's commercial DWR finish is the benchmark I am trying to match.</p>
+        <ul class="takeaways reveal">
+          <li><b>C-U / F-U.</b> Uncoated cotton and uncoated Finisterre, the controls.</li>
+          <li><b>A1.</b> My emulsion only, no particles.</li>
+          <li><b>B3.</b> Emulsion plus 3 wt% bare anatase titanium dioxide.</li>
+          <li><b>C3.</b> Emulsion plus 3 wt% silane-treated anatase (the VTMS tweak).</li>
+          <li><b>F-DWR.</b> Finisterre's existing commercial finish, the benchmark.</li>
+        </ul>
+      </div>
+      <div class="wrap fig-block">
+        <figure class="figure reveal">
+          <div class="frame"><img src="assets/figures/fig14_sample_map.png" loading="lazy" alt="Reference table of every sample code, its substrate, coating and titanium dioxide type." /></div>
+          <figcaption><span class="lead">The full sample key.</span> Substrate (C cotton, F Finisterre), coating, and particle type for every code used on this page. Three replicate swatches each.
+            <span class="src">Source: sample map, n = 3 per code</span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===================== REPELLENCY (WCA) ===================== -->
+    <section class="section" id="repellency" style="border-top:1px solid var(--line);">
+      <div class="wrap">
+        <p class="eyebrow reveal">Repellency</p>
+        <h2 class="big reveal">Every coating makes water bead.</h2>
+        <p class="reveal" style="margin-top:1.1rem;max-width:60ch;">Water contact angle is the first test: how spherical a droplet sits on the surface. Above 90&#176; is hydrophobic, and the superhydrophobic target is 150&#176;. Every coating I made clears the hydrophobic line comfortably and holds around 130&#176;, right alongside the commercial finish.</p>
+      </div>
+      <div class="wrap fig-block">
+        <figure class="figure reveal">
+          <div class="frame"><img src="assets/figures/fig02_wca.png" loading="lazy" alt="Water contact angle versus time for each sample, with initial angle per sample. Coatings hold around 130 degrees; uncoated Finisterre wets." /></div>
+          <figcaption><span class="lead">Contact angle, coatings versus controls.</span> All three cotton coatings sit at <b>132 to 135&#176;</b>, clustering within a few degrees of each other. Finisterre's commercial DWR sits at about <b>132&#176;</b>, so on this measure my coatings sit right alongside it. Emulsion-only on Finisterre (F-A1) is lower at about <b>107&#176;</b>. Uncoated Finisterre wets out, its contact angle collapsing as the drop soaks in.
+            <span class="src">Source: fig02, sessile drop, RMSE-gated mean, 2 to 10 s window, n = 3</span>
+          </figcaption>
+        </figure>
+        <ul class="takeaways reveal" style="margin-top:1.8rem;">
+          <li><b>The honest caveat.</b> Static contact angle does not separate the two particle treatments, bare versus silane-treated. If the silane helps, it should show up in shedding and durability, not here.</li>
+          <li><b>A control to fix.</b> Uncoated cotton sits around ~110&#176;, likely a residual factory finish rather than true repellency. Scouring the cotton before coating should strip that and show the coating's real benefit.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===================== SHEDDING (ROLL-OFF) ===================== -->
+    <section class="section" id="shedding" style="border-top:1px solid var(--line);">
+      <div class="wrap">
+        <p class="eyebrow reveal">Shedding</p>
+        <h2 class="big reveal">Beading is not the same as shedding.</h2>
+        <p class="reveal" style="margin-top:1.1rem;max-width:60ch;">This is the honest part. A high contact angle means a drop <em>sits</em> as a bead, but roll-off angle asks the harder question: does it actually run off a tilted surface? Here the commercial finish is still ahead.</p>
+      </div>
+      <div class="wrap fig-block">
+        <figure class="figure reveal">
+          <span class="prelim">Preliminary</span>
+          <div class="frame"><img src="assets/figures/fig03_rolloff.png" loading="lazy" alt="Roll-off angle before wash with a small droplet versus after wash with a larger droplet. Only the commercial DWR sheds small droplets." /></div>
+          <figcaption><span class="lead">Roll-off, before and after a wash.</span> With a small droplet, <b>only the commercial F-DWR rolled at all</b> (around 57&#176; on average). Every one of my fluorine-free coatings pinned the drop in place, even tilted to the 90&#176; limit. After a wash and with a larger droplet, all of them shed, and the commercial finish is still the best.
+            <span class="src">Source: fig03, RollOff_angles.csv, 1 to 2 Jul 2026, n = 3</span>
+          </figcaption>
+        </figure>
+
+        <div class="rtable-wrap reveal">
+          <table class="rtable">
+            <caption>Mean roll-off angle after wash, larger droplet. Lower is better.</caption>
+            <thead>
+              <tr><th>Sample</th><th>What it is</th><th>Roll-off angle</th></tr>
+            </thead>
+            <tbody>
+              <tr class="best"><td>F-DWR</td><td>Commercial benchmark</td><td class="num">~24&#176;</td></tr>
+              <tr><td>C-B3</td><td>Emulsion + bare anatase</td><td class="num">~37&#176;</td></tr>
+              <tr><td>C-A1</td><td>Emulsion only</td><td class="num">~43&#176;</td></tr>
+              <tr><td>C-C3</td><td>Emulsion + silane-treated anatase</td><td class="num">~49&#176;</td></tr>
+              <tr><td>F-A1</td><td>Emulsion only, on Finisterre</td><td class="num">~59&#176;</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="status reveal" style="margin-top:1.8rem;">
+          <p><b>What this means.</b> My coatings match the commercial finish on how water beads, but not yet on how easily it sheds. The gap is contact angle hysteresis, the drop grips as it tries to move. That is the specific thing the next emulsion re-run is designed to fix.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== COMPOSITION (EDX) ===================== -->
+    <section class="section" id="composition" style="border-top:1px solid var(--line);">
+      <div class="wrap">
+        <p class="eyebrow reveal">Composition</p>
+        <h2 class="big reveal">What is actually on the fabric.</h2>
+        <p class="reveal" style="margin-top:1.1rem;max-width:60ch;">SEM-EDX reads the elements on the fibre surface. Titanium tracks the titanium dioxide I added, and silicon tracks the silicone and silane in the coating. Both show up exactly where they should, and the commercial finish looks chemically nothing like mine.</p>
+      </div>
+      <div class="wrap fig-block">
+        <figure class="figure reveal">
+          <div class="frame"><img src="assets/figures/fig07_edx_quant.png" loading="lazy" alt="Titanium and silicon tracer bars plus full elemental composition per sample from SEM-EDX." /></div>
+          <figcaption><span class="lead">Titanium and silicon, the two tracers.</span> On cotton, titanium is near zero on the uncoated and emulsion-only samples, then rises to <b>28%</b> on the bare-anatase C-B3 and <b>8.8%</b> on the silane-treated C-C3. Silicon is zero uncoated and <b>1.7 to 2.9%</b> across the coatings, highest on C-C3 where the silane shell adds its own silicon. The commercial F-DWR is EDX-light, about 0.2% titanium and no silicon, a different chemistry to mine. These are single-area scans, so read them as showing what is present rather than a precise loading.
+            <span class="src">Source: fig07, SEM-EDX at x2000, mass-normalised %</span>
+          </figcaption>
+        </figure>
+      </div>
+      <div class="wrap fig-block">
+        <figure class="figure reveal">
+          <div class="frame"><img src="assets/figures/fig08_edx_maps.png" loading="lazy" alt="SEM greyscale images with colour elemental overlays showing where titanium and silicon sit on the fibres." /></div>
+          <figcaption><span class="lead">And where it sits.</span> Elemental maps put the titanium and silicon across the coated fibres rather than in isolated clumps, which is what I want for an even coating.
+            <span class="src">Source: fig08, SEM-EDX elemental maps (B3, C3, F-A1)</span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===================== CHEMISTRY (FTIR) ===================== -->
+    <section class="section" id="chemistry" style="border-top:1px solid var(--line);">
+      <div class="wrap">
+        <p class="eyebrow reveal">Chemistry</p>
+        <h2 class="big reveal">The right bonds are there.</h2>
+        <p class="reveal" style="margin-top:1.1rem;max-width:60ch;">Infrared spectroscopy checks the chemistry rather than the elements. On the fabric it confirms the coating is deposited and has formed a siloxane network. On the titanium dioxide powder it is where I can actually see the silane grafting.</p>
+      </div>
+      <div class="wrap fig-block">
+        <figure class="figure reveal">
+          <div class="frame"><img src="assets/figures/fig04_ftir_textiles.png" loading="lazy" alt="Stacked ATR-FTIR spectra of the cotton and Finisterre sample series." /></div>
+          <figcaption><span class="lead">Coating on the fibre.</span> The carbon-hydrogen bands grow with coating, and a siloxane (Si-O-Si) network shows up clearest on Finisterre, where cotton's cellulose does not mask it. This method is semi-quantitative, so it confirms the coating chemistry but cannot on its own separate bare from silane-treated anatase.
+            <span class="src">Source: fig04, ATR-FTIR, replicate means</span>
+          </figcaption>
+        </figure>
+      </div>
+      <div class="wrap fig-block">
+        <figure class="figure reveal">
+          <div class="frame"><img src="assets/figures/fig05_ftir_tio2.png" loading="lazy" alt="ATR-FTIR of the T0 to T3 titanium dioxide grafting series with a normalised organic window." /></div>
+          <figcaption><span class="lead">Signs the silane grafted.</span> Bare anatase is flat through the organic region, while the silane-treated powders pick up carbon-hydrogen and siloxane bands. The signal is weak, but it is the clearest grafting evidence I have, and it is why I chose the vented-reflux batch (T2) to carry into the C3 coating.
+            <span class="src">Source: fig05, ATR-FTIR of TiO2 powders, T0 to T3</span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===================== DIGGING DEEPER ===================== -->
+    <section class="section" id="deeper" style="border-top:1px solid var(--line);">
+      <div class="wrap">
+        <p class="eyebrow reveal">Digging deeper</p>
+        <h2 class="mid reveal">Supporting structure and corroboration.</h2>
+        <p class="reveal">These back up the headline results: an independent check on the titanium signal, the particle and coating morphology under the microscope, and the smaller supporting measurements.</p>
+      </div>
+      <div class="wrap">
+        <div class="fig-grid">
+          <figure class="figure reveal">
+            <div class="frame"><img src="assets/figures/fig09_xrf.png" loading="lazy" alt="XRF survey spectra per sample; the titanium signal tracks added titanium dioxide." /></div>
+            <figcaption><span class="lead">XRF corroborates the titanium.</span> An independent read that titanium tracks the added titanium dioxide on cotton. On Finisterre it is confounded, because the fibre already contains a titanium dioxide delustrant.
+              <span class="src">Source: fig09, benchtop XRF</span>
+            </figcaption>
+          </figure>
+          <figure class="figure reveal">
+            <div class="frame"><img src="assets/figures/fig12_sem_tio2.png" loading="lazy" alt="SEM of bare versus silane-modified anatase titanium dioxide powder morphology." /></div>
+            <figcaption><span class="lead">Bare versus treated particles.</span> Under the SEM the silane-treated anatase looks finer and more even than the bare powder, which clumps into shards. This is the morphology behind the T2 choice.
+              <span class="src">Source: fig12, SEM of TiO2 powders</span>
+            </figcaption>
+          </figure>
+          <figure class="figure reveal">
+            <div class="frame"><img src="assets/figures/fig11_sem_textiles_x2000.png" loading="lazy" alt="High magnification SEM of the coating on Finisterre fibre." /></div>
+            <figcaption><span class="lead">The coating on the fibre.</span> High-magnification SEM of the coated Finisterre fabric, showing the coating's texture on the fibre surface.
+              <span class="src">Source: fig11, SEM at x2000</span>
+            </figcaption>
+          </figure>
+          <figure class="figure reveal">
+            <div class="frame"><img src="assets/figures/fig01_wet_pickup_addon.png" loading="lazy" alt="Wet pickup after padding and dry mass add-on after cure, per sample." /></div>
+            <figcaption><span class="lead">Comparable loadings.</span> Wet pickup after padding and dry mass gain after cure, confirming the coatings went on at controlled, comparable amounts so the comparison is fair.
+              <span class="src">Source: fig01, wet pickup and dry add-on</span>
+            </figcaption>
+          </figure>
+        </div>
+        <figure class="figure reveal fig-block">
+          <div class="frame"><img src="assets/figures/fig13_tga.png" loading="lazy" alt="Thermogravimetric mass-loss curves for the titanium dioxide powder series." /></div>
+          <figcaption><span class="lead">A small thermal signal.</span> Thermogravimetry shows only a weak organic mass loss (around half a percent) on the treated powders, consistent with a thin grafted silane layer rather than bulk material.
+            <span class="src">Source: fig13, TGA of TiO2 powders</span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===================== WHAT'S NEXT ===================== -->
+    <section class="section narrow-wrap" id="next" style="border-top:1px solid var(--line);">
+      <div class="wrap narrow">
+        <p class="eyebrow reveal">What's next</p>
+        <h2 class="mid reveal">The part that actually decides it.</h2>
+        <p class="reveal">The headline is honest: my coatings match a commercial DWR on how water beads, but not yet on how cleanly it sheds. Two things follow from that.</p>
+        <ul class="takeaways reveal">
+          <li><b>Fix the shedding.</b> Re-run the emulsion to cut the contact angle hysteresis, on properly scoured cotton, so the roll-off catches up to the contact angle.</li>
+          <li><b>Prove it lasts.</b> The core deliverable is still to come: abrasion and wash durability, the tests that decide whether any of this survives real use.</li>
+        </ul>
+        <div class="status reveal" style="margin-top:1.8rem;">
+          <p><b>A note on these numbers.</b> Everything here is preliminary and none of it is public-final. No figure goes out as a result until my supervisor has signed it off.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <p class="foot-mark">Fluorine-Free Superhydrophobic Coatings</p>
+      <p>A UCL masters project replacing PFAS in water-repellent textiles, tested on real outdoor fabrics. By Jackson Brocklebank.</p>
+      <p><a href="index.html">Back to the project</a> &#183; <a href="mailto:jackson.brocklebank.25@ucl.ac.uk">Get in touch</a></p>
+      <p class="foot-meta">&#169; 2026 Jackson Brocklebank &#183; UCL Advanced Materials Science</p>
+    </div>
+  </footer>
+
+  <script src="site.js?v=2026-06-26b"></script>
+</body>
+</html>

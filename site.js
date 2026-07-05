@@ -28,7 +28,10 @@
   /* ---- active nav link ---- */
   var links = [].slice.call(document.querySelectorAll('.nav nav a'));
   var sections = links
-    .map(function (a) { return document.querySelector(a.getAttribute("href")); })
+    .map(function (a) {
+      var href = a.getAttribute("href") || "";
+      return href.charAt(0) === "#" ? document.querySelector(href) : null;
+    })
     .filter(Boolean);
   if ("IntersectionObserver" in window && sections.length) {
     var spy = new IntersectionObserver(function (entries) {
