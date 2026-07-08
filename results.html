@@ -90,6 +90,7 @@
           <a href="#samples">Samples</a>
           <a href="#repellency">Repellency</a>
           <a href="#shedding">Shedding</a>
+          <a href="#durability">Durability</a>
           <a href="#composition">Composition</a>
           <a href="#chemistry">Chemistry</a>
           <a href="#deeper">Digging deeper</a>
@@ -176,7 +177,37 @@
         </div>
 
         <div class="status reveal" style="margin-top:1.8rem;">
-          <p><b>What this means.</b> My coatings match the commercial finish on how water beads, but not yet on how easily it sheds. The gap is contact angle hysteresis, the drop grips as it tries to move. That is the specific thing the next emulsion re-run is designed to fix.</p>
+          <p><b>What this means.</b> My coatings match the commercial finish on how water beads, but on a fresh sample not yet on how easily it sheds. The gap is contact angle hysteresis, the drop grips as it tries to move. That is the specific thing the next emulsion re-run is designed to fix. It is also not the whole story: under repeated wear the ranking changes, which is the next section.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== DURABILITY ===================== -->
+    <section class="section" id="durability" style="border-top:1px solid var(--line);">
+      <div class="wrap">
+        <p class="eyebrow reveal">Durability</p>
+        <h2 class="big reveal">Does it survive real use?</h2>
+        <p class="reveal" style="margin-top:1.1rem;max-width:60ch;">A coating is only useful if it lasts. I put the whole sample set through repeated washing and hand abrasion, re-measuring roll-off and contact angle at each stage. This is the test that actually decides it, and it is where the silane-treated particle earns its place.</p>
+      </div>
+      <div class="wrap fig-block">
+        <figure class="figure reveal">
+          <span class="prelim">Preliminary</span>
+          <div class="frame"><img src="assets/figures/fig17_durability_rolloff.png" width="2866" height="1249" loading="lazy" decoding="async" alt="Roll-off angle across abrasion cycles and wash cycles. Under abrasion the silane-treated coating C-C3 falls below and overtakes the commercial DWR." /></div>
+          <figcaption><span class="lead">Roll-off through abrasion and washing.</span> Under abrasion the story changes. <b>C-C3, my silane-treated titania coating, keeps improving as it is worn</b>, dropping from around 49&#176; to 27&#176; over 30 cycles, while the commercial F-DWR drifts the wrong way (24&#176; to 39&#176;). By 30 cycles the fluorine-free coating sheds better than the commercial benchmark. Washing nudges every coating up slightly, but they all keep shedding.
+            <span class="src">Source: fig17, ROA_durability_long.csv, abrasion and wash, 6 to 8 Jul 2026, n = 3</span>
+          </figcaption>
+        </figure>
+
+        <figure class="figure reveal">
+          <span class="prelim">Preliminary</span>
+          <div class="frame"><img src="assets/figures/fig18_durability_wca.png" width="2849" height="1249" loading="lazy" decoding="async" alt="Water contact angle across wash and abrasion cycles. The cotton coatings hold their contact angle throughout." /></div>
+          <figcaption><span class="lead">Contact angle holds up.</span> The cotton coatings stay firmly water-repellent through five washes and thirty abrasion cycles, sitting around 125 to 142&#176; the whole way. None of them collapse. The coating is not just sitting on the surface, it survives handling.
+            <span class="src">Source: fig18, WCA_durability_long_mean.csv, 29 Jun to 8 Jul 2026, n = 3</span>
+          </figcaption>
+        </figure>
+
+        <div class="status reveal" style="margin-top:1.8rem;">
+          <p><b>What this means.</b> The honest baseline was that the commercial finish sheds better on a fresh sample. Durability flips part of that: the silane-treated titania coating <b>C-C3</b> gets better under abrasion and overtakes the benchmark, and every cotton coating holds its contact angle through wash and wear. Small sample (n = 3), so I am leading on the size of the effect rather than the p-values, but the direction is clear and repeatable.</p>
         </div>
       </div>
     </section>
@@ -279,10 +310,10 @@
       <div class="wrap narrow">
         <p class="eyebrow reveal">What's next</p>
         <h2 class="mid reveal">The part that actually decides it.</h2>
-        <p class="reveal">The headline is honest: my coatings match a commercial DWR on how water beads, but not yet on how cleanly it sheds. Two things follow from that.</p>
+        <p class="reveal">The headline is honest: my coatings match a commercial DWR on how water beads, and on a fresh sample the commercial finish still sheds a little better. But under wear that gap closes and then reverses. Two things follow from that.</p>
         <ul class="takeaways reveal">
-          <li><b>Fix the shedding.</b> Re-run the emulsion to cut the contact angle hysteresis, on properly scoured cotton, so the roll-off catches up to the contact angle.</li>
-          <li><b>Prove it lasts.</b> The core deliverable is still to come: abrasion and wash durability, the tests that decide whether any of this survives real use.</li>
+          <li><b>Fix the fresh shedding.</b> Re-run the emulsion to cut the contact angle hysteresis, on properly scoured cotton, so the fresh roll-off catches up to the contact angle from the start, not just after wear.</li>
+          <li><b>Firm up the durability.</b> The abrasion and wash results are in, and they are the promising part: C-C3 overtakes the commercial finish under abrasion, and every cotton coating holds its contact angle. Next is more cycles and more replicates to lock the effect down.</li>
         </ul>
         <div class="status reveal" style="margin-top:1.8rem;">
           <p><b>A note on these numbers.</b> Everything here is preliminary and none of it is public-final. No figure goes out as a result until my supervisor has signed it off.</p>
