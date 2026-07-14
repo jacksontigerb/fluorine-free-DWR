@@ -176,7 +176,7 @@ figcaption .lead{color:var(--ink);font-weight:560;font-family:var(--serif);}
   letter-spacing:.06em;text-transform:uppercase;color:var(--teal-deep);
   background:var(--teal-tint);padding:.3rem .65rem;border-radius:999px;margin-bottom:.9rem;}
 .vid-row{display:flex;gap:clamp(1.5rem,4vw,3rem);align-items:center;flex-wrap:wrap;}
-.vid-row .frame{flex:0 1 320px;min-width:240px;}
+.vid-row .frame{flex:0 1 400px;min-width:260px;}
 .vid-row .frame video{width:100%;height:auto;display:block;border-radius:8px;}
 .vid-row figcaption{flex:1 1 320px;margin-top:0;}
 
