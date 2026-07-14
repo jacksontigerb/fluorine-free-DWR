@@ -27,7 +27,13 @@
 
     /* figure rhythm on this page */
     .fig-block{margin-top:clamp(2.5rem,6vh,4.5rem);}
-    .fig-block:first-of-type{margin-top:2rem;}
+    /* consecutive figures inside one fig-block need the same breathing room
+       as separate fig-blocks (durability stacks three) */
+    .fig-block > .figure + .figure{margin-top:clamp(2.5rem,6vh,4.5rem);}
+    /* serif takeaway line gets a little more air off the frame */
+    figcaption:has(> .fig-take){margin-top:1.4rem;}
+    /* .mid sections: intro paragraph matches the .big sections' 1.1rem gap */
+    h2.mid + p{margin-top:1.1rem;}
 
     /* two-up smaller figures for the deeper section */
     .fig-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.4rem,4vw,2.6rem);
