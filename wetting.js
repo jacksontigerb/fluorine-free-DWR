@@ -323,19 +323,8 @@
     roll: document.getElementById("outRoll"),
     note: document.getElementById("outNote"),
     live: document.getElementById("outLive"),
-    thr: document.getElementById("thrTick"),
     tiltBtn: document.getElementById("tiltBtn")
   };
-
-  /* mark where the drop would flip onto trapped air, on the chemistry slider */
-  function markThreshold() {
-    var lo = 20, hi = 122, t = res.thetaCrit;
-    if (t == null || t <= lo + 1 || t >= hi - 1) { el.thr.hidden = true; return; }
-    var frac = (t - lo) / (hi - lo);
-    el.thr.hidden = false;
-    el.thr.style.left = "calc(" + (frac * 100).toFixed(2) + "% + " + ((0.5 - frac) * 20).toFixed(1) + "px)";
-    el.thr.title = "Above " + Math.round(t) + "° the drop sits on trapped air";
-  }
 
   function render() {
     res = compute(state);
@@ -358,7 +347,6 @@
     }
     el.note.textContent = note;
 
-    markThreshold();
     el.tiltBtn.textContent = "Tilt test";
     announce();
     draw();

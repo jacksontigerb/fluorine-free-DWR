@@ -48,14 +48,8 @@
     .ctrl-top{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;}
     .ctrl-name{font-weight:600;font-size:.95rem;letter-spacing:-.01em;cursor:pointer;}
     .ctrl-val{font-family:var(--mono);font-size:.9rem;color:var(--teal-deep);}
-    .track{position:relative;display:block;margin:.55rem 0 .2rem;}
-    .track.has-thr{margin-top:1.25rem;}   /* clear space for the threshold label */
+    .track{display:block;margin:.55rem 0 .2rem;}
     .track input[type=range]{width:100%;margin:0;accent-color:var(--teal);height:1.2rem;display:block;}
-    .thr{position:absolute;top:-.2rem;bottom:0;width:2px;background:var(--teal-deep);
-      opacity:.6;pointer-events:none;}
-    .thr b{position:absolute;left:50%;top:-1.05rem;transform:translateX(-50%);font-weight:500;
-      white-space:nowrap;font-family:var(--mono);font-size:.58rem;letter-spacing:.08em;
-      text-transform:uppercase;color:var(--teal-deep);}
     .ctrl-ends{display:flex;justify-content:space-between;font-family:var(--mono);
       font-size:.66rem;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-2);
       opacity:.8;margin-bottom:.4rem;}
@@ -170,9 +164,8 @@
                 <label class="ctrl-name" for="sThetaY">Surface energy</label>
                 <span class="ctrl-val" id="vThetaY">108&#176;</span>
               </div>
-              <span class="track has-thr">
+              <span class="track">
                 <input type="range" id="sThetaY" min="20" max="122" step="1" value="108" aria-describedby="hThetaY" />
-                <span class="thr" id="thrTick" hidden><b>on air</b></span>
               </span>
               <div class="ctrl-ends"><span>High energy</span><span>Low energy</span></div>
               <p class="ctrl-hint" id="hThetaY">Low energy repels water. The number is the angle on a smooth version of the same material.</p>
@@ -252,7 +245,7 @@
           <li>
             <b>Cassie and Baxter, 1944</b>
             <code>cos&#920;* = f<sub>s</sub>(cos&#952; + 1) &#8722; 1</code>
-            <p>The drop bridges the texture and rests partly on trapped air. Whichever state has the lower energy wins, and air takes over above <code>cos&#952; &lt; (f<sub>s</sub> &#8722; 1)/(r &#8722; f<sub>s</sub>)</code>, marked on the first slider. Below that line a drop can still perch on air, until pressure or a wash pushes it in.</p>
+            <p>The drop bridges the texture and rests partly on trapped air. Whichever state has the lower energy wins, and air takes over above <code>cos&#952; &lt; (f<sub>s</sub> &#8722; 1)/(r &#8722; f<sub>s</sub>)</code>. Below that line a drop can still perch on air, until pressure or a wash pushes it in.</p>
           </li>
           <li>
             <b>Furmidge, 1962</b>
