@@ -49,6 +49,7 @@
     .ctrl-name{font-weight:600;font-size:.95rem;letter-spacing:-.01em;cursor:pointer;}
     .ctrl-val{font-family:var(--mono);font-size:.9rem;color:var(--teal-deep);}
     .track{position:relative;display:block;margin:.55rem 0 .2rem;}
+    .track.has-thr{margin-top:1.25rem;}   /* clear space for the threshold label */
     .track input[type=range]{width:100%;margin:0;accent-color:var(--teal);height:1.2rem;display:block;}
     .thr{position:absolute;top:-.2rem;bottom:0;width:2px;background:var(--teal-deep);
       opacity:.6;pointer-events:none;}
@@ -169,7 +170,7 @@
                 <label class="ctrl-name" for="sThetaY">Surface energy</label>
                 <span class="ctrl-val" id="vThetaY">108&#176;</span>
               </div>
-              <span class="track">
+              <span class="track has-thr">
                 <input type="range" id="sThetaY" min="20" max="122" step="1" value="108" aria-describedby="hThetaY" />
                 <span class="thr" id="thrTick" hidden><b>on air</b></span>
               </span>
