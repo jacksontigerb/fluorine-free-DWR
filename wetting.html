@@ -3,16 +3,16 @@
   Fluorine-Free DWR - interactive wetting model
   Wenzel / Cassie-Baxter + Furmidge, driven by four sliders.
   Reuses styles.css + site.js; sim logic in wetting.js.
-  HOUSE STYLE: no em dashes.
+  HOUSE STYLE: no em dashes, plain language on the page.
 ============================================================ -->
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Try it · Roughness, surface energy and roll-off · Fluorine-Free DWR</title>
-  <meta name="description" content="An interactive model of water on a textured surface: change the surface chemistry and the roughness and watch the contact angle and the roll-off angle move. Wenzel, Cassie-Baxter and Furmidge, from a UCL masters project on fluorine-free water-repellent coatings." />
-  <meta property="og:title" content="Try it &#183; Roughness, surface energy and roll-off" />
-  <meta property="og:description" content="An interactive model: change the chemistry and the texture, watch the drop bead, stick or roll." />
+  <title>Try it · What makes water roll off · Fluorine-Free DWR</title>
+  <meta name="description" content="An interactive model of water on a textured surface: change the surface energy and the roughness, and watch the contact angle and the roll-off angle move. From a UCL masters project on fluorine-free water-repellent coatings." />
+  <meta property="og:title" content="Try it &#183; What makes water roll off" />
+  <meta property="og:description" content="Change the surface, watch the drop bead, stick or roll." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://jacksontigerb.github.io/fluorine-free-DWR/wetting.html" />
   <meta property="og:image" content="https://jacksontigerb.github.io/fluorine-free-DWR/assets/img/droplet-coated.jpg" />
@@ -20,21 +20,22 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 28'%3E%3Cpath d='M12 2C12 2 4 12.5 4 18a8 8 0 0 0 16 0C20 12.5 12 2 12 2Z' fill='%230e6e5c'/%3E%3C/svg%3E" />
   <link rel="preload" href="assets/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="assets/fonts/geist-var.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/geist-mono-var.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="styles.css?v=2026-07-05" />
   <script>document.documentElement.className += " js";</script>
 
   <style>
     /* ---- wetting-page-only additions (tokens from styles.css) ---- */
 
-    .sim{display:grid;gap:clamp(1.4rem,3.5vw,2.4rem);margin-top:2rem;}
+    .sim{display:grid;gap:clamp(1.4rem,3.5vw,2.4rem);margin-top:1.8rem;}
     @media (min-width:960px){
-      .sim{grid-template-columns:330px 1fr;align-items:start;}
+      .sim{grid-template-columns:320px minmax(0,1fr);align-items:start;}
       .sim-controls{grid-column:1;grid-row:1;position:sticky;top:calc(var(--nav-h) + 1.2rem);}
       .sim-stage{grid-column:2;grid-row:1;}
     }
 
     /* presets */
-    .presets{display:flex;flex-wrap:wrap;gap:.5rem;margin:0 0 1.6rem;padding:0;list-style:none;}
+    .presets{display:flex;flex-wrap:wrap;gap:.5rem;margin:0;padding:0;list-style:none;}
     .preset{font-family:var(--mono);font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;
       color:var(--teal-deep);background:transparent;border:1px solid rgba(14,110,92,.35);
       border-radius:999px;padding:.4rem .8rem;cursor:pointer;line-height:1.2;
@@ -43,15 +44,21 @@
     .preset.on{background:var(--teal);border-color:var(--teal);color:#fff;}
 
     /* sliders */
-    .ctrl{display:block;margin-bottom:1.5rem;}
+    .ctrl{margin-bottom:1.4rem;}
     .ctrl-top{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;}
-    .ctrl-name{font-weight:600;font-size:.95rem;letter-spacing:-.01em;}
+    .ctrl-name{font-weight:600;font-size:.95rem;letter-spacing:-.01em;cursor:pointer;}
     .ctrl-val{font-family:var(--mono);font-size:.9rem;color:var(--teal-deep);}
-    .ctrl input[type=range]{width:100%;margin:.55rem 0 .2rem;accent-color:var(--teal);height:1.2rem;}
-    .ctrl-hint{font-size:.82rem;color:var(--ink-2);margin:0;max-width:none;}
+    .track{position:relative;display:block;margin:.55rem 0 .2rem;}
+    .track input[type=range]{width:100%;margin:0;accent-color:var(--teal);height:1.2rem;display:block;}
+    .thr{position:absolute;top:-.2rem;bottom:0;width:2px;background:var(--teal-deep);
+      opacity:.6;pointer-events:none;}
+    .thr b{position:absolute;left:50%;top:-1.05rem;transform:translateX(-50%);font-weight:500;
+      white-space:nowrap;font-family:var(--mono);font-size:.58rem;letter-spacing:.08em;
+      text-transform:uppercase;color:var(--teal-deep);}
     .ctrl-ends{display:flex;justify-content:space-between;font-family:var(--mono);
       font-size:.66rem;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-2);
-      opacity:.8;margin-bottom:.35rem;}
+      opacity:.8;margin-bottom:.4rem;}
+    .ctrl-hint{font-size:.82rem;color:var(--ink-2);margin:0;max-width:none;}
 
     /* stage */
     .stage-frame{background:#fff;border:1px solid var(--line);border-radius:16px;
@@ -71,7 +78,6 @@
     .reads dd{margin:.3rem 0 0;font-family:var(--mono);font-size:1.15rem;color:var(--ink);}
     @media (max-width:560px){.reads{grid-template-columns:1fr 1fr;}
       .reads div:last-child{grid-column:1 / -1;}}
-    .read-line{font-family:var(--mono);font-size:.74rem;color:var(--ink-2);margin:.7rem 0 0;}
     .read-note{margin:1rem 0 0;font-size:.95rem;color:var(--ink-2);max-width:62ch;}
     #presetNote{margin:.8rem 0 0;font-size:.92rem;color:var(--teal-deep);
       background:var(--teal-tint);border-radius:12px;padding:.75rem 1rem;max-width:none;}
@@ -83,7 +89,7 @@
     .takeaways b{color:var(--ink);}
 
     /* equations */
-    .eqs{list-style:none;margin:1.8rem 0 0;padding:0;display:grid;gap:1.1rem;max-width:70ch;}
+    .eqs{list-style:none;margin:1.6rem 0 0;padding:0;display:grid;gap:1rem;max-width:68ch;}
     .eqs li{padding-left:1.1rem;border-left:2px solid var(--teal-tint);}
     .eqs b{display:block;font-size:.95rem;margin-bottom:.15rem;}
     .eqs code{font-family:var(--mono);font-size:.88rem;color:var(--teal-deep);
@@ -114,9 +120,9 @@
       <div class="wrap">
         <a class="backlink" href="results.html#shedding">&larr; Back to the results</a>
         <p class="eyebrow">Try it</p>
-        <h1 class="big">Roughness, chemistry, and whether the drop lets go.</h1>
-        <p class="lede">Two things decide how water behaves on a fabric: what the surface is made of, and how rough it is. Move the sliders and watch a drop bead, stick, or roll away.</p>
-        <p class="src" style="margin-top:1.1rem;">An idealised pillar model, not a fit to my data. It reproduces the behaviour, not the exact angles.</p>
+        <h1 class="big">What makes water roll off.</h1>
+        <p class="lede">Two things decide it: what the surface is made of, and how rough it is. Move the sliders and watch the drop bead, stick, or run.</p>
+        <p class="src" style="margin-top:1.1rem;">An idealised model. It reproduces the behaviour, not the exact angles.</p>
       </div>
     </section>
 
@@ -137,55 +143,75 @@
           <div class="sim-stage">
             <div class="stage-frame">
               <canvas id="wetCanvas" role="img"
-                aria-label="Cross-section of a water droplet resting on a textured surface, drawn from the current settings."></canvas>
+                aria-label="Cross-section of a water droplet on a textured surface, drawn from the current settings."></canvas>
             </div>
 
             <div class="stage-actions">
               <button type="button" class="btn small" id="tiltBtn">Tilt test</button>
-              <p class="hint">Tilts the surface until the drop runs, or to 90° if it never does</p>
+              <p class="hint">Tilts until the drop runs, or to 90&#176; if it never does</p>
             </div>
 
             <dl class="reads">
-              <div><dt>Contact angle</dt><dd id="outTheta">128°</dd></div>
+              <div><dt>Contact angle</dt><dd id="outTheta">130&#176;</dd></div>
               <div><dt>Wetting state</dt><dd id="outState">Wenzel</dd></div>
-              <div><dt>Roll-off angle</dt><dd id="outRoll">75°</dd></div>
+              <div><dt>Roll-off angle</dt><dd id="outRoll">78&#176;</dd></div>
             </dl>
-            <p class="read-line">Advancing / receding: <span id="outHyst">140° / 113°</span></p>
             <p class="read-note" id="outNote"></p>
             <p id="presetNote" hidden></p>
             <p class="sr" id="outLive" aria-live="polite"></p>
           </div>
 
           <div class="sim-controls">
-            <noscript><p style="color:var(--ink-2);">The model needs JavaScript. The equations behind it are written out below.</p></noscript>
+            <noscript><p style="color:var(--ink-2);">The model needs JavaScript. The equations are written out below.</p></noscript>
 
-            <label class="ctrl">
-              <span class="ctrl-top"><span class="ctrl-name">Surface chemistry</span><span class="ctrl-val" id="vThetaY">108°</span></span>
-              <input type="range" id="sThetaY" min="20" max="122" step="1" value="108" />
-              <span class="ctrl-ends"><span>Cellulose</span><span>Wax</span><span>Fluorocarbon</span></span>
-              <p class="ctrl-hint">The contact angle the material would give if it were perfectly smooth. Lower surface energy means a higher angle. Cotton sits near 40°, my stearyl acrylate polymer near 108°, a fluorinated finish near 118°.</p>
-            </label>
+            <div class="ctrl">
+              <div class="ctrl-top">
+                <label class="ctrl-name" for="sThetaY">Surface energy</label>
+                <span class="ctrl-val" id="vThetaY">108&#176;</span>
+              </div>
+              <span class="track">
+                <input type="range" id="sThetaY" min="20" max="122" step="1" value="108" aria-describedby="hThetaY" />
+                <span class="thr" id="thrTick" hidden><b>on air</b></span>
+              </span>
+              <div class="ctrl-ends"><span>High energy</span><span>Low energy</span></div>
+              <p class="ctrl-hint" id="hThetaY">Low energy repels water. The number is the angle on a smooth version of the same material.</p>
+            </div>
 
-            <label class="ctrl">
-              <span class="ctrl-top"><span class="ctrl-name">Roughness, r</span><span class="ctrl-val" id="vR">2.00</span></span>
-              <input type="range" id="sR" min="1" max="4" step="0.05" value="2" />
-              <span class="ctrl-ends"><span>Smooth</span><span>Woven</span><span>Nanotexture</span></span>
-              <p class="ctrl-hint">Real surface area divided by flat area. A plain weave is around 2. Adding titanium dioxide pushes it higher.</p>
-            </label>
+            <div class="ctrl">
+              <div class="ctrl-top">
+                <label class="ctrl-name" for="sR">Roughness</label>
+                <span class="ctrl-val" id="vR">2.1&#215;</span>
+              </div>
+              <span class="track">
+                <input type="range" id="sR" min="1" max="4" step="0.1" value="2.1" aria-describedby="hR" />
+              </span>
+              <div class="ctrl-ends"><span>Smooth</span><span>Rough</span></div>
+              <p class="ctrl-hint" id="hR">How much real surface area the texture adds. A plain weave is about 2&#215;.</p>
+            </div>
 
-            <label class="ctrl">
-              <span class="ctrl-top"><span class="ctrl-name">Solid fraction, f<sub>s</sub></span><span class="ctrl-val" id="vFs">0.46</span></span>
-              <input type="range" id="sFs" min="0.04" max="1" step="0.01" value="0.46" />
-              <span class="ctrl-ends"><span>Sparse tips</span><span>Solid</span></span>
-              <p class="ctrl-hint">How much of the surface the drop can actually touch. The rest is air. Sparse, fine texture is what lets a drop sit on a cushion of air.</p>
-            </label>
+            <div class="ctrl">
+              <div class="ctrl-top">
+                <label class="ctrl-name" for="sFs">Solid contact</label>
+                <span class="ctrl-val" id="vFs">45%</span>
+              </div>
+              <span class="track">
+                <input type="range" id="sFs" min="0.04" max="1" step="0.01" value="0.45" aria-describedby="hFs" />
+              </span>
+              <div class="ctrl-ends"><span>Sparse tips</span><span>Solid</span></div>
+              <p class="ctrl-hint" id="hFs">How much of the surface the drop can touch. The rest is air.</p>
+            </div>
 
-            <label class="ctrl">
-              <span class="ctrl-top"><span class="ctrl-name">Droplet volume</span><span class="ctrl-val" id="vVol">10 µL</span></span>
-              <input type="range" id="sVol" min="2" max="50" step="1" value="10" />
-              <span class="ctrl-ends"><span>2 µL</span><span>50 µL</span></span>
-              <p class="ctrl-hint">Weight helps a drop break free, so a big drop rolls off a surface that pins a small one. This is not a detail: it is why my early roll-off run looked like a failure.</p>
-            </label>
+            <div class="ctrl">
+              <div class="ctrl-top">
+                <label class="ctrl-name" for="sVol">Drop size</label>
+                <span class="ctrl-val" id="vVol">10 µL</span>
+              </div>
+              <span class="track">
+                <input type="range" id="sVol" min="2" max="50" step="1" value="10" aria-describedby="hVol" />
+              </span>
+              <div class="ctrl-ends"><span>2 µL</span><span>50 µL</span></div>
+              <p class="ctrl-hint" id="hVol">Weight helps a drop break free, so a big drop rolls off a surface that pins a small one.</p>
+            </div>
           </div>
 
         </div>
@@ -197,16 +223,16 @@
       <div class="wrap">
         <p class="eyebrow reveal">What to look for</p>
         <h2 class="mid reveal">Worth trying.</h2>
-        <ul class="takeaways reveal" style="margin-top:1.4rem;">
-          <li><b>Roughness cuts both ways.</b> Start on uncoated cotton and turn the roughness up. The drop spreads faster, not slower. Texture only repels water once the chemistry is already repellent.</li>
-          <li><b>My coating and the commercial one, side by side.</b> Switch between them. Same texture, ten degrees of chemistry apart, and almost the same contact angle. One is sitting on air and rolls off; the other is sunk into the weave and stays put. That is the whole gap between beading and shedding.</li>
-          <li><b>Sparse beats deep.</b> Drop the solid fraction towards the lotus setting. Less contact means less to grip the back edge of the drop, and the roll-off angle collapses.</li>
+        <ul class="takeaways reveal">
+          <li><b>Roughness cuts both ways.</b> Start on uncoated cotton and turn the roughness up. The drop spreads faster, not slower.</li>
+          <li><b>My coating against the commercial one.</b> Same texture, ten degrees of chemistry apart, almost the same contact angle. One sits on air and rolls off, the other sinks into the weave and stays put.</li>
+          <li><b>Sparse beats deep.</b> Drop the solid contact towards the lotus setting and the roll-off angle collapses.</li>
         </ul>
         <div class="status reveal" style="margin-top:1.8rem;">
-          <p><b>Why this is on the site.</b> Every coating I made beads water at about 130°, level with the commercial finish, and fresh out of the bath none of them shed a small droplet while the commercial one did. The model says why: contact angle can be reached from either state, but only the Cassie state lets the drop go.</p>
+          <p><b>Why this is here.</b> Every coating I made beads water at about 130&#176;, level with the commercial finish, yet only the commercial one shed a small droplet. The same contact angle can be reached from either state, and only one of them lets the drop go.</p>
         </div>
         <div class="hero-cta reveal" style="margin-top:1.6rem;">
-          <a class="btn" href="results.html#shedding">See the measured roll-off data</a>
+          <a class="btn" href="results.html#shedding">See the measured data</a>
         </div>
       </div>
     </section>
@@ -220,22 +246,22 @@
           <li>
             <b>Wenzel, 1936</b>
             <code>cos&#920;* = r&#183;cos&#952;</code>
-            <p>The liquid follows the texture all the way down. Roughness multiplies whatever the flat surface already does, so it makes a repellent surface more repellent and a wetting surface wetter.</p>
+            <p>The drop sinks into the texture. Roughness multiplies whatever the flat surface already does, so it makes a repellent surface more repellent and a wetting surface wetter.</p>
           </li>
           <li>
             <b>Cassie and Baxter, 1944</b>
             <code>cos&#920;* = f<sub>s</sub>(cos&#952; + 1) &#8722; 1</code>
-            <p>The drop bridges the texture and rests partly on trapped air. The state with the lower energy wins, and Cassie takes over once <code>cos&#952; &lt; (f<sub>s</sub> &#8722; 1)/(r &#8722; f<sub>s</sub>)</code>. Below that threshold a drop can still sit on air, but only until something presses it in.</p>
+            <p>The drop bridges the texture and rests partly on trapped air. Whichever state has the lower energy wins, and air takes over above <code>cos&#952; &lt; (f<sub>s</sub> &#8722; 1)/(r &#8722; f<sub>s</sub>)</code>, marked on the first slider. Below that line a drop can still perch on air, until pressure or a wash pushes it in.</p>
           </li>
           <li>
             <b>Furmidge, 1962</b>
             <code>&#961;Vg&#183;sin&#945; = &#947;w(cos&#952;<sub>rec</sub> &#8722; cos&#952;<sub>adv</sub>)</code>
-            <p>Roll-off is a force balance: gravity down the slope against the grip of the contact line. Hysteresis is modelled as scaling with the wetted area, so with <code>f<sub>s</sub></code> in the Cassie state and with <code>r</code> in the Wenzel state, from a smooth-surface baseline of cos&#952;<sub>rec</sub> &#8722; cos&#952;<sub>adv</sub> = 0.30.</p>
+            <p>Roll-off is a force balance: gravity down the slope against the grip of the drop's edge. Grip is taken to scale with how much solid the drop touches, from a smooth-surface baseline of 0.30.</p>
           </li>
           <li>
             <b>The caveat</b>
             <code>idealised</code>
-            <p>This is a square-pillar array, not a woven fabric. Real cotton pins harder than any regular texture because the weave is uneven and the fibres swell, so the model gives roll-off angles that are lower than the ones I measured. It gets the ordering and the mechanism right, which is what it is here to show. The drop outline is drawn as a spherical cap and only the roll-off calculation carries gravity.</p>
+            <p>This is a square-pillar array, not a woven fabric. Real cotton grips harder than any regular texture, so the model rolls drops off more easily than I measured. It gets the ordering and the mechanism right, which is what it is here for.</p>
           </li>
         </ul>
       </div>
@@ -253,6 +279,6 @@
   </footer>
 
   <script src="site.js?v=2026-06-26b"></script>
-  <script src="wetting.js?v=2026-07-30"></script>
+  <script src="wetting.js?v=2026-07-31"></script>
 </body>
 </html>

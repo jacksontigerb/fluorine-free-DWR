@@ -14,6 +14,7 @@
   var RHO   = 1000;     /* kg/m3 */
   var GRAV  = 9.81;     /* m/s2 */
   var H_FLAT = 0.30;    /* intrinsic hysteresis on a smooth surface, cos(r) - cos(a) */
+  var MONO = '"Geist Mono", ui-monospace, Menlo, monospace';
 
   var COL = {
     paper: "#f6f3ec", paper2: "#efeae0", ink: "#17150f", ink2: "#5b564a",
@@ -21,24 +22,19 @@
     water: "#cfe3ee", waterEdge: "#4d8fae", solid: "#e2dccd"
   };
   /* ---------- state ---------- */
-  var state = { thetaY: 108, r: 2.0, fs: 0.46, vol: 10 };
+  var state = { thetaY: 108, r: 2.1, fs: 0.45, vol: 10 };   /* matches the HTML defaults */
 
   var PRESETS = [
-    { id: "cu",   label: "Uncoated cotton",
-      v: { thetaY: 45, r: 1.10, fs: 0.95, vol: 10 },
-      note: "Cellulose is high energy, so water spreads and soaks in. Measured: about 39°, no roll-off." },
-    { id: "a1",   label: "My coating (C-A1)",
-      v: { thetaY: 108, r: 2.10, fs: 0.45, vol: 10 },
-      note: "Waxy stearyl chains on a woven surface. Repellent chemistry, but not quite repellent enough for the drop to hold itself off the weave. Measured: 132 to 135°, pinned to the 90° limit." },
-    { id: "c3",   label: "Coating + particles (C-C3)",
-      v: { thetaY: 108, r: 2.20, fs: 0.40, vol: 10 },
-      note: "Titanium dioxide adds texture, and the contact angle barely moves. Roughness alone cannot lift the drop while the chemistry sits below the threshold. Measured: about 133°, and the worst roll-off of the three." },
-    { id: "dwr",  label: "Commercial DWR (F-DWR)",
-      v: { thetaY: 118, r: 2.10, fs: 0.45, vol: 10 },
-      note: "The same texture, ten degrees of chemistry apart, and the drop flips onto trapped air. Measured: 132°, rolls at about 24° after a wash." },
-    { id: "lotus", label: "Lotus leaf",
-      v: { thetaY: 112, r: 3.50, fs: 0.08, vol: 10 },
-      note: "Waxy chemistry plus very sparse, tall texture. Real lotus sheds at 2 to 3°." }
+    { id: "cu",  v: { thetaY: 45, r: 1.10, fs: 0.95, vol: 10 },
+      note: "High energy surface, so water spreads and soaks in. Measured: about 39°, no roll-off." },
+    { id: "a1",  v: { thetaY: 108, r: 2.10, fs: 0.45, vol: 10 },
+      note: "Repellent chemistry, but not quite enough to hold the drop off the weave. Measured: 132 to 135°, pinned to the 90° limit." },
+    { id: "c3",  v: { thetaY: 108, r: 2.20, fs: 0.40, vol: 10 },
+      note: "The particles add texture and the contact angle barely moves. Measured: about 133°, and the worst roll-off of the three." },
+    { id: "dwr", v: { thetaY: 118, r: 2.10, fs: 0.45, vol: 10 },
+      note: "Same texture, ten degrees of chemistry apart, and the drop flips onto trapped air. Measured: 132°, rolls at about 24°." },
+    { id: "lotus", v: { thetaY: 112, r: 3.50, fs: 0.08, vol: 10 },
+      note: "Repellent wax on very sparse, tall texture. Real lotus sheds at 2 to 3°." }
   ];
   /* ---------- helpers ---------- */
   function rad(d) { return d * Math.PI / 180; }
@@ -55,9 +51,6 @@
     var canAir = s.fs < 0.995 && s.r > 1.005;
     var cCrit = (s.r - s.fs) > 1e-6 ? (s.fs - 1) / (s.r - s.fs) : -1;
     var cassie = canAir && cY < cCrit;
-    /* a metastable Cassie state only makes sense on a hydrophobic material */
-    var metastable = canAir && !cassie && cY < 0 && cCB > -1 && cCB < cW;
-
     var mode = (!canAir && s.r <= 1.005) ? "flat" : (cassie ? "cassie" : "wenzel");
     var rawCos = cassie ? cCB : cW;
     var wetsOut = rawCos >= 1;
@@ -86,10 +79,8 @@
     var alpha = pinned ? null : deg(Math.asin(sinA));
 
     return {
-      mode: mode, cassie: cassie, metastable: metastable, wetsOut: wetsOut,
-      theta: theta, cosApp: cosApp,
-      thetaAdv: deg(Math.acos(cAdv)), thetaRec: deg(Math.acos(cRec)),
-      dcos: dEff, R: R * 1000, alpha: alpha, pinned: pinned,
+      mode: mode, cassie: cassie, wetsOut: wetsOut, theta: theta,
+      thetaAdv: deg(Math.acos(cAdv)), R: R * 1000, alpha: alpha, pinned: pinned,
       thetaCrit: canAir ? deg(Math.acos(clamp(cCrit, -1, 1))) : null
     };
   }
@@ -98,13 +89,16 @@
   var slide = 0;       /* 0 to 1, drop sliding away */
   var res = compute(state);
 
+  /* Size the backing store to the width CSS has already given the canvas. Never set
+     style.width from the parent: clientWidth includes the frame's padding, so each
+     resize would add that padding again and the canvas would creep wider forever. */
   function fit() {
-    var w = canvas.parentNode.clientWidth;
+    var w = canvas.clientWidth;
+    if (!w) return;
     var h = Math.round(clamp(w * 0.60, 280, 430));
     var dpr = window.devicePixelRatio || 1;
     canvas.width = Math.round(w * dpr);
     canvas.height = Math.round(h * dpr);
-    canvas.style.width = w + "px";
     canvas.style.height = h + "px";
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
@@ -247,12 +241,10 @@
       ctx.strokeStyle = "rgba(14,110,92,.55)";
       ctx.setLineDash([4, 4]);
       ctx.lineWidth = 1;
-      ctx.beginPath();                          /* surface reference, into the liquid */
-      ctx.moveTo(px - arm, py);
+      ctx.beginPath();
+      ctx.moveTo(px - arm, py);                 /* surface reference, into the liquid */
       ctx.lineTo(px + arm * 0.45, py);
-      ctx.stroke();
-      ctx.beginPath();                          /* tangent at the contact line */
-      ctx.moveTo(px, py);
+      ctx.moveTo(px, py);                       /* tangent at the contact line */
       ctx.lineTo(px - Math.cos(rad(res.theta)) * arm, py - Math.sin(rad(res.theta)) * arm);
       ctx.stroke();
       ctx.setLineDash([]);
@@ -264,13 +256,13 @@
       ctx.strokeStyle = COL.tealDeep;
       ctx.lineWidth = 1.4;
       ctx.stroke();
-      var mid = rad(res.theta) / 2 - Math.PI;             /* halfway round the sweep */
+      var bis = rad(res.theta) / 2 - Math.PI;             /* halfway round the sweep */
       ctx.fillStyle = COL.tealDeep;
-      ctx.font = "600 12px ui-monospace, Menlo, monospace";
+      ctx.font = "600 12px " + MONO;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText(Math.round(res.theta) + "°",
-        px + Math.cos(mid) * (ar + 15), py + Math.sin(mid) * (ar + 15));
+        px + Math.cos(bis) * (ar + 15), py + Math.sin(bis) * (ar + 15));
       ctx.restore();
     }
 
@@ -294,7 +286,7 @@
       ctx.lineWidth = 1.4;
       ctx.stroke();
       ctx.fillStyle = COL.tealDeep;
-      ctx.font = "600 12px ui-monospace, Menlo, monospace";
+      ctx.font = "600 12px " + MONO;
       ctx.textAlign = "left";
       ctx.textBaseline = "middle";
       ctx.fillText(Math.round(tilt) + "°",
@@ -302,33 +294,24 @@
       ctx.restore();
     }
 
-    /* ---- scale bar: the view rescales with the drop, so say how big it is ---- */
+    /* ---- chrome: scale bar (the view rescales with the drop) + captions ---- */
     var steps = [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10], mm = steps[0], j;
     for (j = 0; j < steps.length; j++) { if (steps[j] * S <= 120) mm = steps[j]; }
     var barPx = mm * S, bx = 14, by = H - 34;
     ctx.save();
     ctx.strokeStyle = COL.ink2;
+    ctx.fillStyle = COL.ink2;
     ctx.lineWidth = 1;
+    ctx.font = "500 11px " + MONO;
+    ctx.textAlign = "left";
+    ctx.textBaseline = "alphabetic";
     ctx.beginPath();
     ctx.moveTo(bx, by - 4); ctx.lineTo(bx, by); ctx.lineTo(bx + barPx, by); ctx.lineTo(bx + barPx, by - 4);
     ctx.stroke();
-    ctx.font = "500 11px ui-monospace, Menlo, monospace";
-    ctx.fillStyle = COL.ink2;
-    ctx.textAlign = "left";
     ctx.fillText(mm < 1 ? (mm * 1000) + " µm" : mm + " mm", bx + barPx + 8, by);
-    ctx.restore();
-
-    /* ---- state label ---- */
-    ctx.save();
-    ctx.font = "500 11px ui-monospace, Menlo, monospace";
-    ctx.fillStyle = COL.ink2;
-    ctx.textAlign = "left";
-    ctx.textBaseline = "alphabetic";
-    var label = res.wetsOut ? "SOAKS IN"
-      : res.cassie ? "CASSIE: DROP SITS ON TRAPPED AIR"
-      : (flatTop ? "ALL BUT SMOOTH: NOTHING FOR AIR TO SIT IN"
-                 : "WENZEL: LIQUID FILLS THE TEXTURE");
-    ctx.fillText(label, 14, H - 14);
+    ctx.fillText(res.wetsOut ? "SOAKS IN"
+      : res.cassie ? "SITTING ON TRAPPED AIR"
+      : (flatTop ? "SMOOTH SURFACE" : "SUNK INTO THE TEXTURE"), 14, H - 14);
     ctx.textAlign = "right";
     ctx.fillText(state.vol + " µL", W - 14, H - 14);
     ctx.restore();
@@ -338,11 +321,21 @@
     theta: document.getElementById("outTheta"),
     state: document.getElementById("outState"),
     roll: document.getElementById("outRoll"),
-    hyst: document.getElementById("outHyst"),
     note: document.getElementById("outNote"),
     live: document.getElementById("outLive"),
+    thr: document.getElementById("thrTick"),
     tiltBtn: document.getElementById("tiltBtn")
   };
+
+  /* mark where the drop would flip onto trapped air, on the chemistry slider */
+  function markThreshold() {
+    var lo = 20, hi = 122, t = res.thetaCrit;
+    if (t == null || t <= lo + 1 || t >= hi - 1) { el.thr.hidden = true; return; }
+    var frac = (t - lo) / (hi - lo);
+    el.thr.hidden = false;
+    el.thr.style.left = "calc(" + (frac * 100).toFixed(2) + "% + " + ((0.5 - frac) * 20).toFixed(1) + "px)";
+    el.thr.title = "Above " + Math.round(t) + "° the drop sits on trapped air";
+  }
 
   function render() {
     res = compute(state);
@@ -350,45 +343,55 @@
     el.state.textContent = res.wetsOut ? "Soaks in"
       : res.cassie ? "Cassie-Baxter" : (res.mode === "flat" ? "Smooth" : "Wenzel");
     el.roll.textContent = res.pinned ? "pinned" : Math.round(res.alpha) + "°";
-    el.hyst.textContent = res.wetsOut ? "n/a"
-      : Math.round(res.thetaAdv) + "° / " + Math.round(res.thetaRec) + "°";
 
     var note;
     if (res.wetsOut) {
-      note = "The surface energy is too high for this texture to help. Roughness makes a wetting surface wet faster, which is what happens to uncoated cotton.";
+      note = "Too much surface energy for texture to help. Roughness makes a wetting surface wet faster.";
     } else if (res.cassie) {
-      note = "Air is trapped under the drop, so it touches only the tops of the texture. Little contact means little pinning, and the drop runs off"
-        + (res.alpha != null && res.alpha < 10 ? " almost as soon as you tilt it." : " at a modest tilt.");
+      note = "The drop touches only the tips, so there is little holding its back edge and it runs off"
+        + (res.alpha != null && res.alpha < 10 ? " almost as soon as you tilt it." : " at a gentle tilt.");
     } else if (res.mode === "flat") {
-      note = "No texture, so the drop sits at the intrinsic angle of the chemistry itself.";
+      note = "No texture, so the drop sits at the angle of the chemistry alone.";
     } else {
-      note = "The liquid follows the texture into the grooves, so the wetted area goes up with r. That raises the contact angle but it also raises pinning, which is why a high angle here still means a stuck drop.";
-      if (res.thetaCrit != null) {
-        note += " Push the chemistry past " + Math.round(res.thetaCrit) + "° and it flips into the Cassie state.";
-      }
-    }
-    if (res.metastable) {
-      note += " A drop gently placed here can sit on air for a while, but it is metastable: pressure, impact or a wash cycle collapses it into the grooves.";
+      note = "The drop has sunk into the texture. That lifts the contact angle, but gives the back edge more to grip, which is why a high angle can still mean a stuck drop.";
+      if (res.thetaCrit != null) note += " Past " + Math.round(res.thetaCrit) + "° it flips onto trapped air.";
     }
     el.note.textContent = note;
-    el.live.textContent = "Contact angle " + el.theta.textContent
-      + ", " + el.state.textContent + " state, roll-off " + el.roll.textContent + ".";
+
+    markThreshold();
     el.tiltBtn.textContent = "Tilt test";
+    announce();
     draw();
   }
+
+  /* one announcement after the user settles, rather than on every slider step */
+  var liveTimer = null;
+  function announce() {
+    clearTimeout(liveTimer);
+    liveTimer = setTimeout(function () {
+      el.live.textContent = "Contact angle " + el.theta.textContent + ", "
+        + el.state.textContent + " state, roll-off " + el.roll.textContent + ".";
+    }, 700);
+  }
   /* ---------- tilt animation ---------- */
-  var raf = null, t0 = 0, phase = "idle", limit = 0;
-  function stopAnim() { if (raf) cancelAnimationFrame(raf); raf = null; phase = "idle"; }
+  var raf = null, t0 = 0, phase = "idle", limit = 0, settleTimer = null;
+
+  function stopAnim() {
+    if (raf) cancelAnimationFrame(raf);
+    clearTimeout(settleTimer);          /* a pending settle must not restore an old tilt */
+    raf = null; settleTimer = null; phase = "idle";
+  }
 
   function runTilt() {
     stopAnim();
+    tilt = 0; slide = 0;                /* always start the test from flat */
     limit = res.pinned ? 90 : res.alpha;
     if (reduce) {
-      tilt = limit; slide = res.pinned ? 0 : 1; draw();
+      tilt = limit; draw();
       el.tiltBtn.textContent = res.pinned ? "Still pinned at 90°" : "Rolled at " + Math.round(limit) + "°";
       return;
     }
-    phase = "tilting"; t0 = performance.now(); slide = 0;
+    phase = "tilting"; t0 = performance.now();
     raf = requestAnimationFrame(step);
   }
 
@@ -414,7 +417,7 @@
       if (s >= 1) {
         el.tiltBtn.textContent = "Rolled at " + Math.round(limit) + "°";
         phase = "idle"; raf = null;
-        setTimeout(function () { if (phase === "idle") { slide = 0; tilt = limit; draw(); } }, 250);
+        settleTimer = setTimeout(function () { slide = 0; draw(); }, 250);
         return;
       }
       raf = requestAnimationFrame(step);
@@ -423,8 +426,8 @@
   /* ---------- controls ---------- */
   var sliders = [
     { id: "sThetaY", key: "thetaY", out: "vThetaY", fmt: function (v) { return Math.round(v) + "°"; } },
-    { id: "sR",      key: "r",      out: "vR",      fmt: function (v) { return v.toFixed(2); } },
-    { id: "sFs",     key: "fs",     out: "vFs",     fmt: function (v) { return v.toFixed(2); } },
+    { id: "sR",      key: "r",      out: "vR",      fmt: function (v) { return v.toFixed(1) + "×"; } },
+    { id: "sFs",     key: "fs",     out: "vFs",     fmt: function (v) { return Math.round(v * 100) + "%"; } },
     { id: "sVol",    key: "vol",    out: "vVol",    fmt: function (v) { return v + " µL"; } }
   ];
 
@@ -438,6 +441,13 @@
 
   function reset() { stopAnim(); tilt = 0; slide = 0; }
 
+  /* dragging a slider fires far faster than the screen refreshes, so coalesce */
+  var pending = null;
+  function queueRender() {
+    if (pending) return;
+    pending = requestAnimationFrame(function () { pending = null; render(); });
+  }
+
   sliders.forEach(function (s) {
     var input = document.getElementById(s.id);
     input.addEventListener("input", function () {
@@ -445,7 +455,7 @@
       document.getElementById(s.out).textContent = s.fmt(state[s.key]);
       clearPreset();
       reset();
-      render();
+      queueRender();
     });
   });
 
@@ -489,6 +499,11 @@
   fit();
   syncInputs();
   render();
+
+  /* canvas text is painted, not laid out, so redraw once the webfont arrives */
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () { draw(); });
+  }
 
   /* ?p=<preset> opens the page on a named surface, handy for a QR code */
   var q = /[?&]p=([a-z0-9]+)/i.exec(window.location.search);
