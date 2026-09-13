@@ -1,7 +1,9 @@
-/* Fluorine-Free DWR - interactive wetting model (vanilla, no deps).
-   Wenzel / Cassie-Baxter apparent contact angle + Furmidge roll-off angle,
-   drawn as a cross-section on canvas. Degrades: no JS = static text + equations.
-   HOUSE STYLE: no em dashes. */
+/* Fluorine Free DWR - wetting concepts teaching model (vanilla, no deps).
+   Wenzel / Cassie-Baxter apparent contact angle + Furmidge roll-off angle on
+   idealised square pillars, drawn as a cross-section on canvas. Not a model of
+   the lab samples: no sample presets. The hysteresis rule below is a stand-in,
+   so where it saturates the page says "outside the model" rather than "pinned".
+   Degrades: no JS = static text + equations. HOUSE STYLE: no em dashes. */
 (function () {
   "use strict";
 
@@ -13,7 +15,7 @@
   var GAMMA = 0.0728;   /* water surface tension, N/m */
   var RHO   = 1000;     /* kg/m3 */
   var GRAV  = 9.81;     /* m/s2 */
-  var H_FLAT = 0.30;    /* intrinsic hysteresis on a smooth surface, cos(r) - cos(a) */
+  var H_FLAT = 0.30;    /* illustrative stand-in for hysteresis, cos(r) - cos(a); not measured */
   var MONO = '"Geist Mono", ui-monospace, Menlo, monospace';
 
   var COL = {
@@ -24,18 +26,6 @@
   /* ---------- state ---------- */
   var state = { thetaY: 108, r: 2.1, fs: 0.45, vol: 10 };   /* matches the HTML defaults */
 
-  var PRESETS = [
-    { id: "cu",  v: { thetaY: 45, r: 1.10, fs: 0.95, vol: 10 },
-      note: "High energy surface, so water spreads and soaks in. Measured: about 39°, no roll-off." },
-    { id: "a1",  v: { thetaY: 108, r: 2.10, fs: 0.45, vol: 10 },
-      note: "Repellent chemistry, but not quite enough to hold the drop off the weave. Measured: 132 to 135°, pinned to the 90° limit." },
-    { id: "c3",  v: { thetaY: 108, r: 2.20, fs: 0.40, vol: 10 },
-      note: "The particles add texture and the contact angle barely moves. Measured: about 133°, and the worst roll-off of the three." },
-    { id: "dwr", v: { thetaY: 118, r: 2.10, fs: 0.45, vol: 10 },
-      note: "Same texture, ten degrees of chemistry apart, and the drop flips onto trapped air. Measured: 132°, rolls at about 24°." },
-    { id: "lotus", v: { thetaY: 112, r: 3.50, fs: 0.08, vol: 10 },
-      note: "Repellent wax on very sparse, tall texture. Real lotus sheds at 2 to 3°." }
-  ];
   /* ---------- helpers ---------- */
   function rad(d) { return d * Math.PI / 180; }
   function deg(r) { return r * 180 / Math.PI; }
@@ -63,8 +53,8 @@
     var cAdv = clamp(cosApp - dcos / 2, -1, 1);
     var cRec = clamp(cosApp + dcos / 2, -1, 1);
     var dEff = cRec - cAdv;
-    /* if the advancing angle saturates the contact line cannot advance at all,
-       so the drop is stuck rather than easier to move */
+    /* if the advancing angle saturates, the stand-in rule has broken down; report
+       that instead of presenting a numerical limit as a physical pinned drop */
     var saturated = (cosApp - dcos / 2) < -1;
 
     /* spherical cap of the given volume */
@@ -75,12 +65,13 @@
 
     /* Furmidge: rho V g sin(alpha) = gamma w (cos thetaR - cos thetaA) */
     var sinA = GAMMA * w * dEff / (RHO * V * GRAV);
-    var pinned = wetsOut || saturated || theta < 15 || !(sinA < 1);
-    var alpha = pinned ? null : deg(Math.asin(sinA));
+    var outside = saturated && !wetsOut;
+    var pinned = !outside && (wetsOut || theta < 15 || !(sinA < 1));
+    var alpha = (pinned || outside) ? null : deg(Math.asin(sinA));
 
     return {
       mode: mode, cassie: cassie, wetsOut: wetsOut, theta: theta,
-      thetaAdv: deg(Math.acos(cAdv)), R: R * 1000, alpha: alpha, pinned: pinned,
+      thetaAdv: deg(Math.acos(cAdv)), R: R * 1000, alpha: alpha, pinned: pinned, outside: outside,
       thetaCrit: canAir ? deg(Math.acos(clamp(cCrit, -1, 1))) : null
     };
   }
@@ -331,20 +322,21 @@
     el.theta.textContent = res.wetsOut ? "wets out" : Math.round(res.theta) + "°";
     el.state.textContent = res.wetsOut ? "Soaks in"
       : res.cassie ? "Cassie-Baxter" : (res.mode === "flat" ? "Smooth" : "Wenzel");
-    el.roll.textContent = res.pinned ? "pinned" : Math.round(res.alpha) + "°";
+    el.roll.textContent = res.outside ? "outside model" : res.pinned ? "pinned" : Math.round(res.alpha) + "°";
 
     var note;
     if (res.wetsOut) {
-      note = "Too much surface energy for texture to help. Roughness makes a wetting surface wet faster.";
+      note = "The material already wets, so texture makes it wet more, not less. (Real fabric would also soak the water up, which this model does not include.)";
     } else if (res.cassie) {
-      note = "The drop touches only the tips, so there is little holding its back edge and it runs off"
-        + (res.alpha != null && res.alpha < 10 ? " almost as soon as you tilt it." : " at a gentle tilt.");
+      note = "In this ideal state the drop touches only the pillar tops, so there is less holding its back edge"
+        + (res.alpha != null && res.alpha < 10 ? " and it runs off almost as soon as you tilt it." : ".");
     } else if (res.mode === "flat") {
       note = "No texture, so the drop sits at the angle of the chemistry alone.";
     } else {
-      note = "The drop has sunk into the texture. That lifts the contact angle, but gives the back edge more to grip, which is why a high angle can still mean a stuck drop.";
-      if (res.thetaCrit != null) note += " Past " + Math.round(res.thetaCrit) + "° it flips onto trapped air.";
+      note = "In this ideal state the drop has filled the texture. That lifts the contact angle, but gives the back edge more to grip, which is why a high angle can still come with a stuck drop.";
+      if (res.thetaCrit != null) note += " Above a smooth surface angle of " + Math.round(res.thetaCrit) + "°, resting on trapped air has the lower energy.";
     }
+    if (res.outside) note += " At these settings the simple grip rule breaks down, so the model cannot give a roll off angle.";
     el.note.textContent = note;
 
     el.tiltBtn.textContent = "Tilt test";
@@ -358,7 +350,7 @@
     clearTimeout(liveTimer);
     liveTimer = setTimeout(function () {
       el.live.textContent = "Contact angle " + el.theta.textContent + ", "
-        + el.state.textContent + " state, roll-off " + el.roll.textContent + ".";
+        + el.state.textContent + " ideal state, roll off " + el.roll.textContent + ".";
     }, 700);
   }
   /* ---------- tilt animation ---------- */
@@ -373,6 +365,7 @@
   function runTilt() {
     stopAnim();
     tilt = 0; slide = 0;                /* always start the test from flat */
+    if (res.outside) { draw(); el.tiltBtn.textContent = "Outside the model"; return; }
     limit = res.pinned ? 90 : res.alpha;
     if (reduce) {
       tilt = limit; draw();
@@ -441,39 +434,9 @@
     input.addEventListener("input", function () {
       state[s.key] = parseFloat(input.value);
       document.getElementById(s.out).textContent = s.fmt(state[s.key]);
-      clearPreset();
       reset();
       queueRender();
     });
-  });
-
-  var chips = [].slice.call(document.querySelectorAll(".preset"));
-
-  function applyPreset(id) {
-    var chip = chips.filter(function (c) { return c.dataset.preset === id; })[0];
-    var p = PRESETS.filter(function (x) { return x.id === id; })[0];
-    if (!chip || !p) return false;
-    clearPreset();
-    chip.classList.add("on");
-    chip.setAttribute("aria-pressed", "true");
-    state.thetaY = p.v.thetaY; state.r = p.v.r; state.fs = p.v.fs; state.vol = p.v.vol;
-    syncInputs();
-    reset();
-    render();
-    var m = document.getElementById("presetNote");
-    m.textContent = p.note;
-    m.hidden = false;
-    return true;
-  }
-
-  function clearPreset() {
-    chips.forEach(function (c) { c.classList.remove("on"); c.setAttribute("aria-pressed", "false"); });
-    var m = document.getElementById("presetNote");
-    m.textContent = "";
-    m.hidden = true;
-  }
-  chips.forEach(function (chip) {
-    chip.addEventListener("click", function () { applyPreset(chip.dataset.preset); });
   });
 
   el.tiltBtn.addEventListener("click", runTilt);
@@ -493,7 +456,4 @@
     document.fonts.ready.then(function () { draw(); });
   }
 
-  /* ?p=<preset> opens the page on a named surface, handy for a QR code */
-  var q = /[?&]p=([a-z0-9]+)/i.exec(window.location.search);
-  if (q) applyPreset(q[1].toLowerCase());
 })();
