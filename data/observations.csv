@@ -1,0 +1,322 @@
+dataset,sample,fabric,coating,particle,test,exposure,cycles,swatch,drop,drop_volume,value_deg,status,session,source
+wca_baseline,C-A1,cotton,A1,none,wca,none,0,1,1,not recorded,135.93,measured,2026-06-29,WCA/WCA_29.06/2C-A1.1.csv
+wca_baseline,C-A1,cotton,A1,none,wca,none,0,2,1,not recorded,131.91,measured,2026-06-29,WCA/WCA_29.06/2C-A1.2.csv
+wca_baseline,C-A1,cotton,A1,none,wca,none,0,3,1,not recorded,133.7,measured,2026-06-29,WCA/WCA_29.06/2C-A1.3.csv
+wca_baseline,C-B3,cotton,B3,bare anatase,wca,none,0,1,1,not recorded,125.91,measured,2026-06-29,WCA/WCA_29.06/2C-B3.1.csv
+wca_baseline,C-B3,cotton,B3,bare anatase,wca,none,0,2,1,not recorded,129.43,measured,2026-06-29,WCA/WCA_29.06/2C-B3.2.csv
+wca_baseline,C-B3,cotton,B3,bare anatase,wca,none,0,3,1,not recorded,149.33,measured,2026-06-29,WCA/WCA_29.06/2C-B3.3.csv
+wca_baseline,C-C3,cotton,C3,VTMS anatase,wca,none,0,1,1,not recorded,130.84,measured,2026-06-29,WCA/WCA_29.06/2C-C3.1.csv
+wca_baseline,C-C3,cotton,C3,VTMS anatase,wca,none,0,2,1,not recorded,130.85,measured,2026-06-29,WCA/WCA_29.06/2C-C3.2.csv
+wca_baseline,C-C3,cotton,C3,VTMS anatase,wca,none,0,3,1,not recorded,135.21,measured,2026-06-29,WCA/WCA_29.06/2C-C3.3.csv
+wca_baseline,F-A1,finisterre,A1,none,wca,none,0,1,1,not recorded,116.65,measured,2026-06-29,WCA/WCA_29.06/2F-A1.1.csv
+wca_baseline,F-A1,finisterre,A1,none,wca,none,0,2,1,not recorded,113.26,measured,2026-06-29,WCA/WCA_29.06/2F-A1.2.csv
+wca_baseline,F-A1,finisterre,A1,none,wca,none,0,3,1,not recorded,94.38,measured,2026-06-29,WCA/WCA_29.06/2F-A1.3.csv
+wca_baseline,F-DWR,finisterre,DWR,commercial,wca,none,0,1,1,not recorded,129.34,measured,2026-06-29,WCA/WCA_29.06/2F-DWR.1.csv
+wca_baseline,F-DWR,finisterre,DWR,commercial,wca,none,0,2,1,not recorded,139.06,measured,2026-06-29,WCA/WCA_29.06/2F-DWR.2.csv
+wca_baseline,F-DWR,finisterre,DWR,commercial,wca,none,0,3,1,not recorded,127.63,measured,2026-06-29,WCA/WCA_29.06/2F-DWR.3.csv
+rolloff_small,C-A1,cotton,A1,none,rolloff,none,0,1,1,smaller (not recorded),,no_release_90,2026-07-01,ROA/RollOff_angles.csv
+rolloff_small,C-A1,cotton,A1,none,rolloff,none,0,2,1,smaller (not recorded),,no_release_90,2026-07-01,ROA/RollOff_angles.csv
+rolloff_small,C-A1,cotton,A1,none,rolloff,none,0,3,1,smaller (not recorded),,no_release_90,2026-07-01,ROA/RollOff_angles.csv
+rolloff_small,C-B3,cotton,B3,bare anatase,rolloff,none,0,1,1,smaller (not recorded),,no_release_90,2026-07-01,ROA/RollOff_angles.csv
+rolloff_small,C-B3,cotton,B3,bare anatase,rolloff,none,0,2,1,smaller (not recorded),,no_release_90,2026-07-01,ROA/RollOff_angles.csv
+rolloff_small,C-B3,cotton,B3,bare anatase,rolloff,none,0,3,1,smaller (not recorded),,no_release_90,2026-07-01,ROA/RollOff_angles.csv
+rolloff_small,C-C3,cotton,C3,VTMS anatase,rolloff,none,0,1,1,smaller (not recorded),,no_release_90,2026-07-01,ROA/RollOff_angles.csv
+rolloff_small,C-C3,cotton,C3,VTMS anatase,rolloff,none,0,2,1,smaller (not recorded),,no_release_90,2026-07-01,ROA/RollOff_angles.csv
+rolloff_small,C-C3,cotton,C3,VTMS anatase,rolloff,none,0,3,1,smaller (not recorded),,no_release_90,2026-07-01,ROA/RollOff_angles.csv
+rolloff_small,F-A1,finisterre,A1,none,rolloff,none,0,1,1,smaller (not recorded),,no_release_90,2026-07-01,ROA/RollOff_angles.csv
+rolloff_small,F-A1,finisterre,A1,none,rolloff,none,0,2,1,smaller (not recorded),,no_release_90,2026-07-01,ROA/RollOff_angles.csv
+rolloff_small,F-A1,finisterre,A1,none,rolloff,none,0,3,1,smaller (not recorded),,no_release_90,2026-07-01,ROA/RollOff_angles.csv
+rolloff_small,F-DWR,finisterre,DWR,commercial,rolloff,none,0,1,1,smaller (not recorded),50.9,released,2026-07-01,ROA/RollOff_angles.csv
+rolloff_small,F-DWR,finisterre,DWR,commercial,rolloff,none,0,1,2,smaller (not recorded),52.9,released,2026-07-01,ROA/RollOff_angles.csv
+rolloff_small,F-DWR,finisterre,DWR,commercial,rolloff,none,0,1,3,smaller (not recorded),77.5,released,2026-07-01,ROA/RollOff_angles.csv
+rolloff_small,F-DWR,finisterre,DWR,commercial,rolloff,none,0,2,1,smaller (not recorded),58.6,released,2026-07-01,ROA/RollOff_angles.csv
+rolloff_small,F-DWR,finisterre,DWR,commercial,rolloff,none,0,2,2,smaller (not recorded),46.3,released,2026-07-01,ROA/RollOff_angles.csv
+rolloff_small,F-DWR,finisterre,DWR,commercial,rolloff,none,0,2,3,smaller (not recorded),41.7,released,2026-07-01,ROA/RollOff_angles.csv
+rolloff_small,F-DWR,finisterre,DWR,commercial,rolloff,none,0,3,1,smaller (not recorded),70.7,released,2026-07-01,ROA/RollOff_angles.csv
+rolloff_small,F-DWR,finisterre,DWR,commercial,rolloff,none,0,3,2,smaller (not recorded),60.5,released,2026-07-01,ROA/RollOff_angles.csv
+rolloff_small,F-DWR,finisterre,DWR,commercial,rolloff,none,0,3,3,smaller (not recorded),,no_release_90,2026-07-01,ROA/RollOff_angles.csv
+rolloff_durability,C-A1,cotton,A1,none,rolloff,none,0,1,1,about 33 uL,28.5,released,2026-07-02,ROA/ROA_durability_long.csv
+rolloff_durability,C-A1,cotton,A1,none,rolloff,none,0,2,1,about 33 uL,55.7,released,2026-07-02,ROA/ROA_durability_long.csv
+rolloff_durability,C-A1,cotton,A1,none,rolloff,none,0,3,1,about 33 uL,45.7,released,2026-07-02,ROA/ROA_durability_long.csv
+rolloff_durability,C-B3,cotton,B3,bare anatase,rolloff,none,0,1,1,about 33 uL,42.9,released,2026-07-02,ROA/ROA_durability_long.csv
+rolloff_durability,C-B3,cotton,B3,bare anatase,rolloff,none,0,2,1,about 33 uL,34.6,released,2026-07-02,ROA/ROA_durability_long.csv
+rolloff_durability,C-B3,cotton,B3,bare anatase,rolloff,none,0,3,1,about 33 uL,33.6,released,2026-07-02,ROA/ROA_durability_long.csv
+rolloff_durability,C-C3,cotton,C3,VTMS anatase,rolloff,none,0,1,1,about 33 uL,48.5,released,2026-07-02,ROA/ROA_durability_long.csv
+rolloff_durability,C-C3,cotton,C3,VTMS anatase,rolloff,none,0,2,1,about 33 uL,50.2,released,2026-07-02,ROA/ROA_durability_long.csv
+rolloff_durability,C-C3,cotton,C3,VTMS anatase,rolloff,none,0,3,1,about 33 uL,49.3,released,2026-07-02,ROA/ROA_durability_long.csv
+rolloff_durability,F-A1,finisterre,A1,none,rolloff,none,0,1,1,about 33 uL,42.8,released,2026-07-02,ROA/ROA_durability_long.csv
+rolloff_durability,F-A1,finisterre,A1,none,rolloff,none,0,2,1,about 33 uL,57.9,released,2026-07-02,ROA/ROA_durability_long.csv
+rolloff_durability,F-A1,finisterre,A1,none,rolloff,none,0,3,1,about 33 uL,76.3,released,2026-07-02,ROA/ROA_durability_long.csv
+rolloff_durability,F-DWR,finisterre,DWR,commercial,rolloff,none,0,1,1,about 33 uL,26.5,released,2026-07-02,ROA/ROA_durability_long.csv
+rolloff_durability,F-DWR,finisterre,DWR,commercial,rolloff,none,0,2,1,about 33 uL,25.7,released,2026-07-02,ROA/ROA_durability_long.csv
+rolloff_durability,F-DWR,finisterre,DWR,commercial,rolloff,none,0,3,1,about 33 uL,21.0,released,2026-07-02,ROA/ROA_durability_long.csv
+rolloff_durability,C-A1,cotton,A1,none,rolloff,abrasion,10,1,1,about 33 uL,45.0,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-A1,cotton,A1,none,rolloff,abrasion,10,2,1,about 33 uL,39.6,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-A1,cotton,A1,none,rolloff,abrasion,10,3,1,about 33 uL,35.8,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-B3,cotton,B3,bare anatase,rolloff,abrasion,10,1,1,about 33 uL,51.8,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-B3,cotton,B3,bare anatase,rolloff,abrasion,10,2,1,about 33 uL,34.7,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-B3,cotton,B3,bare anatase,rolloff,abrasion,10,3,1,about 33 uL,32.6,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-C3,cotton,C3,VTMS anatase,rolloff,abrasion,10,1,1,about 33 uL,47.8,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-C3,cotton,C3,VTMS anatase,rolloff,abrasion,10,2,1,about 33 uL,45.5,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-C3,cotton,C3,VTMS anatase,rolloff,abrasion,10,3,1,about 33 uL,32.6,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-A1,finisterre,A1,none,rolloff,abrasion,10,1,1,about 33 uL,68.3,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-A1,finisterre,A1,none,rolloff,abrasion,10,2,1,about 33 uL,58.6,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-A1,finisterre,A1,none,rolloff,abrasion,10,3,1,about 33 uL,66.2,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-DWR,finisterre,DWR,commercial,rolloff,abrasion,10,1,1,about 33 uL,31.8,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-DWR,finisterre,DWR,commercial,rolloff,abrasion,10,2,1,about 33 uL,30.1,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-DWR,finisterre,DWR,commercial,rolloff,abrasion,10,3,1,about 33 uL,38.9,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-A1,cotton,A1,none,rolloff,abrasion,30,1,1,about 33 uL,28.8,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-A1,cotton,A1,none,rolloff,abrasion,30,2,1,about 33 uL,40.3,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-A1,cotton,A1,none,rolloff,abrasion,30,3,1,about 33 uL,26.7,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-B3,cotton,B3,bare anatase,rolloff,abrasion,30,1,1,about 33 uL,48.2,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-B3,cotton,B3,bare anatase,rolloff,abrasion,30,2,1,about 33 uL,34.5,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-B3,cotton,B3,bare anatase,rolloff,abrasion,30,3,1,about 33 uL,32.0,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-C3,cotton,C3,VTMS anatase,rolloff,abrasion,30,1,1,about 33 uL,29.7,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-C3,cotton,C3,VTMS anatase,rolloff,abrasion,30,2,1,about 33 uL,23.9,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-C3,cotton,C3,VTMS anatase,rolloff,abrasion,30,3,1,about 33 uL,28.1,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-A1,finisterre,A1,none,rolloff,abrasion,30,1,1,about 33 uL,44.0,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-A1,finisterre,A1,none,rolloff,abrasion,30,2,1,about 33 uL,49.8,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-A1,finisterre,A1,none,rolloff,abrasion,30,3,1,about 33 uL,33.4,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-DWR,finisterre,DWR,commercial,rolloff,abrasion,30,1,1,about 33 uL,40.7,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-DWR,finisterre,DWR,commercial,rolloff,abrasion,30,2,1,about 33 uL,35.8,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-DWR,finisterre,DWR,commercial,rolloff,abrasion,30,3,1,about 33 uL,41.3,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-A1,cotton,A1,none,rolloff,wash,5,1,1,about 33 uL,49.9,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-A1,cotton,A1,none,rolloff,wash,5,2,1,about 33 uL,47.1,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-A1,cotton,A1,none,rolloff,wash,5,3,1,about 33 uL,44.7,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-B3,cotton,B3,bare anatase,rolloff,wash,5,1,1,about 33 uL,49.3,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-B3,cotton,B3,bare anatase,rolloff,wash,5,2,1,about 33 uL,43.3,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-B3,cotton,B3,bare anatase,rolloff,wash,5,3,1,about 33 uL,60.6,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-C3,cotton,C3,VTMS anatase,rolloff,wash,5,1,1,about 33 uL,55.1,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-C3,cotton,C3,VTMS anatase,rolloff,wash,5,2,1,about 33 uL,32.8,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-C3,cotton,C3,VTMS anatase,rolloff,wash,5,3,1,about 33 uL,40.7,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-A1,finisterre,A1,none,rolloff,wash,5,1,1,about 33 uL,75.4,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-A1,finisterre,A1,none,rolloff,wash,5,2,1,about 33 uL,87.1,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-A1,finisterre,A1,none,rolloff,wash,5,3,1,about 33 uL,77.5,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-DWR,finisterre,DWR,commercial,rolloff,wash,5,1,1,about 33 uL,35.2,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-DWR,finisterre,DWR,commercial,rolloff,wash,5,2,1,about 33 uL,41.1,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-DWR,finisterre,DWR,commercial,rolloff,wash,5,3,1,about 33 uL,46.5,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-A1,cotton,A1,none,rolloff,wash,10,1,1,about 33 uL,47.0,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-A1,cotton,A1,none,rolloff,wash,10,2,1,about 33 uL,48.5,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-A1,cotton,A1,none,rolloff,wash,10,3,1,about 33 uL,56.0,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-B3,cotton,B3,bare anatase,rolloff,wash,10,1,1,about 33 uL,53.2,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-B3,cotton,B3,bare anatase,rolloff,wash,10,2,1,about 33 uL,52.1,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-B3,cotton,B3,bare anatase,rolloff,wash,10,3,1,about 33 uL,46.9,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-C3,cotton,C3,VTMS anatase,rolloff,wash,10,1,1,about 33 uL,56.3,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-C3,cotton,C3,VTMS anatase,rolloff,wash,10,2,1,about 33 uL,55.3,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-C3,cotton,C3,VTMS anatase,rolloff,wash,10,3,1,about 33 uL,51.0,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-A1,finisterre,A1,none,rolloff,wash,10,1,1,about 33 uL,,no_release_90,,ROA/ROA_durability_long.csv
+rolloff_durability,F-A1,finisterre,A1,none,rolloff,wash,10,2,1,about 33 uL,64.3,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-A1,finisterre,A1,none,rolloff,wash,10,3,1,about 33 uL,54.3,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-DWR,finisterre,DWR,commercial,rolloff,wash,10,1,1,about 33 uL,50.9,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-DWR,finisterre,DWR,commercial,rolloff,wash,10,2,1,about 33 uL,44.9,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-DWR,finisterre,DWR,commercial,rolloff,wash,10,3,1,about 33 uL,61.9,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-A1,cotton,A1,none,rolloff,abrasion,50,1,1,about 33 uL,33.5,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-A1,cotton,A1,none,rolloff,abrasion,50,2,1,about 33 uL,35.8,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-A1,cotton,A1,none,rolloff,abrasion,50,3,1,about 33 uL,33.5,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-B3,cotton,B3,bare anatase,rolloff,abrasion,50,1,1,about 33 uL,40.1,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-B3,cotton,B3,bare anatase,rolloff,abrasion,50,2,1,about 33 uL,34.5,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-B3,cotton,B3,bare anatase,rolloff,abrasion,50,3,1,about 33 uL,43.7,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-C3,cotton,C3,VTMS anatase,rolloff,abrasion,50,1,1,about 33 uL,29.1,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-C3,cotton,C3,VTMS anatase,rolloff,abrasion,50,2,1,about 33 uL,45.8,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-C3,cotton,C3,VTMS anatase,rolloff,abrasion,50,3,1,about 33 uL,28.1,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-A1,finisterre,A1,none,rolloff,abrasion,50,1,1,about 33 uL,30.3,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-A1,finisterre,A1,none,rolloff,abrasion,50,2,1,about 33 uL,34.4,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-A1,finisterre,A1,none,rolloff,abrasion,50,3,1,about 33 uL,45.8,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-DWR,finisterre,DWR,commercial,rolloff,abrasion,50,1,1,about 33 uL,32.4,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-DWR,finisterre,DWR,commercial,rolloff,abrasion,50,2,1,about 33 uL,36.0,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-DWR,finisterre,DWR,commercial,rolloff,abrasion,50,3,1,about 33 uL,40.3,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-A1,cotton,A1,none,rolloff,abrasion,100,1,1,about 33 uL,25.8,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-A1,cotton,A1,none,rolloff,abrasion,100,2,1,about 33 uL,22.5,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-A1,cotton,A1,none,rolloff,abrasion,100,3,1,about 33 uL,30.3,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-B3,cotton,B3,bare anatase,rolloff,abrasion,100,1,1,about 33 uL,49.6,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-B3,cotton,B3,bare anatase,rolloff,abrasion,100,2,1,about 33 uL,32.7,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-B3,cotton,B3,bare anatase,rolloff,abrasion,100,3,1,about 33 uL,38.3,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-C3,cotton,C3,VTMS anatase,rolloff,abrasion,100,1,1,about 33 uL,23.6,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-C3,cotton,C3,VTMS anatase,rolloff,abrasion,100,2,1,about 33 uL,25.3,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-C3,cotton,C3,VTMS anatase,rolloff,abrasion,100,3,1,about 33 uL,29.0,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-A1,finisterre,A1,none,rolloff,abrasion,100,1,1,about 33 uL,19.6,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-A1,finisterre,A1,none,rolloff,abrasion,100,2,1,about 33 uL,32.0,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-A1,finisterre,A1,none,rolloff,abrasion,100,3,1,about 33 uL,45.5,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-DWR,finisterre,DWR,commercial,rolloff,abrasion,100,1,1,about 33 uL,34.4,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-DWR,finisterre,DWR,commercial,rolloff,abrasion,100,2,1,about 33 uL,22.6,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-DWR,finisterre,DWR,commercial,rolloff,abrasion,100,3,1,about 33 uL,29.7,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-A1,cotton,A1,none,rolloff,wash,20,1,1,about 33 uL,56.1,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-A1,cotton,A1,none,rolloff,wash,20,2,1,about 33 uL,46.4,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-A1,cotton,A1,none,rolloff,wash,20,3,1,about 33 uL,49.6,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-B3,cotton,B3,bare anatase,rolloff,wash,20,1,1,about 33 uL,50.0,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-B3,cotton,B3,bare anatase,rolloff,wash,20,2,1,about 33 uL,46.6,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-B3,cotton,B3,bare anatase,rolloff,wash,20,3,1,about 33 uL,64.1,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-C3,cotton,C3,VTMS anatase,rolloff,wash,20,1,1,about 33 uL,45.3,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-C3,cotton,C3,VTMS anatase,rolloff,wash,20,2,1,about 33 uL,50.0,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-C3,cotton,C3,VTMS anatase,rolloff,wash,20,3,1,about 33 uL,56.6,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-A1,finisterre,A1,none,rolloff,wash,20,1,1,about 33 uL,85.2,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-A1,finisterre,A1,none,rolloff,wash,20,2,1,about 33 uL,72.9,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-A1,finisterre,A1,none,rolloff,wash,20,3,1,about 33 uL,77.9,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-DWR,finisterre,DWR,commercial,rolloff,wash,20,1,1,about 33 uL,,no_release_90,,ROA/ROA_durability_long.csv
+rolloff_durability,F-DWR,finisterre,DWR,commercial,rolloff,wash,20,2,1,about 33 uL,84.2,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-DWR,finisterre,DWR,commercial,rolloff,wash,20,3,1,about 33 uL,71.5,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-A1,cotton,A1,none,rolloff,abrasion,200,1,1,about 33 uL,35.8,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-A1,cotton,A1,none,rolloff,abrasion,200,2,1,about 33 uL,19.2,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-A1,cotton,A1,none,rolloff,abrasion,200,3,1,about 33 uL,28.5,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-B3,cotton,B3,bare anatase,rolloff,abrasion,200,1,1,about 33 uL,32.0,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-B3,cotton,B3,bare anatase,rolloff,abrasion,200,2,1,about 33 uL,18.9,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-B3,cotton,B3,bare anatase,rolloff,abrasion,200,3,1,about 33 uL,24.0,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-C3,cotton,C3,VTMS anatase,rolloff,abrasion,200,1,1,about 33 uL,29.7,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-C3,cotton,C3,VTMS anatase,rolloff,abrasion,200,2,1,about 33 uL,12.8,released,,ROA/ROA_durability_long.csv
+rolloff_durability,C-C3,cotton,C3,VTMS anatase,rolloff,abrasion,200,3,1,about 33 uL,18.1,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-A1,finisterre,A1,none,rolloff,abrasion,200,1,1,about 33 uL,16.8,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-A1,finisterre,A1,none,rolloff,abrasion,200,2,1,about 33 uL,19.2,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-A1,finisterre,A1,none,rolloff,abrasion,200,3,1,about 33 uL,46.3,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-DWR,finisterre,DWR,commercial,rolloff,abrasion,200,1,1,about 33 uL,39.2,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-DWR,finisterre,DWR,commercial,rolloff,abrasion,200,2,1,about 33 uL,28.2,released,,ROA/ROA_durability_long.csv
+rolloff_durability,F-DWR,finisterre,DWR,commercial,rolloff,abrasion,200,3,1,about 33 uL,25.8,released,,ROA/ROA_durability_long.csv
+wca_durability,C-A1,cotton,A1,none,wca,none,0,1,1,not recorded,133.7,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,none,0,2,1,not recorded,131.2,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,none,0,3,1,not recorded,134.3,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,none,0,1,1,not recorded,126.3,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,none,0,2,1,not recorded,130.6,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,none,0,3,1,not recorded,149.7,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,none,0,1,1,not recorded,134.1,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,none,0,2,1,not recorded,132.2,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,none,0,3,1,not recorded,133.8,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,none,0,1,1,not recorded,116.7,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,none,0,2,1,not recorded,112.8,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,none,0,3,1,not recorded,95.0,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,none,0,1,1,not recorded,129.4,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,none,0,2,1,not recorded,136.7,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,none,0,3,1,not recorded,126.2,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,wash,1,1,1,not recorded,132.0,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,wash,1,2,1,not recorded,138.7,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,wash,1,3,1,not recorded,131.0,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,wash,1,1,1,not recorded,140.7,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,wash,1,2,1,not recorded,122.7,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,wash,1,3,1,not recorded,113.3,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,wash,1,1,1,not recorded,115.6,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,wash,1,2,1,not recorded,137.3,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,wash,1,3,1,not recorded,125.4,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,wash,1,1,1,not recorded,111.2,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,wash,1,2,1,not recorded,112.1,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,wash,1,3,1,not recorded,109.3,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,wash,1,1,1,not recorded,124.8,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,wash,1,2,1,not recorded,139.7,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,wash,1,3,1,not recorded,132.2,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,wash,5,1,1,not recorded,128.7,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,wash,5,2,1,not recorded,140.2,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,wash,5,3,1,not recorded,129.1,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,wash,5,1,1,not recorded,116.8,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,wash,5,2,1,not recorded,123.2,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,wash,5,3,1,not recorded,134.2,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,wash,5,1,1,not recorded,128.3,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,wash,5,2,1,not recorded,150.9,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,wash,5,3,1,not recorded,132.2,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,wash,5,1,1,not recorded,130.2,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,wash,5,2,1,not recorded,125.8,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,wash,5,3,1,not recorded,125.1,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,wash,5,1,1,not recorded,130.3,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,wash,5,2,1,not recorded,125.8,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,wash,5,3,1,not recorded,127.6,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,wash,10,1,1,not recorded,125.6,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,wash,10,2,1,not recorded,141.9,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,wash,10,3,1,not recorded,136.3,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,wash,10,1,1,not recorded,132.3,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,wash,10,2,1,not recorded,126.1,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,wash,10,3,1,not recorded,142.5,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,wash,10,1,1,not recorded,126.5,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,wash,10,2,1,not recorded,124.1,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,wash,10,3,1,not recorded,132.3,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,wash,10,1,1,not recorded,126.8,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,wash,10,2,1,not recorded,117.3,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,wash,10,3,1,not recorded,117.3,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,wash,10,1,1,not recorded,123.7,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,wash,10,2,1,not recorded,130.8,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,wash,10,3,1,not recorded,125.5,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,wash,20,1,1,not recorded,120.4,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,wash,20,2,1,not recorded,127.0,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,wash,20,3,1,not recorded,113.2,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,wash,20,1,1,not recorded,132.0,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,wash,20,2,1,not recorded,120.8,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,wash,20,3,1,not recorded,122.2,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,wash,20,1,1,not recorded,124.2,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,wash,20,2,1,not recorded,117.6,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,wash,20,3,1,not recorded,133.6,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,wash,20,1,1,not recorded,109.3,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,wash,20,2,1,not recorded,106.1,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,wash,20,3,1,not recorded,120.5,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,wash,20,1,1,not recorded,136.3,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,wash,20,2,1,not recorded,122.0,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,wash,20,3,1,not recorded,126.3,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,abrasion,10,1,1,not recorded,139.8,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,abrasion,10,2,1,not recorded,143.8,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,abrasion,10,3,1,not recorded,121.0,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,abrasion,10,1,1,not recorded,145.1,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,abrasion,10,2,1,not recorded,126.6,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,abrasion,10,3,1,not recorded,138.2,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,abrasion,10,1,1,not recorded,139.4,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,abrasion,10,2,1,not recorded,134.2,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,abrasion,10,3,1,not recorded,137.6,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,abrasion,10,1,1,not recorded,120.4,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,abrasion,10,2,1,not recorded,126.6,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,abrasion,10,3,1,not recorded,115.8,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,abrasion,10,1,1,not recorded,135.7,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,abrasion,10,2,1,not recorded,123.4,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,abrasion,10,3,1,not recorded,120.2,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,abrasion,30,1,1,not recorded,134.3,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,abrasion,30,2,1,not recorded,142.8,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,abrasion,30,3,1,not recorded,146.1,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,abrasion,30,1,1,not recorded,133.6,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,abrasion,30,2,1,not recorded,133.6,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,abrasion,30,3,1,not recorded,136.4,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,abrasion,30,1,1,not recorded,148.5,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,abrasion,30,2,1,not recorded,144.3,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,abrasion,30,3,1,not recorded,133.4,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,abrasion,30,1,1,not recorded,124.3,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,abrasion,30,2,1,not recorded,123.0,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,abrasion,30,3,1,not recorded,121.8,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,abrasion,30,1,1,not recorded,133.9,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,abrasion,30,2,1,not recorded,122.2,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,abrasion,30,3,1,not recorded,147.1,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,abrasion,50,1,1,not recorded,135.3,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,abrasion,50,2,1,not recorded,132.6,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,abrasion,50,3,1,not recorded,145.1,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,abrasion,50,1,1,not recorded,119.4,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,abrasion,50,2,1,not recorded,139.8,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,abrasion,50,3,1,not recorded,133.9,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,abrasion,50,1,1,not recorded,129.8,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,abrasion,50,2,1,not recorded,139.0,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,abrasion,50,3,1,not recorded,124.4,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,abrasion,50,1,1,not recorded,125.8,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,abrasion,50,2,1,not recorded,132.2,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,abrasion,50,3,1,not recorded,135.9,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,abrasion,50,1,1,not recorded,136.9,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,abrasion,50,2,1,not recorded,137.2,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,abrasion,50,3,1,not recorded,132.3,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,abrasion,100,1,1,not recorded,138.8,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,abrasion,100,2,1,not recorded,134.9,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,abrasion,100,3,1,not recorded,130.7,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,abrasion,100,1,1,not recorded,137.4,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,abrasion,100,2,1,not recorded,128.4,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,abrasion,100,3,1,not recorded,139.4,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,abrasion,100,1,1,not recorded,142.5,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,abrasion,100,2,1,not recorded,137.8,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,abrasion,100,3,1,not recorded,137.1,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,abrasion,100,1,1,not recorded,130.0,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,abrasion,100,2,1,not recorded,135.2,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,abrasion,100,3,1,not recorded,128.4,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,abrasion,100,1,1,not recorded,151.6,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,abrasion,100,2,1,not recorded,152.5,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,abrasion,100,3,1,not recorded,136.0,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,abrasion,200,1,1,not recorded,129.7,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,abrasion,200,2,1,not recorded,146.3,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-A1,cotton,A1,none,wca,abrasion,200,3,1,not recorded,147.8,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,abrasion,200,1,1,not recorded,136.6,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,abrasion,200,2,1,not recorded,139.3,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-B3,cotton,B3,bare anatase,wca,abrasion,200,3,1,not recorded,133.4,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,abrasion,200,1,1,not recorded,146.1,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,abrasion,200,2,1,not recorded,143.1,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,C-C3,cotton,C3,VTMS anatase,wca,abrasion,200,3,1,not recorded,137.9,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,abrasion,200,1,1,not recorded,117.2,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,abrasion,200,2,1,not recorded,150.2,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-A1,finisterre,A1,none,wca,abrasion,200,3,1,not recorded,109.2,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,abrasion,200,1,1,not recorded,134.2,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,abrasion,200,2,1,not recorded,138.1,measured,,WCA/WCA_durability_long_median.csv
+wca_durability,F-DWR,finisterre,DWR,commercial,wca,abrasion,200,3,1,not recorded,139.5,measured,,WCA/WCA_durability_long_median.csv

@@ -76,6 +76,37 @@
     .abstract ol{margin:0 0 .9rem;padding-left:1.3rem;display:grid;gap:.6rem;}
     .abstract .limits{color:var(--ink-2);font-size:.94rem;margin:0;}
 
+
+    /* interactive charts (charts.js); the PNG stays until a chart mounts */
+    [data-chart] img[hidden],.chart-tip[hidden]{display:none !important;}
+    .chart-stage{width:100%;}
+    .chart-svg{display:block;max-width:100%;overflow:visible;}
+    .chart-svg [tabindex]:focus{outline:none;}
+    .chart-svg [tabindex]:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+    .chart-table{margin-top:.9rem;}
+    .chart-table .rtable-wrap{margin-top:.7rem;}
+    .chart-tip{position:absolute;left:0;top:0;z-index:60;max-width:300px;pointer-events:none;
+      background:#fff;border:1px solid var(--line);border-radius:10px;padding:.55rem .75rem;
+      box-shadow:0 8px 24px rgba(23,21,15,.12);font-size:.82rem;color:var(--ink-2);}
+    .chart-tip p{margin:0;max-width:none;}
+    .chart-tip-title{font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;
+      color:var(--teal-deep);margin-bottom:.3rem !important;}
+    .chart-tip-row{display:flex;align-items:baseline;gap:.4rem;line-height:1.45;}
+    .chart-tip-row b{color:var(--ink);font-family:var(--mono);font-weight:600;white-space:nowrap;}
+    .chart-tip-key{flex:none;width:12px;height:2px;border-radius:2px;transform:translateY(-3px);}
+    .chart-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.8rem 1.4rem;}
+    .chart-legend{display:flex;flex-wrap:wrap;gap:.4rem;}
+    .chart-key{display:inline-flex;align-items:center;gap:.4rem;font:inherit;font-size:.82rem;color:var(--ink-2);
+      background:#fff;border:1px solid var(--line);border-radius:999px;padding:.35rem .75rem;cursor:pointer;min-height:36px;}
+    .chart-key b{color:var(--ink);font-family:var(--mono);font-size:.76rem;}
+    .chart-key-line{width:14px;height:2px;border-radius:2px;flex:none;}
+    .chart-key[aria-pressed="true"]{border-color:var(--teal);background:var(--teal-tint);}
+    .chart-switch{font-size:.85rem;color:var(--ink-2);display:inline-flex;align-items:center;gap:.35rem;min-height:36px;}
+    .chart-switch input{accent-color:var(--teal);width:1rem;height:1rem;}
+    .chart-keynote{font-size:.82rem;color:var(--ink-2);margin:.7rem 0 1.6rem;max-width:80ch;}
+    @media (max-width:560px){.chart-key span:last-child{display:none;}}
+    @media print{.chart-controls,.chart-tip{display:none !important;}}
+
     /* methods */
     .methods-list{list-style:none;margin:1.6rem 0 0;padding:0;display:grid;gap:1.1rem;max-width:70ch;}
     .methods-list li{padding-left:1.1rem;border-left:2px solid var(--teal-tint);color:var(--ink-2);}
@@ -172,12 +203,12 @@
       </div>
       <div class="wrap fig-block">
         <figure class="figure reveal">
-          <div class="frame"><img src="assets/figures/fig02_wca.png" width="3203" height="1259" loading="lazy" decoding="async" alt="Water contact angle against time for each sample, with a representative angle per sample. The cotton coatings and the commercial finish sit around 130 degrees; the emulsion on Finisterre fabric sits lower, near 108." /></div>
+          <div class="frame" data-chart="repellency"><img src="assets/figures/fig02_wca.png" width="3203" height="1259" loading="lazy" decoding="async" alt="Water contact angle against time for each sample, with a representative angle per sample. The cotton coatings and the commercial finish sit around 130 degrees; the emulsion on Finisterre fabric sits lower, near 108." /></div>
           <figcaption>
             <p class="fig-take">On cotton my coatings bead water about as well as the commercial finish does on its fabric.</p>
             <details class="more"><summary>More detail</summary>
               <div class="more-body"><p>The three cotton coatings sit at <b>132 to 135&#176;</b>, within a few degrees of each other. Finisterre's commercial finish sits at about <b>132&#176;</b>, but on a different fabric, so this is a similar number rather than a like for like match. On the same Finisterre fabric my emulsion (F-A1) is lower, at about <b>108&#176;</b>. Uncoated Finisterre fabric wets out, its contact angle collapsing as the drop soaks in.</p>
-                <span class="src">Source: fig02, 29 Jun 2026. Per swatch: median angle 2 to 10 s after the drop lands, poor fits rejected; then mean of 3 swatches.</span>
+                <span class="src">Source: 29 Jun 2026, contact angle videos (wca_baseline in the <a href="data/observations.csv">data file</a>). Per swatch: median angle 2 to 10 s after the drop lands, poor fits rejected. Dots are swatches; the rule marks their mean.</span>
               </div>
             </details>
           </figcaption>
@@ -198,12 +229,12 @@
       </div>
       <div class="wrap fig-block">
         <figure class="figure reveal">
-          <div class="frame"><img src="assets/figures/fig03_rolloff.png" width="2904" height="1219" loading="lazy" decoding="async" alt="Roll off angle before washing, first with a smaller drop, where only the commercial finish released, then with a larger drop, where every coating released." /></div>
+          <div class="frame" data-chart="shedding"><img src="assets/figures/fig03_rolloff.png" width="2904" height="1219" loading="lazy" decoding="async" alt="Roll off angle before washing, first with a smaller drop, where only the commercial finish released, then with a larger drop, where every coating released." /></div>
           <figcaption>
             <p class="fig-take">Fresh coatings bead but hold on to a smaller drop. Only the commercial finish let one go.</p>
             <details class="more"><summary>More detail</summary>
               <div class="more-body"><p>With a smaller drop, <b>only the commercial F-DWR released</b>: 8 of its 9 drops across three swatches moved, at 42 to 78&#176; (57&#176; on average for the drops that moved). Every drop on my coatings stayed pinned, even tilted to the 90&#176; limit. The next day, still before any washing, I repeated the test with a larger drop of about 33&#160;&#181;L and every coating released. Drop size is the only thing that changed between the two tests, and on the same fabric the commercial finish was still clearly the better shedder.</p>
-                <span class="src">Source: fig03, RollOff_angles.csv, 1 and 2 Jul 2026. Smaller drop: 3 drops per swatch on F-DWR, 1 per swatch on the others. Larger drop: 1 per swatch, n = 3.</span>
+                <span class="src">Source: RollOff_angles.csv and ROA_durability_long.csv, 1 and 2 Jul 2026. Smaller drop: 3 drops per swatch on F-DWR, 1 per swatch on the others. Larger drop: 1 per swatch, n = 3. Triangles are drops that had not moved by 90&#176;; they are never averaged in, and a mean marked * uses only the drops that moved.</span>
               </div>
             </details>
           </figcaption>
@@ -243,14 +274,27 @@
         <p class="reveal" style="margin-top:1.1rem;max-width:60ch;">A coating is only useful if it lasts. I put the whole sample set through 200 abrasion passes and 20 wash cycles, measuring roll off and contact angle on the same swatches at every stage, then put spare worn swatches under the electron microscope. Both wear tests are lab screening methods rather than textile standards; <a href="#methods">the methods</a> say exactly what a pass and a cycle were.</p>
       </div>
       <div class="wrap fig-block">
+        <div id="durability-controls" class="chart-controls-host"></div>
         <figure class="figure reveal">
-          <div class="frame"><img src="assets/figures/fig17_durability_rolloff.png" width="2897" height="1249" loading="lazy" decoding="async" alt="Roll off angle across abrasion passes (0 to 200) and wash cycles (0 to 20). Roll off mostly falls with abrasion; with washing it rises for every sample, the commercial finish most." /></div>
+          <div class="frame" data-chart="durability-rolloff"><img src="assets/figures/fig17_durability_rolloff.png" width="2897" height="1249" loading="lazy" decoding="async" alt="Roll off angle across abrasion passes (0 to 200) and wash cycles (0 to 20). Roll off mostly falls with abrasion; with washing it rises for every sample, the commercial finish most." /></div>
           <figcaption>
             <p class="fig-take">Washing makes every sample shed worse, the commercial finish most. With abrasion, roll off mostly fell.</p>
             <details class="more"><summary>More detail</summary>
               <div class="more-body"><p>Washing is the clearest result. The commercial finish went from <b>24&#176; to 78&#176;</b> over 20 wash cycles, the steadiest trend in the whole dataset, and one of its three swatches stopped releasing the drop altogether. On the same fabric my emulsion went from 59&#176; to 79&#176;, so after 20 cycles the two sit in the same place. On cotton my coatings ended between 51 and 54&#176;: C-C3 barely moved (49&#176; to 51&#176;), C-A1 rose about 7&#176; and C-B3 about 17&#176;. Cotton is a different fabric, so those are not a head to head with the commercial finish.</p>
                 <p>Abrasion went the other way: roll off fell on my coatings, even though the microscope shows the cotton yarns frayed and snapped. I do not read that as the coating getting better. The samples that started worst improved most, which is what measurement noise alone would produce, and the cause is not settled. On the same fabric the commercial finish started well ahead (24&#176; against 59&#176;), and after 200 passes the two read about the same (31&#176; against 27&#176;).</p>
-                <span class="src">Source: fig17, ROA_durability_long.csv, 2 to 14 Jul 2026, larger drop (about 33&#160;&#181;L). Points are means of 3 swatches; error bars are standard error. A swatch that stopped releasing (F-A1 at 10 cycles, F-DWR at 20) is left out of that point, so those two points use 2 swatches and look better than they were. That is why F-A1 appears to dip at 10 cycles.</span>
+                <span class="src">Source: ROA_durability_long.csv, 2 to 14 Jul 2026, larger drop (about 33&#160;&#181;L), the same 3 swatches at every stage. Lines join the mean of the swatches that released; small dots are single swatches. A swatch that stopped releasing (F-A1 at 10 cycles, F-DWR at 20) shows as a triangle and is left out of that mean, drawn as an open circle, so those two means look better than they were. That is why F-A1 appears to dip at 10 cycles. (Without JavaScript the static figure shows means with standard error bars.)</span>
+              </div>
+            </details>
+          </figcaption>
+        </figure>
+
+        <figure class="figure reveal">
+          <div class="frame" data-chart="durability-wca"><img src="assets/figures/fig18_durability_wca.png" width="2895" height="1249" loading="lazy" decoding="async" alt="Water contact angle across wash cycles and abrasion passes. The cotton coatings and the commercial finish stay above 120 degrees throughout." /></div>
+          <figcaption>
+            <p class="fig-take">Contact angle moves far less than roll off does.</p>
+            <details class="more"><summary>More detail</summary>
+              <div class="more-body"><p>On average the cotton coatings and the commercial finish stayed above 120&#176; through 20 wash cycles and 200 abrasion passes; my emulsion on Finisterre fabric sat between 108 and 131&#176;. Washing did lower the cotton coatings by 8 to 13&#176;, though with three swatches that is within the spread between them, and abrasion nudged the angles up. The contrast with roll off is the point. On the commercial finish, 20 wash cycles raised roll off by 53&#176; while contact angle moved by 3&#176;. Judged on contact angle alone, that finish would have looked unchanged.</p>
+                <span class="src">Source: WCA_durability_long_median.csv, 29 Jun to 14 Jul 2026, same reduction as above. Lines join the mean of 3 swatches; small dots are single swatches. The before wear values here come from the durability file and differ from the chart above by 1.5&#176; at most. (Without JavaScript the static figure shows means with standard error bars.)</span>
               </div>
             </details>
           </figcaption>
@@ -273,17 +317,6 @@
           </figcaption>
         </figure>
 
-        <figure class="figure reveal">
-          <div class="frame"><img src="assets/figures/fig18_durability_wca.png" width="2895" height="1249" loading="lazy" decoding="async" alt="Water contact angle across wash cycles and abrasion passes. The cotton coatings and the commercial finish stay above 120 degrees throughout." /></div>
-          <figcaption>
-            <p class="fig-take">Contact angle moves far less than roll off does.</p>
-            <details class="more"><summary>More detail</summary>
-              <div class="more-body"><p>The cotton coatings and the commercial finish stayed above 120&#176; through 20 wash cycles and 200 abrasion passes; my emulsion on Finisterre fabric sat between 108 and 131&#176;. Washing did lower the cotton coatings by 8 to 12&#176;, though with three swatches that is within the spread between them, and abrasion nudged the angles up. The contrast with roll off is the point. On the commercial finish, 20 wash cycles raised roll off by 53&#176; while contact angle moved by 3&#176;. Judged on contact angle alone, that finish would have looked unchanged.</p>
-                <span class="src">Source: fig18, WCA_durability_long_mean.csv, 29 Jun to 14 Jul 2026. Points are means of 3 swatches; error bars are standard error.</span>
-              </div>
-            </details>
-          </figcaption>
-        </figure>
 
         <figure class="figure reveal">
           <div class="frame"><img src="assets/figures/fig21_sem_durability_x100.jpg" width="2400" height="2936" loading="lazy" decoding="async" alt="Electron microscope survey of each coating at baseline, after 20 wash cycles and after 200 abrasion passes. Washing leaves the weave intact; abrasion frays the cotton yarns." /></div>
@@ -442,7 +475,8 @@
           <li><b>Wash cycle</b>10 minutes in 500 mL of deionised water with 2.5 g of non ionic detergent (Alcojet) at 40&#176;C, on a magnetic stirrer at 300 rpm, whole sample set together, then rinsed and air dried overnight with no heat. A lab screening wash, not a domestic wash or ISO 6330.</li>
           <li><b>Abrasion pass</b>One 10 cm stroke, about 3 s, of a 1.5 cm swatch on a microscope slide under 157 g (about 6.8 kPa), drawn by hand across 1000 grit sandpaper. A lab screening method, not Martindale.</li>
           <li><b>Microscopy and composition</b>Hitachi TM4000Plus SEM at 15 kV after 10 nm of gold. EDX from single area scans without standards. ATR-FTIR on a Shimadzu IRSpirit with a QATR-S accessory, three spectra per sample. Benchtop XRF on a Fischerscope XAN 250.</li>
-          <li><b>Statistics</b>Error bars on the durability charts are standard error of three swatches. With one batch and three swatches, the trends are described rather than claimed as significant; the dissertation reports the tests and corrections.</li>
+          <li><b>Statistics</b>The charts show every swatch, with lines and rules at the mean. With one batch and three swatches, the trends are described rather than claimed as significant; the dissertation reports the tests and corrections.</li>
+          <li><b>Data</b>Every swatch value behind the charts is in <a href="data/observations.csv">observations.csv</a>, with column notes in <a href="data/README.md">the data README</a>. It is built straight from the lab exports, not read off the figures.</li>
         </ul>
       </div>
     </section>
@@ -477,5 +511,6 @@
   </footer>
 
   <script src="site.js?v=2026-09-13"></script>
+  <script src="charts.js?v=2026-09-13"></script>
 </body>
 </html>
