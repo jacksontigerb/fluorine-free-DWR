@@ -105,6 +105,39 @@ with open(LAB / "WCA" / "WCA_durability_long_median.csv") as f:
                      "value_deg": round(float(r["wca_deg"]), 2), "status": "measured",
                      "session": "", "source": "WCA/WCA_durability_long_median.csv"})
 
+# 5. One contact angle recording in full, for the "how a contact angle becomes one
+#    number" chart: C-A1 swatch 1 on 29/06. Time is from the first good fit, as in
+#    wca_clean. A side is rejected when its fit RMSE is above 1.0.
+import pandas as pd  # noqa: E402  (already a figlib dependency)
+EX = LAB / "WCA" / "WCA_29.06" / "2C-A1.1.csv"
+raw = pd.read_csv(EX)
+tt, aa = wca_clean(EX)
+num = lambda col: pd.to_numeric(raw[col], errors="coerce")
+t, la, ra, lr, rr, avg = (num("Time (s)"), num("Left Angle (°)"), num("Right Angle (°)"),
+                          num("Left RMSE"), num("Right RMSE"), num("Average Angle (°)"))
+good = (la.where(lr <= 1.0).notna()) | (ra.where(rr <= 1.0).notna())
+t0 = float(t[good].iloc[0])
+clean_by_t = {round(float(x), 4): float(y) for x, y in zip(tt + t0, aa)}
+ex_rows = []
+for i in range(len(raw)):
+    if pd.isna(la[i]) and pd.isna(ra[i]):
+        continue
+    ti = float(t[i])
+    ex_rows.append({
+        "t_s": round(ti - t0, 3),
+        "left_deg": "" if pd.isna(la[i]) else round(float(la[i]), 2),
+        "right_deg": "" if pd.isna(ra[i]) else round(float(ra[i]), 2),
+        "left_ok": bool(lr[i] <= 1.0), "right_ok": bool(rr[i] <= 1.0),
+        "instrument_avg_deg": "" if pd.isna(avg[i]) else round(float(avg[i]), 2),
+        "filtered_deg": round(clean_by_t[round(ti, 4)], 2) if round(ti, 4) in clean_by_t else "",
+    })
+EX_OUT = OUT.parent / "goniometer_example.csv"
+with open(EX_OUT, "w", newline="") as f:
+    w = csv.DictWriter(f, fieldnames=list(ex_rows[0].keys()), lineterminator="\n")
+    w.writeheader()
+    w.writerows(ex_rows)
+print(f"wrote {EX_OUT} ({len(ex_rows)} frames)")
+
 COLS = ["dataset", "sample", "fabric", "coating", "particle", "test", "exposure", "cycles",
         "swatch", "drop", "drop_volume", "value_deg", "status", "session", "source"]
 OUT.parent.mkdir(exist_ok=True)

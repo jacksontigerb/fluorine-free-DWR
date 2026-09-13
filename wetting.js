@@ -1,459 +1,411 @@
-/* Fluorine Free DWR - wetting concepts teaching model (vanilla, no deps).
-   Wenzel / Cassie-Baxter apparent contact angle + Furmidge roll-off angle on
-   idealised square pillars, drawn as a cross-section on canvas. Not a model of
-   the lab samples: no sample presets. The hysteresis rule below is a stand-in,
-   so where it saturates the page says "outside the model" rather than "pinned".
-   Degrades: no JS = static text + equations. HOUSE STYLE: no em dashes. */
+/* Fluorine Free DWR - wetting concepts page: controls and drawing (vanilla, no deps).
+   All physics comes from wetting-physics.js, which is unit tested. Nothing here is
+   fitted to or describes the lab samples. Texture sizes in module 1 are fixed in
+   micrometres and never rescale with the inputs. HOUSE STYLE: no em dashes. */
 (function () {
   "use strict";
 
-  var canvas = document.getElementById("wetCanvas");
-  if (!canvas || !canvas.getContext) return;
-  var ctx = canvas.getContext("2d");
+  var P = window.WettingPhysics;
+  if (!P || !document.getElementById("cWenzel")) return;
+
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  /* ---------- constants ---------- */
-  var GAMMA = 0.0728;   /* water surface tension, N/m */
-  var RHO   = 1000;     /* kg/m3 */
-  var GRAV  = 9.81;     /* m/s2 */
-  var H_FLAT = 0.30;    /* illustrative stand-in for hysteresis, cos(r) - cos(a); not measured */
   var MONO = '"Geist Mono", ui-monospace, Menlo, monospace';
-
   var COL = {
-    paper: "#f6f3ec", paper2: "#efeae0", ink: "#17150f", ink2: "#5b564a",
-    teal: "#0e6e5c", tealDeep: "#0a5546", line: "#ddd7c9",
-    water: "#cfe3ee", waterEdge: "#4d8fae", solid: "#e2dccd"
+    paper: "#f6f3ec", paper2: "#efeae0", ink: "#17150f", ink2: "#5b564a", teal: "#0e6e5c",
+    tealDeep: "#0a5546", line: "#ddd7c9", water: "#cfe3ee", waterEdge: "#4d8fae", solid: "#d9d2c1", air: "#ffffff"
   };
-  /* ---------- state ---------- */
-  var state = { thetaY: 108, r: 2.1, fs: 0.45, vol: 10 };   /* matches the HTML defaults */
-
-  /* ---------- helpers ---------- */
   function rad(d) { return d * Math.PI / 180; }
-  function deg(r) { return r * 180 / Math.PI; }
   function clamp(v, lo, hi) { return v < lo ? lo : (v > hi ? hi : v); }
+  function $(id) { return document.getElementById(id); }
 
-  /* ---------- physics ---------- */
-  function compute(s) {
-    var cY = Math.cos(rad(s.thetaY));
-    var cW = s.r * cY;                    /* Wenzel */
-    var cCB = s.fs * (cY + 1) - 1;        /* Cassie-Baxter */
-
-    /* Cassie is the lower energy state when cos(thetaY) < (fs-1)/(r-fs) */
-    var canAir = s.fs < 0.995 && s.r > 1.005;
-    var cCrit = (s.r - s.fs) > 1e-6 ? (s.fs - 1) / (s.r - s.fs) : -1;
-    var cassie = canAir && cY < cCrit;
-    var mode = (!canAir && s.r <= 1.005) ? "flat" : (cassie ? "cassie" : "wenzel");
-    var rawCos = cassie ? cCB : cW;
-    var wetsOut = rawCos >= 1;
-    var cosApp = clamp(rawCos, -0.9986, 0.9962);   /* keep 5 to 177 degrees for geometry */
-    var theta = deg(Math.acos(cosApp));
-
-    /* hysteresis: pinning scales with contact area (fs in Cassie, r in Wenzel) */
-    var amp = cassie ? s.fs : s.r;
-    var dcos = H_FLAT * amp;
-    var cAdv = clamp(cosApp - dcos / 2, -1, 1);
-    var cRec = clamp(cosApp + dcos / 2, -1, 1);
-    var dEff = cRec - cAdv;
-    /* if the advancing angle saturates, the stand-in rule has broken down; report
-       that instead of presenting a numerical limit as a physical pinned drop */
-    var saturated = (cosApp - dcos / 2) < -1;
-
-    /* spherical cap of the given volume */
-    var V = s.vol * 1e-9;                                        /* m3 */
-    var fcap = (Math.PI / 3) * (2 - 3 * cosApp + Math.pow(cosApp, 3));
-    var R = Math.pow(V / fcap, 1 / 3);                           /* m */
-    var w = 2 * R * Math.sin(rad(theta));                        /* contact width, m */
-
-    /* Furmidge: rho V g sin(alpha) = gamma w (cos thetaR - cos thetaA) */
-    var sinA = GAMMA * w * dEff / (RHO * V * GRAV);
-    var outside = saturated && !wetsOut;
-    var pinned = !outside && (wetsOut || theta < 15 || !(sinA < 1));
-    var alpha = (pinned || outside) ? null : deg(Math.asin(sinA));
-
-    return {
-      mode: mode, cassie: cassie, wetsOut: wetsOut, theta: theta,
-      thetaAdv: deg(Math.acos(cAdv)), R: R * 1000, alpha: alpha, pinned: pinned, outside: outside,
-      thetaCrit: canAir ? deg(Math.acos(clamp(cCrit, -1, 1))) : null
-    };
+  /* ---------- a slider and a number box that stay in step ---------- */
+  function bind(rangeId, numId, onChange) {
+    var r = $(rangeId), n = $(numId);
+    function set(v, from) {
+      v = clamp(parseFloat(v), parseFloat(r.min), parseFloat(r.max));
+      if (isNaN(v)) return;
+      if (from !== r) r.value = v;
+      if (from !== n) n.value = v;
+      onChange();
+    }
+    r.addEventListener("input", function () { set(r.value, r); });
+    n.addEventListener("change", function () { set(n.value, null); });
+    return { get: function () { return parseFloat(r.value); } };
   }
-  /* ---------- drawing ---------- */
-  var tilt = 0;        /* current drawn tilt, degrees */
-  var slide = 0;       /* 0 to 1, drop sliding away */
-  var res = compute(state);
 
-  /* Size the backing store to the width CSS has already given the canvas. Never set
-     style.width from the parent: clientWidth includes the frame's padding, so each
-     resize would add that padding again and the canvas would creep wider forever. */
-  function fit() {
+  /* ---------- canvas sizing ---------- */
+  function fit(canvas, ratio, lo, hi) {
     var w = canvas.clientWidth;
-    if (!w) return;
-    var h = Math.round(clamp(w * 0.60, 280, 430));
-    var dpr = window.devicePixelRatio || 1;
+    if (!w) return null;
+    var h = Math.round(clamp(w * ratio, lo, hi)), dpr = window.devicePixelRatio || 1;
     canvas.width = Math.round(w * dpr);
     canvas.height = Math.round(h * dpr);
     canvas.style.height = h + "px";
+    var ctx = canvas.getContext("2d");
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { ctx: ctx, w: w, h: h };
+  }
+  function label(ctx, str, x, y, align, color, weight) {
+    ctx.fillStyle = color || COL.ink2;
+    ctx.font = (weight || "500") + " 11px " + MONO;
+    ctx.textAlign = align || "left";
+    ctx.textBaseline = "middle";
+    ctx.fillText(str, x, y);
+  }
+  function wrapText(ctx, str, x, y, maxW, lh) {
+    var words = str.split(" "), line = "", lines = [], i, test;
+    for (i = 0; i < words.length; i++) {
+      test = line ? line + " " + words[i] : words[i];
+      if (ctx.measureText(test).width > maxW && line) { lines.push(line); line = words[i]; } else line = test;
+    }
+    lines.push(line);
+    lines.forEach(function (l, k) { ctx.fillText(l, x, y + (k - (lines.length - 1) / 2) * lh); });
   }
 
-  /* Drop outline in mm, y measured up from the contact plane. The tilted drop is
-     leaned downhill by a displacement d(u) = k*L*(1 - e^(-u/L)): the slope at the
-     contact line is exactly k, which sets the contact angles, but it saturates
-     higher up so the body stays round instead of shearing into a wedge. */
-  function dropPoints(Rmm, thetaDeg, k) {
-    var th = rad(thetaDeg), pts = [], i, phi, x, u;
-    var yc = -Rmm * Math.cos(th);
-    var L = Math.max(Rmm * (1 - Math.cos(th)) * 0.45, 1e-4);
-    var p0 = Math.PI / 2 - th, p1 = Math.PI / 2 + th, N = 96;
+  /* ===================================================================
+     MODULE 1: same angle, two explanations
+     =================================================================== */
+  var PITCH = 40;          /* um, both textures */
+  var W_PILLAR = 20;       /* um, filled texture: fixed pillar width, height follows r */
+  var H_PILLAR = 30;       /* um, air texture: fixed height, width follows fs */
+  var H_MAX = 110;         /* um, tallest pillar drawn */
+
+  var aY = bind("aY", "aYn", renderA), aS = bind("aS", "aSn", renderA);
+
+  /* the whole drop, same angle in both panels; returns the magnifier anchor */
+  function drawMacroDrop(ctx, w, top, baseY, theta) {
+    var c = Math.cos(rad(theta));
+    var R = Math.min((baseY - top - 6) / (1 - c), w * 0.2);
+    var cx = w * 0.42, yc = baseY + R * c, half = R * Math.sin(rad(theta));
+    ctx.strokeStyle = COL.line; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(10, baseY); ctx.lineTo(w - 10, baseY); ctx.stroke();
+    ctx.beginPath();
+    var N = 80, i, phi;
     for (i = 0; i <= N; i++) {
-      phi = p0 + (p1 - p0) * (i / N);
+      phi = -Math.PI / 2 - rad(theta) + 2 * rad(theta) * (i / N);
+      if (i === 0) ctx.moveTo(cx + R * Math.cos(phi), yc + R * Math.sin(phi));
+      else ctx.lineTo(cx + R * Math.cos(phi), yc + R * Math.sin(phi));
+    }
+    ctx.closePath();
+    ctx.fillStyle = COL.water; ctx.fill();
+    ctx.strokeStyle = COL.waterEdge; ctx.lineWidth = 1.5; ctx.stroke();
+    /* angle through the liquid at the right contact point */
+    var rx = cx + half;
+    ctx.strokeStyle = COL.tealDeep; ctx.lineWidth = 1.3;
+    ctx.beginPath(); ctx.arc(rx, baseY, 15, Math.PI, Math.PI + rad(theta), false); ctx.stroke();
+    label(ctx, Math.round(theta) + "°", rx + 14, baseY - 22, "left", COL.tealDeep, "600");
+    ctx.strokeStyle = COL.ink2; ctx.lineWidth = 1;
+    ctx.strokeRect(rx - 8, baseY - 8, 16, 13);
+    return { x: rx, y: baseY + 5 };
+  }
+
+  function drawTexture(ctx, w, top, bottom, mode, dims, anchor) {
+    var viewUm = PITCH * 5, liquidUm = 22;
+    var s = Math.min((w - 20) / viewUm, (bottom - top - 24) / (dims.h + liquidUm + 4));
+    var left = (w - viewUm * s) / 2, base = bottom - 18, i;
+    var tops = base - dims.h * s;
+    ctx.strokeStyle = COL.line; ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(anchor.x - 8, anchor.y); ctx.lineTo(left, tops - liquidUm * s);
+    ctx.moveTo(anchor.x + 8, anchor.y); ctx.lineTo(left + viewUm * s, tops - liquidUm * s);
+    ctx.stroke();
+    ctx.fillStyle = COL.solid;
+    ctx.fillRect(left, base, viewUm * s, 6);
+    ctx.fillStyle = COL.water;
+    ctx.fillRect(left, tops - liquidUm * s, viewUm * s, liquidUm * s);
+    ctx.fillStyle = mode === "wenzel" ? COL.water : COL.air;
+    ctx.fillRect(left, tops, viewUm * s, dims.h * s);
+    for (i = 0; i < 5; i++) {
+      var x0 = left + (i * PITCH + (PITCH - dims.a) / 2) * s;
+      ctx.fillStyle = COL.solid;
+      ctx.fillRect(x0, tops, dims.a * s, dims.h * s);
+      if (mode === "cassie" && i < 4) {
+        var gL = x0 + dims.a * s, gR = left + ((i + 1) * PITCH + (PITCH - dims.a) / 2) * s;
+        ctx.fillStyle = COL.water;
+        ctx.beginPath();
+        ctx.moveTo(gL, tops);
+        ctx.quadraticCurveTo((gL + gR) / 2, tops + Math.min(5, (gR - gL) * 0.18), gR, tops);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = COL.waterEdge; ctx.lineWidth = 1.1;
+        ctx.beginPath();
+        ctx.moveTo(gL, tops);
+        ctx.quadraticCurveTo((gL + gR) / 2, tops + Math.min(5, (gR - gL) * 0.18), gR, tops);
+        ctx.stroke();
+      }
+    }
+    ctx.strokeStyle = COL.waterEdge; ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.moveTo(left, tops - liquidUm * s); ctx.lineTo(left + viewUm * s, tops - liquidUm * s); ctx.stroke();
+    var bar = 20 * s, by = bottom - 4;
+    ctx.strokeStyle = COL.ink2; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(left, by - 3); ctx.lineTo(left, by); ctx.lineTo(left + bar, by); ctx.lineTo(left + bar, by - 3); ctx.stroke();
+    label(ctx, "20 µm", left + bar + 6, by - 2);
+    label(ctx, mode === "wenzel" ? "water in the gaps" : "air in the gaps", left + viewUm * s, by - 2, "right");
+  }
+
+  function panelA(canvasId, mode, thetaStar, need) {
+    var c = fit($(canvasId), 0.78, 240, 320);
+    if (!c) return;
+    var ctx = c.ctx, w = c.w, h = c.h, msg = null, dims = null;
+    ctx.clearRect(0, 0, w, h);
+    var anchor = drawMacroDrop(ctx, w, 8, h * 0.36, thetaStar);
+    if (!need.ok) msg = "Not possible: " + need.reason;
+    else if (mode === "wenzel") {
+      dims = { a: W_PILLAR, h: (need.value - 1) * PITCH * PITCH / (4 * W_PILLAR) };
+      if (dims.h > H_MAX) msg = "Not reachable with these pillars: they would need to be " + Math.round(dims.h) + " µm tall";
+    } else {
+      dims = { a: PITCH * Math.sqrt(need.value), h: H_PILLAR };
+    }
+    if (msg) {
+      ctx.fillStyle = COL.ink2; ctx.font = "500 12px " + MONO; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      wrapText(ctx, msg, w / 2, h * 0.68, w - 40, 16);
+      return;
+    }
+    drawTexture(ctx, w, h * 0.44, h, mode, dims, anchor);
+  }
+
+  function cap(str) { return str.charAt(0).toUpperCase() + str.slice(1) + "."; }
+
+  function renderA() {
+    var ty = aY.get(), ts = aS.get();
+    var nr = P.requiredR(ts, ty), nf = P.requiredFs(ts, ty);
+    panelA("cWenzel", "wenzel", ts, nr);
+    panelA("cCassie", "cassie", ts, nf);
+    var wh = nr.ok ? (nr.value - 1) * PITCH * PITCH / (4 * W_PILLAR) : null;
+    $("oR").innerHTML = nr.ok ? "r = " + nr.value.toFixed(2) + " <span>roughness needed</span>" : "not possible <span>roughness</span>";
+    $("oF").innerHTML = nf.ok ? "f<sub>s</sub> = " + Math.round(nf.value * 100) + "% <span>solid contact needed</span>" : "not possible <span>solid contact</span>";
+    $("oRnote").textContent = !nr.ok ? cap(nr.reason)
+      : (wh > H_MAX ? "More extra surface than these pillars can give." : "With 20 µm pillars every 40 µm, that means pillars about " + Math.round(wh) + " µm tall.");
+    $("oFnote").textContent = !nf.ok ? cap(nf.reason)
+      : "With 30 µm pillars every 40 µm, the pillar tops would be about " + Math.round(PITCH * Math.sqrt(nf.value)) + " µm wide.";
+    $("aNote").textContent = ts <= ty
+      ? "On a water repellent material, neither ideal state can give a measured angle at or below the smooth surface angle."
+      : "Both pictures give exactly " + Math.round(ts) + "°. A goniometer reading on its own cannot tell you which one you have, and the next model shows why that matters for whether the drop runs off.";
+    $("aLive").textContent = "Smooth " + ty + " degrees, measured " + ts + " degrees. " + $("oR").textContent + ". " + $("oF").textContent + ".";
+  }
+
+  /* ===================================================================
+     MODULE 2: what makes a drop let go
+     =================================================================== */
+  var bA = bind("bA", "bAn", renderB), bR = bind("bR", "bRn", renderB),
+      bV = bind("bV", "bVn", renderB), bK = bind("bK", "bKn", renderB);
+  var res = null, tilt = 0, slide = 0, raf = null, phase = "idle", t0 = 0, limit = 0, settleTimer = null;
+
+  function inputsB() { return { thetaA: bA.get(), thetaR: bR.get(), vol: bV.get(), k: bK.get() }; }
+
+  /* drop outline in mm, y up from the surface; the downhill lean makes the front
+     edge steeper as the stage tilts (drawing only, the number comes from Furmidge) */
+  function dropPoints(Rmm, thetaDeg, lean) {
+    var th = rad(thetaDeg), pts = [], i, phi, x, u, N = 96;
+    var yc = -Rmm * Math.cos(th), L = Math.max(Rmm * (1 - Math.cos(th)) * 0.45, 1e-4);
+    for (i = 0; i <= N; i++) {
+      phi = Math.PI / 2 - th + 2 * th * (i / N);
       x = Rmm * Math.cos(phi);
-      u = yc + Rmm * Math.sin(phi);
-      if (u < 0) u = 0;
-      pts.push([x + k * L * (1 - Math.exp(-u / L)), u]);
+      u = Math.max(0, yc + Rmm * Math.sin(phi));
+      pts.push([x + lean * L * (1 - Math.exp(-u / L)), u]);
     }
     return pts;
   }
 
-  function draw() {
-    var W = canvas.clientWidth, H = canvas.clientHeight;
-    if (!W) return;
+  function drawTilt() {
+    var c = fit($("cTilt"), 0.5, 220, 340);
+    if (!c) return;
+    var ctx = c.ctx, W = c.w, H = c.h, o = inputsB();
     ctx.clearRect(0, 0, W, H);
-
-    var Rmm = res.R;
-    var half = Rmm * Math.sin(rad(res.theta));                  /* contact half width, mm */
-
-    /* texture: pitch follows the footprint so the drop always spans a few cells,
-       then the pillar geometry follows from fs and r (a = pitch*sqrt(fs),
-       r = 1 + 4*a*h/pitch^2) */
-    var pitch = clamp(2 * half / 7, 0.04, 1.2);
-    var wf = Math.sqrt(clamp(state.fs, 0.02, 0.999));
-    var a = wf * pitch;
-    var hp = clamp((state.r - 1) / (4 * wf) * pitch, 0, 2.4);   /* pillar height, mm */
-    var flatTop = (pitch - a) < pitch * 0.04 || hp < pitch * 0.02;
-    if (flatTop) hp = 0;
-
-    /* frame the drop: scale so it fills the stage at any volume or angle */
-    var slabPx = 24, labelPx = 46, padPx = 18;
-    var drawH = Math.max(60, H - slabPx - labelPx - padPx);
-    /* the drop's own box, then its bounding box once the stage is tilted */
-    var boxW = res.theta > 90 ? 2 * Rmm : 2 * half;
-    var boxH = Rmm * (1 - Math.cos(rad(res.theta))) + hp + pitch * 0.4;
-    var ct = Math.abs(Math.cos(rad(tilt))), st = Math.abs(Math.sin(rad(tilt)));
-    var needW = (boxW * ct + boxH * st) * 1.6;
-    var needH = (boxW * st + boxH * ct) * 1.15;
-    var S = clamp(Math.min(W * 0.9 / needW, drawH / needH), 4, 900);   /* px per mm */
-    var floorY = H - slabPx - labelPx;
-    var cx = W / 2;
-
-    /* shear so the downhill contact angle grows towards the advancing angle */
-    var frac = res.pinned ? (tilt / 90) : (res.alpha > 0.5 ? tilt / res.alpha : 0);
-    var kMax = 1 / Math.tan(rad(res.theta)) - 1 / Math.tan(rad(res.thetaAdv));
-    var k = clamp(kMax, 0, 1) * clamp(frac, 0, 1);
-
-    /* lift the contact point as the stage tilts, so a steep surface stays in frame */
-    var pivotY = floorY - clamp(tilt / 90, 0, 1) * drawH * 0.45;
+    if (!res || !res.ok) { label(ctx, "Receding cannot be above advancing.", W / 2, H / 2, "center"); return; }
+    var theta = (o.thetaA + o.thetaR) / 2;
+    var Rmm = (res.width * 1000 / 2) / Math.sin(rad(theta));
+    var S = Math.min(W * 0.34 / (2 * Rmm), (H * 0.45) / (Rmm * (1 - Math.cos(rad(theta)))));
+    var pivotY = H - 42 - clamp(tilt / 90, 0, 1) * H * 0.3, cx = W / 2;
+    var frac = res.released ? clamp(tilt / res.alpha, 0, 1) : clamp(tilt / 90, 0, 1);
+    var lean = clamp(1 / Math.tan(rad(theta)) - 1 / Math.tan(rad(o.thetaA)), 0, 1) * frac;
 
     ctx.save();
     ctx.translate(cx, pivotY);
     ctx.rotate(rad(tilt));
-
-    /* ---- substrate slab ---- */
-    var ext = (W + H) / S;                       /* mm of surface to draw either side */
-    ctx.fillStyle = COL.paper2;
-    ctx.strokeStyle = COL.line;
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.rect(-ext * S, 0, 2 * ext * S, Math.max(H, W));
-    ctx.fill();
-    ctx.beginPath();
-    ctx.moveTo(-ext * S, 0);
-    ctx.lineTo(ext * S, 0);
-    ctx.stroke();
-
-    /* ---- pillars ---- */
-    var nMax = Math.min(Math.ceil(ext / pitch), 260), nMin = -nMax, n, x0;
-    if (!flatTop) {
-      ctx.fillStyle = COL.solid;
-      ctx.strokeStyle = COL.line;
-      for (n = nMin; n <= nMax; n++) {
-        x0 = (n * pitch - a / 2) * S;
-        ctx.beginPath();
-        ctx.rect(x0, -hp * S, a * S, hp * S);
-        ctx.fill();
-        ctx.stroke();
-      }
-    }
-
-    /* ---- water inside the texture ---- */
-    ctx.fillStyle = COL.water;
-    if (!flatTop) {
-      for (n = nMin; n <= nMax; n++) {
-        var gapL = (n * pitch + a / 2), gapR = ((n + 1) * pitch - a / 2);
-        var mid = (gapL + gapR) / 2;
-        if (Math.abs(mid) > half) continue;
-        if (res.cassie) {
-          /* trapped air: a sagging meniscus bridges the gap */
-          var sag = Math.min(hp * 0.55, (gapR - gapL) * 0.4);
-          ctx.beginPath();
-          ctx.moveTo(gapL * S, -hp * S);
-          ctx.quadraticCurveTo(mid * S, (-hp + sag * 2) * S, gapR * S, -hp * S);
-          ctx.fill();                       /* fill closes the path, stroke leaves it open */
-          ctx.strokeStyle = COL.waterEdge;
-          ctx.lineWidth = 1.2;
-          ctx.stroke();
-        } else {
-          /* Wenzel: liquid fills the grooves */
-          ctx.fillRect(gapL * S, -hp * S, (gapR - gapL) * S, hp * S);
-        }
-      }
-    }
-
-    /* ---- the drop ---- */
-    var pts = dropPoints(Rmm, res.theta, k), i;
-    ctx.save();
-    ctx.translate(slide * Math.max(W, H) * 0.95, 0);
+    ctx.fillStyle = COL.paper2; ctx.fillRect(-W, 0, 2 * W, H);
+    ctx.strokeStyle = COL.line; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(-W, 0); ctx.lineTo(W, 0); ctx.stroke();
+    var pts = dropPoints(Rmm, theta, lean), i;
+    ctx.translate(slide * Math.max(W, H), 0);
     ctx.globalAlpha = 1 - slide * 0.85;
     ctx.beginPath();
-    ctx.moveTo(pts[0][0] * S, -(pts[0][1] + hp) * S);
-    for (i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0] * S, -(pts[i][1] + hp) * S);
+    ctx.moveTo(pts[0][0] * S, -pts[0][1] * S);
+    for (i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0] * S, -pts[i][1] * S);
     ctx.closePath();
-    ctx.fillStyle = COL.water;
-    ctx.fill();
-    ctx.strokeStyle = COL.waterEdge;
-    ctx.lineWidth = 1.6;
-    ctx.stroke();
-    ctx.restore();
-    ctx.globalAlpha = 1;
-
-    /* ---- contact angle annotation, untilted only ---- */
-    if (tilt < 0.5 && slide === 0 && !res.wetsOut) {
-      var px = half * S, py = -hp * S;
-      var arm = clamp(Rmm * S * 0.9, 26, 90);   /* annotation arm length, px */
-      ctx.save();
-      ctx.strokeStyle = "rgba(14,110,92,.55)";
-      ctx.setLineDash([4, 4]);
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(px - arm, py);                 /* surface reference, into the liquid */
-      ctx.lineTo(px + arm * 0.45, py);
-      ctx.moveTo(px, py);                       /* tangent at the contact line */
-      ctx.lineTo(px - Math.cos(rad(res.theta)) * arm, py - Math.sin(rad(res.theta)) * arm);
-      ctx.stroke();
-      ctx.setLineDash([]);
-      /* the angle is measured through the liquid: from the surface pointing left
-         round to the tangent, so sweep anticlockwise from (theta - 180) to -180 */
-      ctx.beginPath();
-      var ar = arm * 0.42;
-      ctx.arc(px, py, ar, rad(res.theta) - Math.PI, -Math.PI, true);
-      ctx.strokeStyle = COL.tealDeep;
-      ctx.lineWidth = 1.4;
-      ctx.stroke();
-      var bis = rad(res.theta) / 2 - Math.PI;             /* halfway round the sweep */
-      ctx.fillStyle = COL.tealDeep;
-      ctx.font = "600 12px " + MONO;
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText(Math.round(res.theta) + "°",
-        px + Math.cos(bis) * (ar + 15), py + Math.sin(bis) * (ar + 15));
-      ctx.restore();
-    }
-
+    ctx.fillStyle = COL.water; ctx.fill();
+    ctx.strokeStyle = COL.waterEdge; ctx.lineWidth = 1.6; ctx.stroke();
     ctx.restore();
 
-    /* ---- tilt indicator, screen space ---- */
     if (tilt > 2.5) {
-      var tr = clamp(Math.min(W, H) * 0.22, 40, 120);
-      ctx.save();
-      ctx.strokeStyle = "rgba(91,86,74,.45)";
-      ctx.setLineDash([4, 4]);
-      ctx.lineWidth = 1;
-      ctx.beginPath();                            /* horizontal reference */
-      ctx.moveTo(cx - tr * 0.5, pivotY);
-      ctx.lineTo(cx + tr * 1.35, pivotY);
-      ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.beginPath();
-      ctx.arc(cx, pivotY, tr, 0, rad(tilt));
-      ctx.strokeStyle = COL.tealDeep;
-      ctx.lineWidth = 1.4;
-      ctx.stroke();
-      ctx.fillStyle = COL.tealDeep;
-      ctx.font = "600 12px " + MONO;
-      ctx.textAlign = "left";
-      ctx.textBaseline = "middle";
-      ctx.fillText(Math.round(tilt) + "°",
-        cx + Math.cos(rad(tilt / 2)) * (tr + 10), pivotY + Math.sin(rad(tilt / 2)) * (tr + 10));
-      ctx.restore();
+      var tr = clamp(Math.min(W, H) * 0.25, 40, 110);
+      ctx.strokeStyle = "rgba(91,86,74,.45)"; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(cx - tr * 0.4, pivotY); ctx.lineTo(cx + tr * 1.3, pivotY); ctx.stroke();
+      ctx.strokeStyle = COL.tealDeep; ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.arc(cx, pivotY, tr, 0, rad(tilt)); ctx.stroke();
+      label(ctx, Math.round(tilt) + "°", cx + Math.cos(rad(tilt / 2)) * (tr + 12), pivotY + Math.sin(rad(tilt / 2)) * (tr + 12), "left", COL.tealDeep, "600");
     }
-
-    /* ---- chrome: scale bar (the view rescales with the drop) + captions ---- */
-    var steps = [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10], mm = steps[0], j;
-    for (j = 0; j < steps.length; j++) { if (steps[j] * S <= 120) mm = steps[j]; }
-    var barPx = mm * S, bx = 14, by = H - 34;
-    ctx.save();
-    ctx.strokeStyle = COL.ink2;
-    ctx.fillStyle = COL.ink2;
-    ctx.lineWidth = 1;
-    ctx.font = "500 11px " + MONO;
-    ctx.textAlign = "left";
-    ctx.textBaseline = "alphabetic";
-    ctx.beginPath();
-    ctx.moveTo(bx, by - 4); ctx.lineTo(bx, by); ctx.lineTo(bx + barPx, by); ctx.lineTo(bx + barPx, by - 4);
-    ctx.stroke();
-    ctx.fillText(mm < 1 ? (mm * 1000) + " µm" : mm + " mm", bx + barPx + 8, by);
-    ctx.fillText(res.wetsOut ? "SOAKS IN"
-      : res.cassie ? "SITTING ON TRAPPED AIR"
-      : (flatTop ? "SMOOTH SURFACE" : "SUNK INTO THE TEXTURE"), 14, H - 14);
-    ctx.textAlign = "right";
-    ctx.fillText(state.vol + " µL", W - 14, H - 14);
-    ctx.restore();
+    label(ctx, o.vol + " µL", W - 12, H - 14, "right");
+    label(ctx, o.thetaA + "° / " + o.thetaR + "°", 12, H - 14);
   }
-  /* ---------- readouts ---------- */
-  var el = {
-    theta: document.getElementById("outTheta"),
-    state: document.getElementById("outState"),
-    roll: document.getElementById("outRoll"),
-    note: document.getElementById("outNote"),
-    live: document.getElementById("outLive"),
-    tiltBtn: document.getElementById("tiltBtn")
-  };
-
-  function render() {
-    res = compute(state);
-    el.theta.textContent = res.wetsOut ? "wets out" : Math.round(res.theta) + "°";
-    el.state.textContent = res.wetsOut ? "Soaks in"
-      : res.cassie ? "Cassie-Baxter" : (res.mode === "flat" ? "Smooth" : "Wenzel");
-    el.roll.textContent = res.outside ? "outside model" : res.pinned ? "pinned" : Math.round(res.alpha) + "°";
-
-    var note;
-    if (res.wetsOut) {
-      note = "The material already wets, so texture makes it wet more, not less. (Real fabric would also soak the water up, which this model does not include.)";
-    } else if (res.cassie) {
-      note = "In this ideal state the drop touches only the pillar tops, so there is less holding its back edge"
-        + (res.alpha != null && res.alpha < 10 ? " and it runs off almost as soon as you tilt it." : ".");
-    } else if (res.mode === "flat") {
-      note = "No texture, so the drop sits at the angle of the chemistry alone.";
-    } else {
-      note = "In this ideal state the drop has filled the texture. That lifts the contact angle, but gives the back edge more to grip, which is why a high angle can still come with a stuck drop.";
-      if (res.thetaCrit != null) note += " Above a smooth surface angle of " + Math.round(res.thetaCrit) + "°, resting on trapped air has the lower energy.";
-    }
-    if (res.outside) note += " At these settings the simple grip rule breaks down, so the model cannot give a roll off angle.";
-    el.note.textContent = note;
-
-    el.tiltBtn.textContent = "Tilt test";
-    announce();
-    draw();
-  }
-
-  /* one announcement after the user settles, rather than on every slider step */
-  var liveTimer = null;
-  function announce() {
-    clearTimeout(liveTimer);
-    liveTimer = setTimeout(function () {
-      el.live.textContent = "Contact angle " + el.theta.textContent + ", "
-        + el.state.textContent + " ideal state, roll off " + el.roll.textContent + ".";
-    }, 700);
-  }
-  /* ---------- tilt animation ---------- */
-  var raf = null, t0 = 0, phase = "idle", limit = 0, settleTimer = null;
 
   function stopAnim() {
     if (raf) cancelAnimationFrame(raf);
-    clearTimeout(settleTimer);          /* a pending settle must not restore an old tilt */
+    clearTimeout(settleTimer);
     raf = null; settleTimer = null; phase = "idle";
   }
-
   function runTilt() {
     stopAnim();
-    tilt = 0; slide = 0;                /* always start the test from flat */
-    if (res.outside) { draw(); el.tiltBtn.textContent = "Outside the model"; return; }
-    limit = res.pinned ? 90 : res.alpha;
-    if (reduce) {
-      tilt = limit; draw();
-      el.tiltBtn.textContent = res.pinned ? "Still pinned at 90°" : "Rolled at " + Math.round(limit) + "°";
-      return;
-    }
+    tilt = 0; slide = 0;
+    if (!res || !res.ok) return;
+    limit = res.released ? res.alpha : 90;
+    var done = res.released ? "Moved at " + Math.round(limit) + "°" : "No release by 90°";
+    if (reduce) { tilt = limit; drawTilt(); $("tiltBtn").textContent = done; return; }
     phase = "tilting"; t0 = performance.now();
-    raf = requestAnimationFrame(step);
-  }
-
-  function step(now) {
-    var dur = 900 + limit * 14;
-    var t = (now - t0) / dur;
-    if (phase === "tilting") {
-      tilt = limit * clamp(t, 0, 1);
-      draw();
-      if (t >= 1) {
-        tilt = limit;
-        if (res.pinned) {
-          el.tiltBtn.textContent = "Still pinned at 90°";
-          phase = "idle"; raf = null; return;
+    raf = requestAnimationFrame(function step(now) {
+      if (phase === "tilting") {
+        var t = (now - t0) / (900 + limit * 14);
+        tilt = limit * clamp(t, 0, 1);
+        drawTilt();
+        if (t >= 1) {
+          if (!res.released) { $("tiltBtn").textContent = done; phase = "idle"; raf = null; return; }
+          phase = "sliding"; t0 = now;
         }
-        phase = "sliding"; t0 = now;
+      } else {
+        var s = clamp((now - t0) / 700, 0, 1);
+        slide = s * s;
+        drawTilt();
+        if (s >= 1) {
+          $("tiltBtn").textContent = done; phase = "idle"; raf = null;
+          settleTimer = setTimeout(function () { slide = 0; drawTilt(); }, 250);
+          return;
+        }
       }
       raf = requestAnimationFrame(step);
-    } else if (phase === "sliding") {
-      var s = clamp((now - t0) / 700, 0, 1);
-      slide = s * s;
-      draw();
-      if (s >= 1) {
-        el.tiltBtn.textContent = "Rolled at " + Math.round(limit) + "°";
-        phase = "idle"; raf = null;
-        settleTimer = setTimeout(function () { slide = 0; draw(); }, 250);
-        return;
+    });
+  }
+  $("tiltBtn").addEventListener("click", runTilt);
+
+  /* roll off against drop volume (SVG, one series plus the k band) */
+  var SVGNS = "http://www.w3.org/2000/svg";
+  function svgEl(name, attrs, parent) {
+    var n = document.createElementNS(SVGNS, name), k;
+    for (k in attrs) n.setAttribute(k, attrs[k]);
+    parent.appendChild(n);
+    return n;
+  }
+  function svgText(parent, x, y, str, attrs) {
+    var t = svgEl("text", Object.assign({ x: x, y: y, fill: COL.ink2, "font-family": MONO, "font-size": 11 }, attrs || {}), parent);
+    t.textContent = str;
+    return t;
+  }
+
+  function drawChart() {
+    var svg = $("bChart"), o = inputsB();
+    var W = 600, H = 250, left = 44, right = W - 12, top = 14, bottom = H - 36, bandH = 20;
+    svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+    svg.textContent = "";
+    if (!res || !res.ok) return;
+    var x = function (v) { return left + (v - 2) / 48 * (right - left); };
+    var y = function (a) { return bottom - a / 90 * (bottom - top - bandH); };
+    var yNone = top + (bandH - 4) / 2;
+    [0, 30, 60, 90].forEach(function (a) {
+      svgEl("line", { x1: left, x2: right, y1: y(a), y2: y(a), stroke: "#ebe6da" }, svg);
+      if (a < 90) svgText(svg, left - 8, y(a) + 4, a + "°", { "text-anchor": "end" });
+    });
+    svgEl("rect", { x: left, y: top, width: right - left, height: bandH - 4, fill: "#f3efe6", rx: 4 }, svg);
+    svgText(svg, left - 8, top + 12, ">90°", { "text-anchor": "end" });
+    [2, 10, 20, 30, 40, 50].forEach(function (v) { svgText(svg, x(v), bottom + 16, String(v), { "text-anchor": "middle" }); });
+    svgText(svg, (left + right) / 2, bottom + 31, "drop volume (µL)", { "text-anchor": "middle" });
+    svgEl("line", { x1: x(33), x2: x(33), y1: top + bandH, y2: bottom, stroke: COL.line }, svg);
+    svgText(svg, x(33) + 5, bottom - 6, "33 µL", { "font-size": 10 });
+
+    function series(k) {
+      var out = [], v, r;
+      for (v = 2; v <= 50.001; v += 0.5) {
+        r = P.rolloff({ thetaA: o.thetaA, thetaR: o.thetaR, vol: v, k: k });
+        out.push([x(v), r.released ? y(r.alpha) : yNone]);
       }
-      raf = requestAnimationFrame(step);
+      return out;
     }
-  }
-  /* ---------- controls ---------- */
-  var sliders = [
-    { id: "sThetaY", key: "thetaY", out: "vThetaY", fmt: function (v) { return Math.round(v) + "°"; } },
-    { id: "sR",      key: "r",      out: "vR",      fmt: function (v) { return v.toFixed(1) + "×"; } },
-    { id: "sFs",     key: "fs",     out: "vFs",     fmt: function (v) { return Math.round(v * 100) + "%"; } },
-    { id: "sVol",    key: "vol",    out: "vVol",    fmt: function (v) { return v + " µL"; } }
-  ];
+    var lo = series(0.8), hi = series(1.3), mid = series(o.k);
+    svgEl("polygon", { points: lo.concat(hi.slice().reverse()).map(function (p) { return p[0] + "," + p[1]; }).join(" "),
+      fill: COL.teal, "fill-opacity": 0.1 }, svg);
+    svgEl("path", { d: mid.map(function (p, i) { return (i ? "L" : "M") + p[0] + "," + p[1]; }).join(" "), fill: "none",
+      stroke: COL.teal, "stroke-width": 2, "stroke-linejoin": "round" }, svg);
+    svgEl("circle", { cx: x(o.vol), cy: res.released ? y(res.alpha) : yNone, r: 5, fill: COL.teal, stroke: "#fff", "stroke-width": 2 }, svg);
 
-  function syncInputs() {
-    sliders.forEach(function (s) {
-      var input = document.getElementById(s.id);
-      input.value = state[s.key];
-      document.getElementById(s.out).textContent = s.fmt(state[s.key]);
+    var read = svgText(svg, right - 4, top + bandH + 16, "", { "text-anchor": "end", fill: COL.ink });
+    var hit = svgEl("rect", { x: left, y: top, width: right - left, height: bottom - top, fill: "transparent", tabindex: 0,
+      "aria-label": "Roll off against drop volume. Focus shows the value at the current volume." }, svg);
+    function show(v) {
+      v = clamp(Math.round(v), 2, 50);
+      var f = function (k) { var r = P.rolloff({ thetaA: o.thetaA, thetaR: o.thetaR, vol: v, k: k }); return r.released ? Math.round(r.alpha) + "°" : "no release"; };
+      read.textContent = v + " µL: " + f(o.k) + " (k 0.8 to 1.3: " + f(0.8) + " to " + f(1.3) + ")";
+    }
+    hit.addEventListener("pointermove", function (e) {
+      var r = svg.getBoundingClientRect();
+      show(2 + ((e.clientX - r.left) / r.width * W - left) / (right - left) * 48);
     });
+    hit.addEventListener("pointerleave", function () { read.textContent = ""; });
+    hit.addEventListener("focus", function () { show(o.vol); });
+    hit.addEventListener("blur", function () { read.textContent = ""; });
   }
 
-  function reset() { stopAnim(); tilt = 0; slide = 0; }
-
-  /* dragging a slider fires far faster than the screen refreshes, so coalesce */
-  var pending = null;
-  function queueRender() {
-    if (pending) return;
-    pending = requestAnimationFrame(function () { pending = null; render(); });
+  function renderB() {
+    stopAnim(); tilt = 0; slide = 0;
+    $("tiltBtn").textContent = "Tilt test";
+    var o = inputsB();
+    res = P.rolloff(o);
+    if (!res.ok) {
+      $("oAlpha").textContent = "n/a"; $("oBond").textContent = "n/a"; $("oW").textContent = "n/a";
+      $("bNote").textContent = "The receding angle cannot be above the advancing angle. Lower the receding angle or raise the advancing one.";
+    } else {
+      $("oAlpha").textContent = res.released ? Math.round(res.alpha) + "°" : "no release";
+      $("oBond").textContent = res.bond.toFixed(2);
+      $("oBond").className = res.bond > 0.3 ? "warn" : "";
+      $("oW").textContent = (res.width * 1000).toFixed(1) + " mm";
+      var note = res.released
+        ? "Gravity wins at " + Math.round(res.alpha) + "° of tilt."
+        : "Even tilted to vertical, the grip of the edge beats the drop's weight.";
+      note += " The gap between advancing and receding is " + (o.thetaA - o.thetaR) + "°; a smaller gap, or a higher receding angle, lets go sooner.";
+      if (res.bond > 0.3) note += " At this size gravity visibly flattens the drop, so the footprint and the roll off angle are less accurate.";
+      $("bNote").textContent = note;
+    }
+    drawTilt();
+    drawChart();
+    $("bLive").textContent = "Roll off " + $("oAlpha").textContent + ", Bond number " + $("oBond").textContent + ".";
   }
 
-  sliders.forEach(function (s) {
-    var input = document.getElementById(s.id);
-    input.addEventListener("input", function () {
-      state[s.key] = parseFloat(input.value);
-      document.getElementById(s.out).textContent = s.fmt(state[s.key]);
-      reset();
-      queueRender();
-    });
-  });
+  /* ===================================================================
+     MODULE 3: an ideal textured surface
+     =================================================================== */
+  var cY = bind("cY", "cYn", renderC), cR = bind("cR", "cRn", renderC), cF = bind("cF", "cFn", renderC);
+  function renderC() {
+    var ty = cY.get(), r = cR.get(), fs = cF.get();
+    var wz = P.wenzelAngle(ty, r), cb = P.cassieAngle(ty, fs), st = P.lowerEnergyState(ty, r, fs);
+    $("oCW").textContent = wz <= 0 ? "wets out" : Math.round(wz) + "°";
+    $("oCC").textContent = Math.round(cb) + "°";
+    $("oCS").textContent = st.state === "cassie" ? "on air" : "filled";
+    var note = ty < 90
+      ? "The smooth material already wets, so filling the texture pulls the angle down, and real fabric would also soak water up. "
+      : "";
+    note += st.criticalAngle != null
+      ? "With this texture, resting on air has the lower energy above a smooth surface angle of " + st.criticalAngle.toFixed(1) + "°."
+      : "With this texture, filling the texture has the lower energy at every smooth surface angle.";
+    $("cNote").textContent = note;
+  }
 
-  el.tiltBtn.addEventListener("click", runTilt);
-
-  var resizeTimer = null;
-  window.addEventListener("resize", function () {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(function () { fit(); draw(); }, 120);
-  }, { passive: true });
   /* ---------- go ---------- */
-  fit();
-  syncInputs();
-  render();
-
-  /* canvas text is painted, not laid out, so redraw once the webfont arrives */
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(function () { draw(); });
-  }
-
+  renderA(); renderB(); renderC();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { renderA(); drawTilt(); });
+  var ideal = $("ideal");
+  if (ideal) ideal.addEventListener("toggle", renderC);
+  var lastW = window.innerWidth, resizeTimer = null;
+  window.addEventListener("resize", function () {
+    if (window.innerWidth === lastW) return;
+    lastW = window.innerWidth;
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () { renderA(); drawTilt(); }, 120);
+  }, { passive: true });
 })();

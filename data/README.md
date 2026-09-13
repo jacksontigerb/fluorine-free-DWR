@@ -24,6 +24,15 @@ One row is one measurement: one drop on one swatch at one stage.
 | `session` | Date where known |
 | `source` | File in the lab folder the row came from |
 
+## goniometer_example.csv
+
+Every video frame of one contact angle recording (C-A1, swatch 1, 29 Jun 2026), used for the
+"how one drop becomes one number" chart. Columns: `t_s` (seconds after the first good fit),
+`left_deg` and `right_deg` (the instrument's fit for each edge), `left_ok` and `right_ok` (fit RMSE at
+most 1.0), `instrument_avg_deg` (the instrument's own average of the two sides), `filtered_deg`
+(the lab reduction: good sides only, averaged, 15 frame rolling median). The median of `filtered_deg`
+from 2 to 10 s is 135.93, the swatch value in `observations.csv`.
+
 ## How the numbers were made
 
 - **Contact angle, before wear.** Ossila goniometer, 30 frames per second. Each side of the drop is

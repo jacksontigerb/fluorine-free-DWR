@@ -459,8 +459,101 @@
     host.appendChild(key);
   }
 
+  /* ---------- chart: how one contact angle recording becomes one number ---------- */
+  var GON = null;
+  function renderGoniometer(holder) {
+    var BLUE = "#2a78d6", ORANGE = "#c2410c", GREY = "#b3ab9c";
+    var frames = GON.map(function (r) {
+      return { t: +r.t_s, l: r.left_deg === "" ? null : +r.left_deg, r: r.right_deg === "" ? null : +r.right_deg,
+        lok: r.left_ok === "True", rok: r.right_ok === "True",
+        avg: r.instrument_avg_deg === "" ? null : +r.instrument_avg_deg, f: r.filtered_deg === "" ? null : +r.filtered_deg };
+    });
+    function median(a) { a = a.slice().sort(function (p, q) { return p - q; }); var m = a.length >> 1; return a.length % 2 ? a[m] : (a[m - 1] + a[m]) / 2; }
+    var inWin = frames.filter(function (d) { return d.t >= 2 && d.t <= 10; });
+    var medF = median(inWin.filter(function (d) { return d.f != null; }).map(function (d) { return d.f; }));
+    var medA = median(inWin.filter(function (d) { return d.avg != null; }).map(function (d) { return d.avg; }));
+    var rejected = frames.reduce(function (n, d) { return n + (d.l != null && !d.lok ? 1 : 0) + (d.r != null && !d.rok ? 1 : 0); }, 0);
+
+    var KEYS = [["dot", "#8a8374", "fit kept"], ["ring", ORANGE, "fit rejected"], ["line", GREY, "plain average"], ["line", BLUE, "filtered"]];
+    var keyW = function (k) { return 14 + k[2].length * 6.4 + 16; };   /* monospace, so width is predictable */
+    var Wd = Math.max(280, holder.clientWidth);
+    var twoRows = KEYS.reduce(function (t, k) { return t + keyW(k); }, 40) > Wd;
+    var H = twoRows ? 316 : 300;
+    var svg = el("svg", { width: Wd, height: H, viewBox: "0 0 " + Wd + " " + H, class: "chart-svg" });
+    el("title", {}, svg).textContent = "Left and right contact angle for every video frame of one drop on C-A1, with rejected fits, the instrument's plain average and the filtered value.";
+    var left = 40, right = Wd - 8, top = twoRows ? 46 : 30, bottom = H - 38;
+    var tmax = frames[frames.length - 1].t;
+    var x = scale(0, tmax, left, right), y = scale(115, 160, bottom, top);
+    /* legend row */
+    var lx = left, ly = 12;
+    KEYS.forEach(function (k, i) {
+      if (twoRows && i === 2) { lx = left; ly += 16; }
+      if (k[0] === "dot") el("circle", { cx: lx + 4, cy: ly, r: 3, fill: k[1] }, svg);
+      else if (k[0] === "ring") el("circle", { cx: lx + 4, cy: ly, r: 3, fill: "none", stroke: k[1], "stroke-width": 1.5 }, svg);
+      else el("line", { x1: lx - 2, x2: lx + 10, y1: ly, y2: ly, stroke: k[1], "stroke-width": 2 }, svg);
+      text(svg, lx + 14, ly + 4, k[2], { "font-size": 10.5 });
+      lx += keyW(k);
+    });
+    el("rect", { x: x(2), y: top, width: x(10) - x(2), height: bottom - top, fill: BAND }, svg);
+    text(svg, x(6), bottom - 6, "2 to 10 s window", { "text-anchor": "middle", "font-size": 10 });
+    [120, 130, 140, 150, 160].forEach(function (v) {
+      el("line", { x1: left, x2: right, y1: y(v), y2: y(v), stroke: GRID }, svg);
+      text(svg, left - 6, y(v) + 4, v + "°", { "text-anchor": "end", "font-size": 10 });
+    });
+    for (var sec = 0; sec <= tmax; sec += 2) text(svg, x(sec), bottom + 16, String(sec), { "text-anchor": "middle", "font-size": 10 });
+    text(svg, (left + right) / 2, bottom + 31, "seconds after the first good fit", { "text-anchor": "middle", "font-size": 10 });
+    var gp = el("g", {}, svg);
+    frames.forEach(function (d, i) {
+      if (i % 2) return;                             /* every other frame keeps the plot readable */
+      [[d.l, d.lok], [d.r, d.rok]].forEach(function (s2) {
+        if (s2[0] == null || s2[0] < 115 || s2[0] > 160) return;
+        if (s2[1]) el("circle", { cx: x(d.t), cy: y(s2[0]), r: 1.8, fill: "#8a8374", opacity: 0.55 }, gp);
+        else el("circle", { cx: x(d.t), cy: y(s2[0]), r: 2.4, fill: "none", stroke: ORANGE, "stroke-width": 1.1, opacity: 0.8 }, gp);
+      });
+    });
+    function pathOf(key) {
+      return frames.filter(function (d) { return d[key] != null; }).map(function (d, i) { return (i ? "L" : "M") + x(d.t) + "," + y(d[key]); }).join(" ");
+    }
+    el("path", { d: pathOf("avg"), fill: "none", stroke: GREY, "stroke-width": 1, opacity: 0.8 }, svg);
+    el("path", { d: pathOf("f"), fill: "none", stroke: BLUE, "stroke-width": 2, "stroke-linejoin": "round" }, svg);
+    el("line", { x1: x(2), x2: x(10), y1: y(medF), y2: y(medF), stroke: INK, "stroke-width": 2 }, svg);
+    var labBg = el("rect", { x: x(2) + 2, y: y(medF) + 6, width: 128, height: 16, fill: SURFACE, opacity: 0.9, rx: 3 }, svg);
+    text(svg, x(2) + 6, y(medF) + 18, fmt1(medF) + " swatch value", { fill: INK, "font-size": 10.5, "font-weight": 600 });
+
+    var cross = el("line", { y1: top, y2: bottom, stroke: INK2, opacity: 0 }, svg);
+    var hit = el("rect", { x: left, y: top, width: right - left, height: bottom - top, fill: "transparent", tabindex: 0, role: "img",
+      "aria-label": "Frame by frame fit. Arrow keys step through the recording one second at a time." }, svg);
+    var cur = 2;
+    function show(tq) {
+      cur = Math.max(0, Math.min(tmax, tq));
+      var d = frames.reduce(function (b, q) { return Math.abs(q.t - cur) < Math.abs(b.t - cur) ? q : b; }, frames[0]);
+      cross.setAttribute("x1", x(d.t)); cross.setAttribute("x2", x(d.t)); cross.setAttribute("opacity", 0.5);
+      var f = function (v, ok) { return v == null ? "no fit" : fmt1(v) + (ok ? "" : ", rejected"); };
+      var hr = hit.getBoundingClientRect(), px = hr.left + (x(d.t) - left) / (right - left) * hr.width;
+      showTip({ left: px, width: 0, top: hr.top, bottom: hr.bottom }, d.t.toFixed(2) + " s", [
+        { value: f(d.l, d.lok), label: "left side" }, { value: f(d.r, d.rok), label: "right side" },
+        { color: GREY, value: d.avg == null ? "n/a" : fmt1(d.avg), label: "plain average" },
+        { color: BLUE, value: d.f == null ? "n/a" : fmt1(d.f), label: "filtered" }]);
+    }
+    function off() { cross.setAttribute("opacity", 0); hideTip(); }
+    hit.addEventListener("pointermove", function (e) { var hr = hit.getBoundingClientRect(); show((e.clientX - hr.left) / hr.width * tmax); });
+    hit.addEventListener("pointerleave", off);
+    hit.addEventListener("focus", function () { show(cur); });
+    hit.addEventListener("blur", off);
+    hit.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { show(cur + 1); e.preventDefault(); }
+      if (e.key === "ArrowLeft") { show(cur - 1); e.preventDefault(); }
+      if (e.key === "Escape") off();
+    });
+    return { svg: svg, table: tableView("One drop on C-A1, swatch 1, 29 June 2026. Values over the 2 to 10 s window.",
+      ["Quantity", "Frames", "Value", "Note"], [
+        ["Filtered, then median", String(inWin.length), fmt1(medF), "the swatch value used in the results"],
+        ["Plain average, then median", String(inWin.length), fmt1(medA), "what the instrument's own average gives"],
+        ["Rejected side fits", String(frames.length) + " frames", String(rejected), "fit RMSE above 1.0"]]) };
+  }
+
   /* ---------- mount ---------- */
-  var RENDER = { repellency: renderRepellency, shedding: renderShedding,
+  var RENDER = { repellency: renderRepellency, goniometer: function (hd) { return renderGoniometer(hd); }, shedding: renderShedding,
     "durability-rolloff": function (hd, rows) { return renderDurability(hd, rows, "rolloff"); },
     "durability-wca": function (hd, rows) { return renderDurability(hd, rows, "wca"); } };
   var DATA = null;
@@ -473,6 +566,7 @@
       holder.appendChild(stage);
     }
     stage.textContent = "";
+    if (kind === "goniometer" && !GON) return;
     var out = RENDER[kind](stage, DATA);
     stage.appendChild(out.svg);
     var old = holder.parentNode.querySelector(".chart-table");
@@ -485,9 +579,13 @@
     holders.forEach(function (hd) { if (/^durability/.test(hd.getAttribute("data-chart"))) mount(hd); });
   }
 
-  fetch("data/observations.csv")
-    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
-    .then(function (csv) {
+  function getText(url) { return fetch(url).then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); }); }
+  var gonReq = document.querySelector('[data-chart="goniometer"]')
+    ? getText("data/goniometer_example.csv").then(function (t) { GON = parseCSV(t); }).catch(function () { GON = null; })
+    : Promise.resolve();
+  Promise.all([getText("data/observations.csv"), gonReq])
+    .then(function (got) {
+      var csv = got[0];
       DATA = parseCSV(csv);
       var ctl = document.getElementById("durability-controls");
       if (ctl) buildDurControls(ctl);
