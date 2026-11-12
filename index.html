@@ -18,7 +18,7 @@
   <meta property="og:image" content="https://jacksontigerb.github.io/fluorine-free-DWR/assets/img/og-c-a1-droplet.jpg" />
   <meta name="theme-color" content="#010b13" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 28'%3E%3Cpath d='M12 2C12 2 4 12.5 4 18a8 8 0 0 0 16 0C20 12.5 12 2 12 2Z' fill='%23384972'/%3E%3C/svg%3E" />
-  <link rel="stylesheet" href="styles.css?v=2026-11-12" />
+  <link rel="stylesheet" href="styles.css?v=2026-11-13" />
 </head>
 <body id="top">
   <a class="skip" href="#problem">Skip to content</a>
@@ -110,29 +110,52 @@
     </section>
 
     <section class="block" id="found">
-      <div class="wrap split">
+      <div class="wrap">
         <h2>What the testing found.</h2>
-        <div>
-          <p>Fresh, my coatings bead water like the commercial finish but do not shed as well. Washing took the commercial finish's lead away, and its contact angle barely moved while that happened.</p>
-          <p>That is the main lesson. Contact angle, the number most often reported, misses what matters for shedding.</p>
-          <div class="table-scroll">
-            <table class="cmp">
-              <caption>Both on Finisterre's fabric, three swatches each. Roll off is the tilt at which a drop of about 33&#160;&#181;L moves, so lower is better. After 20 washes one of the three commercial swatches stopped releasing its drop, so 78&#176; is the mean of the other two. On cotton my coatings reached 132 to 135&#176; contact angle.</caption>
-              <thead>
-                <tr><th></th><th class="mine">My emulsion</th><th class="theirs">Finisterre's finish</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>Contact angle, before washing</td><td class="n">108&#176;</td><td class="n">132&#176;</td></tr>
-                <tr><td>Roll off, before washing</td><td class="n">59&#176;</td><td class="n">24&#176;</td></tr>
-                <tr><td>Roll off, after 20 washes</td><td class="n">79&#176;</td><td class="n">78&#176;</td></tr>
-              </tbody>
-            </table>
+        <div class="finds">
+
+          <div class="find">
+            <h3>On cotton, my coating beads water like the commercial finish.</h3>
+            <div class="find-row">
+              <figure><svg viewBox="0 0 104 54" aria-hidden="true"><path class="g-water" d="M35.4 49 A23 23 0 1 1 68.6 49 Z"/><path class="g-fabric" d="M4 50 H100"/></svg><figcaption><b>132 to 135&#176;</b><span>My coating on cotton</span></figcaption></figure>
+              <figure><svg viewBox="0 0 104 54" aria-hidden="true"><path class="g-water" d="M34.8 49 A23.1 23.1 0 1 1 69.2 49 Z"/><path class="g-fabric" d="M4 50 H100"/></svg><figcaption><b>132&#176;</b><span>Finisterre's finish</span></figcaption></figure>
+              <figure><svg viewBox="0 0 104 54" aria-hidden="true"><path class="g-water" d="M27.1 49 A26.2 26.2 0 1 1 76.9 49 Z"/><path class="g-fabric" d="M4 50 H100"/></svg><figcaption><b>108&#176;</b><span>My coating on Finisterre's fabric</span></figcaption></figure>
+            </div>
+            <p class="scale"><svg class="g-scale" viewBox="0 0 100 26" aria-hidden="true"><path class="g-water" d="M1.4 22 A33.5 33.5 0 0 1 42.6 22 Z"/><path class="g-fabric" d="M2 23 H42"/><path class="g-arrow" d="M48 14 H58 M55 11 L58 14 L55 17"/><path class="g-water" d="M75.1 22 A8.4 8.4 0 1 1 86.9 22 Z"/><path class="g-fabric" d="M64 23 H98"/></svg><span>The rounder the drop, the better. That roundness is the contact angle.</span></p>
           </div>
-          <div class="actions">
-            <a class="btn" href="results.html">See the results</a>
-            <a class="btn ghost" href="assets/docs/brocklebank-2026-fluorine-free-dwr-dissertation.pdf">Read the dissertation (PDF)</a>
-            <a href="wetting.html">Why contact angle is not enough</a>
+
+          <div class="find">
+            <h3>New, the commercial finish sheds water better.</h3>
+            <div class="find-row">
+              <figure><svg viewBox="0 0 104 104" aria-hidden="true"><path class="g-level" d="M14 96 H100"/><path class="g-arc" d="M40 96 A26 26 0 0 0 27.4 73.7"/><path class="g-water" transform="translate(40.8 51.4) rotate(-59)" d="M-6.9 -1 A8 8 0 1 1 6.9 -1 Z"/><path class="g-fabric" d="M14 96 L57.3 24"/></svg><figcaption><b>59&#176;</b><span>My coating</span></figcaption></figure>
+              <figure><svg viewBox="0 0 104 104" aria-hidden="true"><path class="g-level" d="M14 96 H100"/><path class="g-arc" d="M40 96 A26 26 0 0 0 37.7 85.3"/><path class="g-water" transform="translate(61.4 74.5) rotate(-24.4)" d="M-6.9 -1 A8 8 0 1 1 6.9 -1 Z"/><path class="g-fabric" d="M14 96 L90.5 61.3"/></svg><figcaption><b>24&#176;</b><span>Finisterre's finish</span></figcaption></figure>
+            </div>
+            <p class="scale"><svg class="g-scale" viewBox="0 0 100 26" aria-hidden="true"><path class="g-water" transform="translate(17.1 12.3) rotate(-75)" d="M-4.8 -1 A5.5 5.5 0 1 1 4.8 -1 Z"/><path class="g-fabric" d="M14 24 L19.7 2.7"/><path class="g-arrow" d="M40 14 H50 M47 11 L50 14 L47 17"/><path class="g-water" transform="translate(78.8 17.9) rotate(-18)" d="M-4.8 -1 A5.5 5.5 0 1 1 4.8 -1 Z"/><path class="g-fabric" d="M60 24 L94.2 12.9"/></svg><span>The less the fabric has to tilt before the drop runs off, the better. Both on Finisterre's fabric.</span></p>
           </div>
+
+          <div class="find">
+            <h3>After 20 washes the two are level.</h3>
+            <div class="find-row">
+              <figure><svg viewBox="0 0 104 104" aria-hidden="true"><path class="g-level" d="M14 96 H100"/><path class="g-arc" d="M40 96 A26 26 0 0 0 19.1 70.5"/><path class="g-water" transform="translate(24.2 45) rotate(-78.7)" d="M-6.9 -1 A8 8 0 1 1 6.9 -1 Z"/><path class="g-fabric" d="M14 96 L30.5 13.6"/></svg><figcaption><b>79&#176;</b><span>My coating</span></figcaption></figure>
+              <figure><svg viewBox="0 0 104 104" aria-hidden="true"><path class="g-level" d="M14 96 H100"/><path class="g-arc" d="M40 96 A26 26 0 0 0 19.5 70.6"/><path class="g-water" transform="translate(25 45.2) rotate(-77.8)" d="M-6.9 -1 A8 8 0 1 1 6.9 -1 Z"/><path class="g-fabric" d="M14 96 L31.8 13.9"/></svg><figcaption><b>78&#176;</b><span>Finisterre's finish</span></figcaption></figure>
+            </div>
+            <p class="scale"><span>Washing cost the commercial finish its lead. Both on Finisterre's fabric.</span></p>
+          </div>
+
+          <div class="find">
+            <h3>The usual test did not see it.</h3>
+            <div class="find-row">
+              <figure><svg viewBox="0 0 104 54" aria-hidden="true"><path class="g-water" d="M34.4 49 A23.2 23.2 0 1 1 69.6 49 Z"/><path class="g-fabric" d="M4 50 H100"/></svg><figcaption><span>New</span></figcaption></figure>
+              <figure><svg viewBox="0 0 104 54" aria-hidden="true"><path class="g-water" d="M33.6 49 A23.5 23.5 0 1 1 70.4 49 Z"/><path class="g-fabric" d="M4 50 H100"/></svg><figcaption><span>After 20 washes</span></figcaption></figure>
+            </div>
+            <p class="scale"><span>The drop on Finisterre's finish stayed as round as ever while the tilt it needed went from 24&#176; to 78&#176;. Contact angle alone would have called it unchanged.</span></p>
+          </div>
+
+        </div>
+        <div class="actions">
+          <a class="btn" href="results.html">See the results</a>
+          <a class="btn ghost" href="assets/docs/brocklebank-2026-fluorine-free-dwr-dissertation.pdf">Read the dissertation (PDF)</a>
+          <a href="wetting.html">Why contact angle is not enough</a>
         </div>
       </div>
     </section>
@@ -163,6 +186,6 @@
     </div>
   </footer>
 
-  <script src="site.js?v=2026-11-12"></script>
+  <script src="site.js?v=2026-11-13"></script>
 </body>
 </html>
