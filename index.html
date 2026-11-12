@@ -1,37 +1,33 @@
 <!DOCTYPE html>
 <!-- ============================================================
-  Fluorine Free DWR - single page (PFAS / Coating / Finisterre / Lab)
-  Clean text hero, minimal line diagrams, autoplay drop video.
-  HOUSE STYLE: no em dashes, no hyphenated compounds in copy. Numbers live on results.html.
+  Fluorine free DWR, home page. Rebuilt 12 November 2026.
+  Opens on the goniometer film, then problem, coating, Finisterre, findings.
+  HOUSE STYLE: no em dashes, no hyphenated compounds in copy.
+  Numbers come from data/observations.csv and match results.html.
 ============================================================ -->
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Fluorine Free Water Repellent Coatings for Outdoor Textiles · UCL Masters Research</title>
-  <meta name="description" content="A UCL masters research project developing fluorine free water repellent coatings for outdoor textiles, using a stearyl acrylate polymer and titanium dioxide on cotton and Finisterre fabric instead of PFAS." />
-  <meta property="og:title" content="Fluorine Free Water Repellent Coatings for Outdoor Textiles" />
-  <meta property="og:description" content="A UCL masters research project on replacing PFAS in water repellent textiles." />
+  <title>Fluorine free water repellent coatings for outdoor textiles</title>
+  <meta name="description" content="UCL masters research on a fluorine free water repellent coating for outdoor textiles, made from a stearyl acrylate polymer and titanium dioxide and tested on Finisterre's fabric against their commercial PFAS free finish." />
+  <meta property="og:title" content="Fluorine free water repellent coatings for outdoor textiles" />
+  <meta property="og:description" content="UCL masters research on replacing PFAS in water repellent textiles, tested on Finisterre's fabric." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://jacksontigerb.github.io/fluorine-free-DWR/" />
   <meta property="og:image" content="https://jacksontigerb.github.io/fluorine-free-DWR/assets/img/og-c-a1-droplet.jpg" />
-  <meta name="theme-color" content="#f6f3ec" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 28'%3E%3Cpath d='M12 2C12 2 4 12.5 4 18a8 8 0 0 0 16 0C20 12.5 12 2 12 2Z' fill='%230e6e5c'/%3E%3C/svg%3E" />
-  <link rel="preload" href="assets/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="assets/fonts/geist-var.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="styles.css?v=2026-09-13" />
-  <script>document.documentElement.className += " js";</script>
+  <meta name="theme-color" content="#010b13" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 28'%3E%3Cpath d='M12 2C12 2 4 12.5 4 18a8 8 0 0 0 16 0C20 12.5 12 2 12 2Z' fill='%23384972'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css?v=2026-11-12" />
 </head>
 <body id="top">
-  <a class="skip" href="#concept">Skip to content</a>
+  <a class="skip" href="#problem">Skip to content</a>
 
   <header class="nav" id="nav">
     <div class="nav-in">
-      <a class="brand" href="#top">Fluorine Free <b>DWR</b></a>
-      <nav aria-label="Sections">
-        <a href="#concept">PFAS</a>
-        <a href="#making">The coating</a>
-        <a href="finisterre.html">Finisterre</a>
+      <a class="brand" href="#top">Fluorine free DWR</a>
+      <nav aria-label="Pages">
+        <a href="index.html" class="active">Project</a>
         <a href="results.html">Results</a>
         <a href="wetting.html">Wetting</a>
       </nav>
@@ -40,133 +36,116 @@
 
   <main>
 
-    <!-- ===================== HERO ===================== -->
-    <section class="hero" aria-label="Introduction">
+    <section class="hero" id="hero" aria-label="Introduction">
+      <video id="dropVid" autoplay muted loop playsinline preload="auto" poster="assets/video/drop-poster.jpg" aria-label="A water drop lands on water repellent fabric and sits as a bead instead of soaking in.">
+        <source src="assets/video/drop.webm" type="video/webm" />
+        <source src="assets/video/drop.mp4" type="video/mp4" />
+      </video>
+      <div class="hero-tint"></div>
+      <div class="hero-shade"></div>
       <div class="hero-in">
-        <h1 class="hero-title">Fluorine Free Water Repellent Coatings for Outdoor Textiles</h1>
-        <p class="hero-sub">A UCL masters research project</p>
-        <p class="hero-lede">Making fabric repel water without fluorine, and finding out how close it gets.</p>
-        <div class="hero-cta">
-          <a class="btn" href="#concept">The problem</a>
-          <a class="btn ghost" href="#making">My coating</a>
+        <div>
+          <h1>Fluorine free water repellent coatings for outdoor textiles</h1>
+          <p class="hero-line">MSc research at UCL, tested on Finisterre's fabric.</p>
+          <div class="actions">
+            <a class="btn sand" href="results.html">See the results</a>
+            <a class="btn ghost" href="assets/docs/brocklebank-2026-fluorine-free-dwr-dissertation.pdf">Read the dissertation</a>
+          </div>
+        </div>
+        <p class="cap">On screen: a drop landing on Finisterre's finished fabric, filmed on the goniometer.</p>
+      </div>
+    </section>
+
+    <section class="block" id="problem">
+      <div class="wrap split">
+        <h2>Water repellent outdoor gear has long relied on PFAS.</h2>
+        <div>
+          <p>The finish that makes rain bead off a jacket is almost always PFAS, better known as the "forever chemicals". Nothing else repels both water and oil quite as well, so the outdoor industry used them for years.</p>
+          <p>The catch is that they barely break down. They build up in the environment and in us, and they are being phased out of textiles. I set out to make a fluorine free finish and test it against a commercial one.</p>
         </div>
       </div>
     </section>
 
-    <!-- ===================== PFAS ===================== -->
-    <section class="section" id="concept">
-      <div class="wrap">
-        <p class="eyebrow reveal">The problem</p>
-        <h2 class="big reveal">Water repellent outdoor gear has long relied on PFAS.</h2>
-        <div class="lead-cols">
-          <p class="reveal">The finish that makes rain bead off a jacket is almost always PFAS: per and polyfluoroalkyl substances, better known as the "forever chemicals". Nothing else repels both water and oil quite as well, so the outdoor industry used them for years.</p>
-          <p class="reveal">The catch is that they barely break down. They build up in the environment and in us, are linked to health concerns, and are being phased out of textiles. Some brands have already moved to fluorine free finishes. I set out to make one and test it against a commercial PFAS free finish.</p>
+    <section class="block" id="coating">
+      <div class="wrap split">
+        <h2>How I make it.</h2>
+        <div>
+          <p>Long carbon chains from stearyl acrylate give a surface water doesn't want to wet. A little silicone keeps the fabric soft, and a crosslinker is meant to help it hold onto the fibre.</p>
+          <p>Anatase titanium dioxide nanoparticles add fine texture. Bare anatase clumps together, so I treat it with a silane to help it spread more evenly. In the end the particles made little difference to the wetting numbers, and the polymer did most of the work.</p>
+          <p>I make the polymer as a waterborne emulsion, mix in the particles, and put it on cotton and on Finisterre's fabric by dip, pad and cure. No fluorinated ingredients go into it.</p>
+          <figure class="media diagram">
+            <img src="assets/img/diagram-dippadcure.svg?v=2026-11-12b" width="592" height="152" alt="Three steps: dip, the fabric is soaked in the dispersion; pad, a roller squeezes it to an even pickup; cure, heat sets the coating on the fibre." />
+            <figcaption class="cap">The fabric is soaked in the dispersion, a roller squeezes out the excess, and heat sets the coating on the fibre.</figcaption>
+          </figure>
         </div>
       </div>
-    </section>
-
-    <!-- ===================== THE COATING ===================== -->
-    <section class="section" id="making">
       <div class="wrap">
-        <p class="eyebrow reveal">The coating</p>
-        <h2 class="big reveal">How I make it.</h2>
-        <p class="lede reveal" style="margin-top:1.2rem;">It comes together in three parts, none of them fluorinated.</p>
-        <div class="parts">
-          <p class="reveal"><strong>The polymer.</strong> Long carbon chains from stearyl acrylate give a surface water doesn't want to wet. A little silicone (polydimethylsiloxane) keeps the fabric soft, and an epoxy group with a blocked isocyanate crosslinker is meant to help it hold onto the fibre.</p>
-          <p class="reveal"><strong>The roughness.</strong> Anatase titanium dioxide nanoparticles add fine texture, aiming to lift a drop onto a cushion of trapped air. In the end the particles made little difference to the wetting numbers; the polymer did most of the work.</p>
-          <p class="reveal"><strong>The particle tweak.</strong> Bare anatase clumps together, so I treat it with a silane (vinyltrimethoxysilane) to help it spread more evenly through the polymer.</p>
-        </div>
-        <p class="reveal" style="margin-top:1.4rem;max-width:54ch;">I make the polymer as a waterborne emulsion, mix in the particles, and put it on cotton and on Finisterre's fabric by dip, pad and cure.</p>
-        <p class="reveal" style="margin-top:1rem;max-width:54ch;color:var(--ink-2);">No fluorinated ingredients go into it. The point of the testing was to find out how close it gets to a commercial PFAS free finish on performance, and where it falls short.</p>
-      </div>
-
-      <div class="wrap">
-        <figure class="diagram wide reveal">
-          <img src="assets/img/diagram-dippadcure.svg" alt="Three steps: dip, the fabric is soaked in the dispersion; pad, a roller squeezes it to an even pickup; cure, heat sets the coating on the fibre." />
-        </figure>
-        <ol class="steps">
-          <li class="reveal"><span class="num">01</span><h4>Dip</h4><p>The fabric is soaked in the dispersion.</p></li>
-          <li class="reveal"><span class="num">02</span><h4>Pad</h4><p>A roller squeezes out the excess.</p></li>
-          <li class="reveal"><span class="num">03</span><h4>Cure</h4><p>Heat sets the coating on the fibre.</p></li>
-        </ol>
-      </div>
-
-      <div class="wrap">
-        <div class="ba reveal">
-          <figure>
+        <figure class="media">
+          <div class="pair">
             <img src="assets/img/sem-tio2-unmodified.jpg" width="1300" height="975" loading="lazy" alt="Scanning electron micrograph of untreated titanium dioxide at 4000x: large clumps like shards." />
-            <figcaption><span class="tag">Untreated</span> clumps into shards</figcaption>
-          </figure>
-          <figure>
             <img src="assets/img/sem-tio2-modified.jpg" width="1300" height="975" loading="lazy" alt="Scanning electron micrograph of silane treated titanium dioxide at 4000x: smaller, more even clumps." />
-            <figcaption><span class="tag">Treated</span> smaller, more even clumps</figcaption>
-          </figure>
-        </div>
-        <p class="reveal" style="margin-top:1rem;font-size:.96rem;color:var(--ink-2);max-width:70ch;"><strong>Why the silane helps.</strong> Left to itself, the titanium dioxide gathers into big clumps like shards. After the silane treatment the clumps are smaller and more even, which is what I want spread through the coating. Both at 4000&#215; on the SEM.</p>
+          </div>
+          <figcaption class="cap">Titanium dioxide at 4000&#215; on the SEM. Left to itself it gathers into big clumps like shards (left). After the silane treatment the clumps are smaller and more even (right).</figcaption>
+        </figure>
       </div>
     </section>
 
-    <!-- ===================== FINISTERRE ===================== -->
-    <section id="finisterre" aria-label="The Finisterre collaboration">
-
-      <div class="vband">
-        <video class="vband-vid" id="dropVid" muted loop playsinline preload="auto" poster="assets/video/drop-poster.jpg" aria-label="A water drop on the goniometer, sitting as a bead on water repellent fabric instead of soaking in.">
-          <source src="assets/video/drop.webm" type="video/webm" />
-          <source src="assets/video/drop.mp4" type="video/mp4" />
-        </video>
-        <div class="vband-scrim"></div>
-        <div class="vband-cap">
-          <p class="eyebrow light">Finisterre</p>
-          <h2 class="big light">Testing it on real fabric.</h2>
+    <section class="block sand" id="finisterre">
+      <div class="wrap split">
+        <h2>Tested on Finisterre's fabric.</h2>
+        <div>
+          <p>Finisterre is the Cornish outdoor brand, started in 2003 above a surf shop in St Agnes. Their outerwear has used <a href="https://finisterre.com/blogs/fabric-of-finisterre/pfas-free-water-repellents" target="_blank" rel="noopener">PFAS free water repellents</a> since 2018, so their finish is a commercial benchmark that is already on sale.</p>
+          <p>They supplied the same fabric twice, once with their finish and once without. I measured both as supplied, then put my coating on the unfinished cloth.</p>
         </div>
       </div>
+      <div class="wrap">
+        <figure class="media">
+          <div class="pair">
+            <img src="assets/img/droplet-untreated.jpg" width="1300" height="731" loading="lazy" decoding="async" alt="A water drop sunk into untreated Finisterre fabric as a low, flat dome." />
+            <img src="assets/img/droplet-coated.jpg" width="1300" height="731" loading="lazy" decoding="async" alt="A water drop beading up as a near sphere on Finisterre fabric with their commercial finish." />
+          </div>
+          <figcaption class="cap">Finisterre's own fabric on the goniometer. Without a finish the drop soaks in (left), and with their finish it beads (right). These two show their fabric, not my coating.</figcaption>
+        </figure>
+      </div>
+    </section>
 
-      <div class="section">
-        <div class="wrap">
-          <h3 class="mid reveal">Their fabric first, then my coating on it.</h3>
-          <p class="reveal" style="max-width:60ch;">I work with Finisterre, the Cornish outdoor brand. Their outerwear has used PFAS free water repellents since 2018, so their finish is the right benchmark. They supplied the same fabric with and without their finish, and I put my coating on the unfinished one.</p>
-          <div class="hero-cta reveal" style="margin-top:1.6rem;">
-            <a class="btn" href="finisterre.html">More on the collaboration</a>
+    <section class="block" id="found">
+      <div class="wrap split">
+        <h2>What the testing found.</h2>
+        <div>
+          <p>Fresh, my coatings bead water like the commercial finish but do not shed as well. Washing took the commercial finish's lead away, and its contact angle barely moved while that happened.</p>
+          <p>That is the main lesson. Contact angle, the number most often reported, misses what matters for shedding.</p>
+          <div class="table-scroll">
+            <table class="cmp">
+              <caption>Both on Finisterre's fabric, three swatches each. Roll off is the tilt at which a drop of about 33&#160;&#181;L moves, so lower is better. After 20 washes one of the three commercial swatches stopped releasing its drop, so 78&#176; is the mean of the other two. On cotton my coatings reached 132 to 135&#176; contact angle.</caption>
+              <thead>
+                <tr><th></th><th class="mine">My emulsion</th><th class="theirs">Finisterre's finish</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Contact angle, before washing</td><td class="n">108&#176;</td><td class="n">132&#176;</td></tr>
+                <tr><td>Roll off, before washing</td><td class="n">59&#176;</td><td class="n">24&#176;</td></tr>
+                <tr><td>Roll off, after 20 washes</td><td class="n">79&#176;</td><td class="n">78&#176;</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="actions">
+            <a class="btn" href="results.html">See the results</a>
+            <a class="btn ghost" href="assets/docs/brocklebank-2026-fluorine-free-dwr-dissertation.pdf">Read the dissertation (PDF)</a>
+            <a href="wetting.html">Why contact angle is not enough</a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ===================== LAB ===================== -->
-    <section class="section" id="lab">
-      <div class="wrap">
-        <p class="eyebrow reveal">In the lab</p>
-        <h2 class="big reveal">What the testing found.</h2>
-        <p class="lede reveal" style="margin-top:1.2rem;">Testing covered repellency, shedding, and durability through 200 abrasion passes and 20 wash cycles, with the worn surfaces checked under the electron microscope. What each test asked is below, and the numbers are on the results page.</p>
-      </div>
-
-      <div class="wrap">
-        <ul class="methods">
-          <li class="reveal"><span class="m-tag">Wetting</span><h4>Contact angle</h4><p>How round a drop sits. On cotton the coatings reach 132 to 135&#176;, similar to the commercial finish on its own fabric.</p></li>
-          <li class="reveal"><span class="m-tag">Shedding</span><h4>Roll off</h4><p>The tilt at which a drop actually moves. Fresh, the commercial finish is well ahead.</p></li>
-          <li class="reveal"><span class="m-tag">Durability</span><h4>Abrasion and wash</h4><p>Washing makes every finish shed worse, the commercial one most. Abrasion did not make shedding worse.</p></li>
-          <li class="reveal"><span class="m-tag">Structure</span><h4>SEM-EDX, FTIR, XRF, TGA</h4><p>Checking the structure, the chemistry, and that the coating really is on the fibre.</p></li>
-        </ul>
-        <p class="reveal" style="margin-top:1.6rem;color:var(--ink-2);max-width:54ch;">In short: the fluorine free coatings bead water like the commercial benchmark, but fresh they do not shed as well. Washing took the commercial finish's lead away, and its contact angle barely moved while that happened. That is the main lesson: contact angle, the number most often reported, misses what matters for shedding.</p>
-        <div class="hero-cta reveal" style="margin-top:1.6rem;">
-          <a class="btn" href="results.html">See the results</a>
-          <a class="btn ghost" href="assets/docs/brocklebank-2026-fluorine-free-dwr-dissertation.pdf">Read the dissertation (PDF)</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===================== FURTHER READING ===================== -->
-    <section class="section" id="reading" style="border-top:1px solid var(--line);">
-      <div class="wrap">
-        <p class="eyebrow reveal">Further reading</p>
-        <h2 class="mid reveal">Where the claims come from.</h2>
-        <p class="reveal" style="max-width:60ch;">The key sources behind the big claims on this page, picked to be readable rather than exhaustive.</p>
-        <ul class="deeper">
-          <li class="reveal"><b>Forever chemicals</b> Why the persistence of PFAS alone justifies treating them as one class. Cousins et al., 2020, Environmental Science: Processes and Impacts. <a href="https://doi.org/10.1039/D0EM00355G" target="_blank" rel="noopener">doi.org</a></li>
-          <li class="reveal"><b>Health</b> The US EPA's overview of what PFAS exposure is linked to. <a href="https://www.epa.gov/pfas/our-current-understanding-human-health-and-environmental-risks-pfas" target="_blank" rel="noopener">epa.gov</a></li>
-          <li class="reveal"><b>Phase out</b> The EU wide PFAS restriction moving through ECHA, textiles included. <a href="https://echa.europa.eu/hot-topics/perfluoroalkyl-chemicals-pfas" target="_blank" rel="noopener">echa.europa.eu</a></li>
-          <li class="reveal"><b>The gap</b> Head to head performance of fluorinated and fluorine free repellents on outdoor fabrics. Schellenberger et al., 2018, Chemosphere. <a href="https://doi.org/10.1016/j.chemosphere.2017.11.027" target="_blank" rel="noopener">doi.org</a></li>
-          <li class="reveal"><b>Roughness</b> The 1944 paper behind the trapped air idea that makes a rough surface repel. Cassie and Baxter, Transactions of the Faraday Society. <a href="https://doi.org/10.1039/tf9444000546" target="_blank" rel="noopener">doi.org</a></li>
+    <section class="block" id="reading">
+      <div class="wrap split">
+        <h2 class="small">Where the claims come from.</h2>
+        <ul class="sources">
+          <li>Why the persistence of PFAS alone justifies treating them as one class. <a href="https://doi.org/10.1039/D0EM00355G" target="_blank" rel="noopener">Cousins et al., 2020</a></li>
+          <li>What PFAS exposure is linked to. <a href="https://www.epa.gov/pfas/our-current-understanding-human-health-and-environmental-risks-pfas" target="_blank" rel="noopener">US EPA</a></li>
+          <li>The EU wide PFAS restriction, textiles included. <a href="https://echa.europa.eu/hot-topics/perfluoroalkyl-chemicals-pfas" target="_blank" rel="noopener">ECHA</a></li>
+          <li>Fluorinated against fluorine free repellents on outdoor fabrics. <a href="https://doi.org/10.1016/j.chemosphere.2017.11.027" target="_blank" rel="noopener">Schellenberger et al., 2018</a></li>
+          <li>The trapped air idea that makes a rough surface repel. <a href="https://doi.org/10.1039/tf9444000546" target="_blank" rel="noopener">Cassie and Baxter, 1944</a></li>
         </ul>
       </div>
     </section>
@@ -175,13 +154,15 @@
 
   <footer class="foot">
     <div class="wrap">
-      <p class="foot-mark">Fluorine Free Water Repellent Coatings</p>
-      <p>A UCL masters project on replacing PFAS in water repellent textiles, tested on real outdoor fabric. By Jackson Brocklebank.</p>
-      <p><a href="mailto:jackson.brocklebank.25@ucl.ac.uk">Get in touch</a></p>
-      <p class="foot-meta">&#169; 2026 Jackson Brocklebank &#183; UCL Advanced Materials Science</p>
+      <p class="foot-name">Jackson Brocklebank</p>
+      <p>MSc Advanced Materials Science at UCL, 2026. The coating was tested on fabric supplied by Finisterre.</p>
+      <p class="foot-links">
+        <a href="mailto:jacksontiger2004@icloud.com">Get in touch</a>
+        <a href="assets/docs/brocklebank-2026-fluorine-free-dwr-dissertation.pdf">Dissertation (PDF, 17 MB)</a>
+      </p>
     </div>
   </footer>
 
-  <script src="site.js?v=2026-09-13"></script>
+  <script src="site.js?v=2026-11-12"></script>
 </body>
 </html>

@@ -16,12 +16,12 @@
   var RHO   = 1000;     /* kg/m3 */
   var GRAV  = 9.81;     /* m/s2 */
   var H_FLAT = 0.30;    /* illustrative stand-in for hysteresis, cos(r) - cos(a); not measured */
-  var MONO = '"Geist Mono", ui-monospace, Menlo, monospace';
+  var MONO = '"Helvetica Neue", "Geist", Arial, sans-serif';   /* the site sans; name kept from the old mono build */
 
   var COL = {
-    paper: "#f6f3ec", paper2: "#efeae0", ink: "#17150f", ink2: "#5b564a",
-    teal: "#0e6e5c", tealDeep: "#0a5546", line: "#ddd7c9",
-    water: "#cfe3ee", waterEdge: "#4d8fae", solid: "#e2dccd"
+    paper: "#f6f6f6", paper2: "#ececea", ink: "#010b13", ink2: "#4b5762",
+    teal: "#384972", tealDeep: "#27355a", line: "#d8d8d4",
+    water: "#cfe3ee", waterEdge: "#4d8fae", solid: "#e0d7b8"
   };
   /* ---------- state ---------- */
   var state = { thetaY: 108, r: 2.1, fs: 0.45, vol: 10 };   /* matches the HTML defaults */
@@ -229,7 +229,7 @@
       var px = half * S, py = -hp * S;
       var arm = clamp(Rmm * S * 0.9, 26, 90);   /* annotation arm length, px */
       ctx.save();
-      ctx.strokeStyle = "rgba(14,110,92,.55)";
+      ctx.strokeStyle = "rgba(56,73,114,.6)";
       ctx.setLineDash([4, 4]);
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -263,7 +263,7 @@
     if (tilt > 2.5) {
       var tr = clamp(Math.min(W, H) * 0.22, 40, 120);
       ctx.save();
-      ctx.strokeStyle = "rgba(91,86,74,.45)";
+      ctx.strokeStyle = "rgba(75,87,98,.45)";
       ctx.setLineDash([4, 4]);
       ctx.lineWidth = 1;
       ctx.beginPath();                            /* horizontal reference */
@@ -300,9 +300,9 @@
     ctx.moveTo(bx, by - 4); ctx.lineTo(bx, by); ctx.lineTo(bx + barPx, by); ctx.lineTo(bx + barPx, by - 4);
     ctx.stroke();
     ctx.fillText(mm < 1 ? (mm * 1000) + " µm" : mm + " mm", bx + barPx + 8, by);
-    ctx.fillText(res.wetsOut ? "SOAKS IN"
-      : res.cassie ? "SITTING ON TRAPPED AIR"
-      : (flatTop ? "SMOOTH SURFACE" : "SUNK INTO THE TEXTURE"), 14, H - 14);
+    ctx.fillText(res.wetsOut ? "Soaks in"
+      : res.cassie ? "Sitting on trapped air"
+      : (flatTop ? "Smooth surface" : "Sunk into the texture"), 14, H - 14);
     ctx.textAlign = "right";
     ctx.fillText(state.vol + " µL", W - 14, H - 14);
     ctx.restore();

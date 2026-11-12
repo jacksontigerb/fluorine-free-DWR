@@ -12,7 +12,7 @@
   if (!holders.length || !window.fetch || !document.createElementNS) return;
 
   var SVGNS = "http://www.w3.org/2000/svg";
-  var MONO = '"Geist Mono", ui-monospace, Menlo, monospace';
+  var MONO = '"Helvetica Neue", "Geist", Arial, sans-serif';   /* the site sans; name kept from the old mono build */
   /* the lab figure palette (scripts/figlib.py), validated for CVD separation on white */
   var SAMPLES = [
     { id: "C-A1",  color: "#2a78d6", fabric: "cotton",     name: "Emulsion only" },
@@ -24,7 +24,7 @@
   var BY_ID = {};
   SAMPLES.forEach(function (s) { BY_ID[s.id] = s; });
   var FABRIC_NAME = { cotton: "Cotton", finisterre: "Finisterre fabric" };
-  var INK = "#17150f", INK2 = "#5b564a", GRID = "#ebe6da", SURFACE = "#ffffff", BAND = "#f3efe6";
+  var INK = "#010b13", INK2 = "#4b5762", GRID = "#e6e6e3", SURFACE = "#ffffff", BAND = "#f1f1ef";
 
   /* ---------- small helpers ---------- */
   function el(name, attrs, parent) {
@@ -221,7 +221,7 @@
         var lines = [{ color: col, value: s.mean != null ? fmt1(s.mean) : "none", label: "mean of released swatches" },
           { value: s.nReleased + " of " + s.n, label: opts.countLabel || "measured" },
           { value: swatchList(s), label: "" }];
-        showTip(hit.getBoundingClientRect(), id + " · " + BY_ID[id].name + ", " + FABRIC_NAME[BY_ID[id].fabric].toLowerCase(), lines);
+        showTip(hit.getBoundingClientRect(), id + ", " + BY_ID[id].name + ", " + FABRIC_NAME[BY_ID[id].fabric].toLowerCase(), lines);
       }
       hit.addEventListener("pointerenter", on);
       hit.addEventListener("focus", on);
@@ -315,7 +315,7 @@
       var xmax = p.exp === "wash" ? 20 : 200;
       var x = scale(0, xmax, left + 8, right - 8);
       var y = scale(cfg.y0, cfg.y1, bottom, top + bandH);
-      text(g, bx, by + 12, (p.exp === "wash" ? "Washing" : "Abrasion") + " · " + (p.fabric === "cotton" ? "cotton" : "Finisterre"), { fill: INK, "font-size": cols === 4 ? 12 : 11, "font-weight": 600 });
+      text(g, bx, by + 12, (p.exp === "wash" ? "Washing" : "Abrasion") + ", " + (p.fabric === "cotton" ? "cotton" : "Finisterre"), { fill: INK, "font-size": cols === 4 ? 12 : 11, "font-weight": 600 });
       cfg.ticks.forEach(function (v) {
         el("line", { x1: left, x2: right, y1: y(v), y2: y(v), stroke: GRID, "stroke-width": 1 }, g);
         if (i % cols === 0 && !(cfg.band && v === 90)) text(g, left - 6, y(v) + 4, v + "°", { "text-anchor": "end", "font-size": 10 });
@@ -397,7 +397,7 @@
             label: id + (s.nReleased < s.n ? ", " + s.nReleased + " of " + s.n + " released" : "") + " (" + swatchList(s) + ")" });
         });
         var hr = hit.getBoundingClientRect(), px = hr.left + (x(c) - left) / (right - left) * hr.width;
-        showTip({ left: px, width: 0, top: hr.top, bottom: hr.bottom }, (c === 0 ? "Before wear" : c + (p.exp === "wash" ? " wash cycles" : " abrasion passes")) + " · " + FABRIC_NAME[p.fabric].toLowerCase(), lines);
+        showTip({ left: px, width: 0, top: hr.top, bottom: hr.bottom }, (c === 0 ? "Before wear" : c + (p.exp === "wash" ? " wash cycles" : " abrasion passes")) + ", " + FABRIC_NAME[p.fabric].toLowerCase(), lines);
       }
       function nearest(evt) {
         var hr = hit.getBoundingClientRect(), vx = left + (evt.clientX - hr.left) / hr.width * (right - left), best = 0;

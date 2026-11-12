@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <!-- ============================================================
-  Fluorine Free DWR - RESULTS (click-in page from the Lab section)
-  Reuses styles.css + site.js. Real data, honest framing.
+  Fluorine free DWR, results. Trimmed and restyled 12 November 2026.
+  Every figure kept; wording cut, not changed. The caveats sit in the
+  "More detail" fold under each figure.
   HOUSE STYLE: no em dashes, no hyphenated compounds in copy.
   Numbers checked against the lab CSVs and dissertation, 13 Sep 2026.
 ============================================================ -->
@@ -9,129 +10,25 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Results · Fluorine Free Water Repellent Coatings · UCL Masters Research</title>
+  <title>Results, fluorine free water repellent coatings</title>
   <meta name="description" content="Final lab results for a fluorine free water repellent coating on cotton and Finisterre fabric: contact angle, roll off, 20 wash cycles and 200 abrasion passes, SEM-EDX and FTIR, with methods and limits." />
-  <meta property="og:title" content="Results &#183; Fluorine Free DWR" />
+  <meta property="og:title" content="Results, fluorine free water repellent coatings" />
   <meta property="og:description" content="Final lab results: repellency, shedding, durability, composition and chemistry." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://jacksontigerb.github.io/fluorine-free-DWR/results.html" />
   <meta property="og:image" content="https://jacksontigerb.github.io/fluorine-free-DWR/assets/img/og-c-a1-droplet.jpg" />
-  <meta name="theme-color" content="#f6f3ec" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 28'%3E%3Cpath d='M12 2C12 2 4 12.5 4 18a8 8 0 0 0 16 0C20 12.5 12 2 12 2Z' fill='%230e6e5c'/%3E%3C/svg%3E" />
-  <link rel="preload" href="assets/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="assets/fonts/geist-var.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="styles.css?v=2026-09-13" />
-  <script>document.documentElement.className += " js";</script>
-
-  <style>
-    /* ---- results-page-only additions (tokens from styles.css) ---- */
-
-    /* figure rhythm on this page */
-    .fig-block{margin-top:clamp(2.5rem,6vh,4.5rem);}
-    /* consecutive figures inside one fig-block need the same breathing room
-       as separate fig-blocks (durability stacks three) */
-    .fig-block > .figure + .figure{margin-top:clamp(2.5rem,6vh,4.5rem);}
-    /* serif takeaway line gets a little more air off the frame */
-    figcaption:has(> .fig-take){margin-top:1.4rem;}
-    /* .mid sections: intro paragraph matches the .big sections' 1.1rem gap */
-    h2.mid + p{margin-top:1.1rem;}
-
-    /* two-up smaller figures for the deeper section */
-    .fig-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.4rem,4vw,2.6rem);
-      margin-top:2rem;}
-    @media (max-width:820px){.fig-grid{grid-template-columns:1fr;}}
-
-    /* results data table */
-    .rtable-wrap{overflow-x:auto;margin-top:1.6rem;
-      border:1px solid var(--line);border-radius:14px;background:#fff;}
-    table.rtable{border-collapse:collapse;width:100%;font-size:.92rem;min-width:440px;}
-    .rtable th,.rtable td{text-align:left;padding:.7rem 1rem;border-bottom:1px solid var(--line);}
-    .rtable thead th{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;
-      text-transform:uppercase;color:var(--teal-deep);background:var(--paper-2);}
-    .rtable tbody tr:last-child td{border-bottom:none;}
-    .rtable td.num{font-family:var(--mono);}
-    .rtable .best td{background:var(--teal-tint);}
-    .rtable .best td:first-child{font-weight:600;}
-    .rtable caption{caption-side:bottom;text-align:left;font-size:.82rem;
-      color:var(--ink-2);padding:.8rem 1rem;font-family:var(--mono);}
-
-    /* key takeaways list */
-    .takeaways{list-style:none;margin:1.6rem 0 0;padding:0;display:grid;gap:.9rem;max-width:64ch;}
-    .takeaways li{padding-left:1.1rem;border-left:2px solid var(--teal);color:var(--ink-2);}
-    .takeaways b{color:var(--ink);}
-
-    /* jump chips */
-    .jump{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.8rem;}
-    .jump a{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;
-      text-transform:uppercase;text-decoration:none;color:var(--teal-deep);
-      border:1px solid rgba(14,110,92,.35);border-radius:999px;padding:.4rem .8rem;}
-    .jump a:hover{background:var(--teal-tint);}
-
-    /* abstract */
-    .abstract{margin-top:2rem;max-width:68ch;background:#fff;border:1px solid var(--line);
-      border-radius:16px;padding:clamp(1.1rem,3vw,1.8rem);}
-    .abstract h2{font-family:var(--mono);font-size:.72rem;letter-spacing:.09em;
-      text-transform:uppercase;color:var(--teal-deep);margin:0 0 .8rem;font-weight:500;}
-    .abstract p{margin:0 0 .9rem;max-width:none;}
-    .abstract ol{margin:0 0 .9rem;padding-left:1.3rem;display:grid;gap:.6rem;}
-    .abstract .limits{color:var(--ink-2);font-size:.94rem;margin:0;}
-
-
-    /* interactive charts (charts.js); the PNG stays until a chart mounts */
-    [data-chart] img[hidden],.chart-tip[hidden]{display:none !important;}
-    .chart-stage{width:100%;}
-    .chart-svg{display:block;max-width:100%;overflow:visible;}
-    .chart-svg [tabindex]:focus{outline:none;}
-    .chart-svg [tabindex]:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
-    .chart-table{margin-top:.9rem;}
-    .chart-table .rtable-wrap{margin-top:.7rem;}
-    .chart-tip{position:absolute;left:0;top:0;z-index:60;max-width:300px;pointer-events:none;
-      background:#fff;border:1px solid var(--line);border-radius:10px;padding:.55rem .75rem;
-      box-shadow:0 8px 24px rgba(23,21,15,.12);font-size:.82rem;color:var(--ink-2);}
-    .chart-tip p{margin:0;max-width:none;}
-    .chart-tip-title{font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;
-      color:var(--teal-deep);margin-bottom:.3rem !important;}
-    .chart-tip-row{display:flex;align-items:baseline;gap:.4rem;line-height:1.45;}
-    .chart-tip-row b{color:var(--ink);font-family:var(--mono);font-weight:600;white-space:nowrap;}
-    .chart-tip-key{flex:none;width:12px;height:2px;border-radius:2px;transform:translateY(-3px);}
-    .chart-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.8rem 1.4rem;}
-    .chart-legend{display:flex;flex-wrap:wrap;gap:.4rem;}
-    .chart-key{display:inline-flex;align-items:center;gap:.4rem;font:inherit;font-size:.82rem;color:var(--ink-2);
-      background:#fff;border:1px solid var(--line);border-radius:999px;padding:.35rem .75rem;cursor:pointer;min-height:36px;}
-    .chart-key b{color:var(--ink);font-family:var(--mono);font-size:.76rem;}
-    .chart-key-line{width:14px;height:2px;border-radius:2px;flex:none;}
-    .chart-key[aria-pressed="true"]{border-color:var(--teal);background:var(--teal-tint);}
-    .chart-switch{font-size:.85rem;color:var(--ink-2);display:inline-flex;align-items:center;gap:.35rem;min-height:36px;}
-    .chart-switch input{accent-color:var(--teal);width:1rem;height:1rem;}
-    .chart-keynote{font-size:.82rem;color:var(--ink-2);margin:.7rem 0 1.6rem;max-width:80ch;}
-    @media (max-width:560px){.chart-key span:last-child{display:none;}}
-    @media print{.chart-controls,.chart-tip{display:none !important;}}
-
-
-    /* goniometer explainer */
-    .gon{margin-top:1.8rem;}
-    .gon-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:1rem;align-items:start;}
-    @media (max-width:820px){.gon-row{grid-template-columns:1fr;}}
-    .gon-img img{display:block;}
-    .gon-fallback{font-size:.9rem;color:var(--ink-2);margin:.5rem;}
-    .chart-live .gon-fallback{display:none;}
-
-    /* methods */
-    .methods-list{list-style:none;margin:1.6rem 0 0;padding:0;display:grid;gap:1.1rem;max-width:70ch;}
-    .methods-list li{padding-left:1.1rem;border-left:2px solid var(--teal-tint);color:var(--ink-2);}
-    .methods-list b{display:block;color:var(--ink);margin-bottom:.15rem;}
-  </style>
+  <meta name="theme-color" content="#f6f6f6" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 28'%3E%3Cpath d='M12 2C12 2 4 12.5 4 18a8 8 0 0 0 16 0C20 12.5 12 2 12 2Z' fill='%23384972'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css?v=2026-11-12" />
 </head>
 <body id="top">
-  <a class="skip" href="#abstract">Skip to content</a>
+  <a class="skip" href="#samples">Skip to content</a>
 
-  <header class="nav" id="nav">
+  <header class="nav solid" id="nav">
     <div class="nav-in">
-      <a class="brand" href="index.html">Fluorine Free <b>DWR</b></a>
-      <nav aria-label="Sections">
-        <a href="index.html#concept">PFAS</a>
-        <a href="index.html#making">The coating</a>
-        <a href="finisterre.html">Finisterre</a>
+      <a class="brand" href="index.html">Fluorine free DWR</a>
+      <nav aria-label="Pages">
+        <a href="index.html">Project</a>
         <a href="results.html" class="active">Results</a>
         <a href="wetting.html">Wetting</a>
       </nav>
@@ -140,25 +37,28 @@
 
   <main>
 
-    <!-- ===================== HEADER + ABSTRACT ===================== -->
+    <!-- ===================== HEADER ===================== -->
     <section class="rhead">
       <div class="wrap">
-        <a class="backlink" href="index.html#lab">&larr; Back to the project</a>
-        <p class="eyebrow">In the lab · Final results</p>
-        <h1 class="big">The results.</h1>
-        <p class="lede">Repellency, shedding, 20 wash cycles and 200 abrasion passes, and the worn surfaces under the electron microscope. Here is what the measurements say, including the parts that did not go the way I hoped.</p>
-        <p class="src" style="margin-top:1.1rem;">Testing finished July 2026 &#183; page checked against the lab data 13 September 2026 &#183; full analysis in <a href="assets/docs/brocklebank-2026-fluorine-free-dwr-dissertation.pdf">the dissertation (PDF, 17 MB)</a></p>
+        <h1>The results.</h1>
+        <p class="lede">Repellency, shedding, 20 wash cycles and 200 abrasion passes, and the worn surfaces under the electron microscope, including the parts that did not go the way I hoped.</p>
 
-        <div class="abstract" id="abstract">
-          <h2>Abstract</h2>
-          <p>I made a fluorine free water repellent emulsion (stearyl acrylate with a little silicone and a blocked isocyanate crosslinker), with and without titanium dioxide particles, and applied it by dip, pad and cure to scoured cotton and to Finisterre's fabric supplied without a finish. The benchmark is Finisterre's own commercial PFAS free finish on that same fabric.</p>
-          <ol>
-            <li><b>Beading.</b> On cotton my coatings reached 132 to 135&#176; contact angle, similar to Finisterre's finish on its own fabric (132&#176;). On Finisterre's fabric my emulsion reached 108&#176;.</li>
-            <li><b>Shedding.</b> Fresh, only the commercial finish released a smaller drop. With a larger drop (about 33&#160;&#181;L) everything released, but on the same fabric the commercial finish was far ahead: 24&#176; against 59&#176;.</li>
-            <li><b>Washing.</b> Over 20 wash cycles the commercial finish went from 24&#176; to 78&#176; roll off, and one of its three swatches stopped releasing the drop, while its contact angle moved by 3&#176;. My emulsion on the same fabric ended in the same place, around 80&#176;.</li>
-          </ol>
-          <p class="limits">Limits: three swatches per condition from one coated batch, and lab screening methods for washing and abrasion rather than textile standards. Read the trends as consistent, not as firm statistics. <a href="#methods">How it was measured</a> &#183; <a href="assets/docs/brocklebank-2026-fluorine-free-dwr-dissertation.pdf">read the dissertation (PDF, 17 MB)</a>.</p>
+        <div class="keynums" id="abstract">
+          <div>
+            <b>132 to 135&#176;</b>
+            <p>Contact angle of my coatings on cotton, similar to Finisterre's finish on its own fabric (132&#176;). On Finisterre's fabric my emulsion reached 108&#176;.</p>
+          </div>
+          <div>
+            <b>24&#176; against 59&#176;</b>
+            <p>Roll off before washing on the same fabric. The commercial finish was far ahead of my emulsion.</p>
+          </div>
+          <div>
+            <b>24&#176; to 78&#176;</b>
+            <p>The commercial finish's roll off over 20 wash cycles, while its contact angle moved by 3&#176;. My emulsion on the same fabric ended in the same place, around 80&#176;.</p>
+          </div>
         </div>
+
+        <p class="note" style="margin-top:2rem;">Three swatches per condition from one coated batch, and lab screening methods for washing and abrasion rather than textile standards. Read the trends as consistent, not as firm statistics. Testing finished July 2026, and the full analysis is in <a href="assets/docs/brocklebank-2026-fluorine-free-dwr-dissertation.pdf">the dissertation (PDF, 17 MB)</a>.</p>
 
         <div class="jump" aria-label="Jump to">
           <a href="#samples">Samples</a>
@@ -167,7 +67,7 @@
           <a href="#durability">Durability</a>
           <a href="#composition">Composition</a>
           <a href="#chemistry">Chemistry</a>
-          <a href="#deeper">Digging deeper</a>
+          <a href="#deeper">More measurements</a>
           <a href="#methods">Methods</a>
           <a href="#next">Summary</a>
         </div>
@@ -177,24 +77,18 @@
     <!-- ===================== SAMPLES ===================== -->
     <section class="section" id="samples">
       <div class="wrap">
-        <p class="eyebrow reveal">The samples</p>
-        <h2 class="mid reveal">Seven samples, two fabrics.</h2>
-        <p class="reveal">Both fabrics, plain cotton and Finisterre's own, have an uncoated control and a swatch of my emulsion on its own. On cotton I also ran two particle treatments at the same loading. Finisterre's commercial finish sits on Finisterre's fabric, so the fair comparison with it is my emulsion on that same fabric, F-A1.</p>
-        <ul class="takeaways reveal">
-          <li><b>C-U / F-U.</b> Uncoated cotton and uncoated Finisterre fabric, the controls.</li>
-          <li><b>A1.</b> My emulsion only, no particles.</li>
-          <li><b>B3.</b> Emulsion plus 3 wt% bare anatase titanium dioxide.</li>
-          <li><b>C3.</b> Emulsion plus 3 wt% anatase treated with a silane (VTMS).</li>
-          <li><b>F-DWR.</b> Finisterre's existing commercial finish, the benchmark.</li>
-        </ul>
+        <h2 class="small">Seven samples, two fabrics.</h2>
+        <p>Finisterre's commercial finish sits on Finisterre's fabric, so the fair comparison with it is my emulsion on that same fabric, F-A1.</p>
       </div>
       <div class="wrap fig-block">
-        <figure class="figure reveal">
+        <figure class="figure">
           <div class="frame"><img src="assets/figures/fig14_sample_map.png" width="3044" height="1305" loading="lazy" decoding="async" alt="Reference table of every sample code, its fabric, coating and titanium dioxide type." /></div>
           <figcaption>
             <p class="fig-take">Five coatings, two uncoated controls, three swatches of each.</p>
             <details class="more"><summary>More detail</summary>
-              <div class="more-body"><p>Fabric (C cotton, F Finisterre), coating, and particle type for every code used on this page. All swatches of a condition were cut from one coated batch.</p>
+              <div class="more-body">
+                <p><b>C-U and F-U</b> are uncoated cotton and uncoated Finisterre fabric, the controls. <b>A1</b> is my emulsion only, no particles. <b>B3</b> is emulsion plus 3 wt% bare anatase titanium dioxide. <b>C3</b> is emulsion plus 3 wt% anatase treated with a silane (VTMS). <b>F-DWR</b> is Finisterre's existing commercial finish, the benchmark.</p>
+                <p>All swatches of a condition were cut from one coated batch.</p>
                 <span class="src">Source: sample map, n = 3 swatches per code</span>
               </div>
             </details>
@@ -204,92 +98,85 @@
     </section>
 
     <!-- ===================== REPELLENCY (WCA) ===================== -->
-    <section class="section" id="repellency" style="border-top:1px solid var(--line);">
+    <section class="section" id="repellency">
       <div class="wrap">
-        <p class="eyebrow reveal">Repellency</p>
-        <h2 class="big reveal">Every coating makes water bead.</h2>
-        <p class="reveal" style="margin-top:1.1rem;max-width:60ch;">Water contact angle is the first test: how round a drop sits on the surface. Above 90&#176; counts as hydrophobic. (Superhydrophobic usually means above 150&#176; with drops that roll at a few degrees; none of these fabrics are that, the commercial finish included.) Every coating clears the hydrophobic line, and on cotton mine sit at about the same angle as the commercial finish does on its own fabric.</p>
+        <h2>Every coating makes water bead.</h2>
+        <p>Water contact angle is how round a drop sits on the surface. Above 90&#176; counts as hydrophobic, and every coating clears that line.</p>
       </div>
       <div class="wrap fig-block">
-        <figure class="figure reveal">
+        <figure class="figure">
           <div class="frame" data-chart="repellency"><img src="assets/figures/fig02_wca.png" width="3203" height="1259" loading="lazy" decoding="async" alt="Water contact angle against time for each sample, with a representative angle per sample. The cotton coatings and the commercial finish sit around 130 degrees; the emulsion on Finisterre fabric sits lower, near 108." /></div>
           <figcaption>
             <p class="fig-take">On cotton my coatings bead water about as well as the commercial finish does on its fabric.</p>
             <details class="more"><summary>More detail</summary>
-              <div class="more-body"><p>The three cotton coatings sit at <b>132 to 135&#176;</b>, within a few degrees of each other. Finisterre's commercial finish sits at about <b>132&#176;</b>, but on a different fabric, so this is a similar number rather than a like for like match. On the same Finisterre fabric my emulsion (F-A1) is lower, at about <b>108&#176;</b>. Uncoated Finisterre fabric wets out, its contact angle collapsing as the drop soaks in.</p>
+              <div class="more-body">
+                <p>The three cotton coatings sit at <b>132 to 135&#176;</b>, within a few degrees of each other. Finisterre's commercial finish sits at about <b>132&#176;</b>, but on a different fabric, so this is a similar number rather than a like for like match. On the same Finisterre fabric my emulsion (F-A1) is lower, at about <b>108&#176;</b>. Uncoated Finisterre fabric wets out, its contact angle collapsing as the drop soaks in.</p>
+                <p>Static contact angle does not separate the two particle treatments, bare against silane treated. If the silane helps, it should show up in shedding and durability, not here.</p>
+                <p>An early reading put uncoated cotton near 110&#176;, but that drop was resting on loose fibres across the weave rather than on the fabric. Measured again, uncoated cotton wets out at about 39&#176; (one swatch), so the coated fabrics sit roughly 95&#176; above their own baseline.</p>
+                <p>Superhydrophobic usually means above 150&#176; with drops that roll at a few degrees. None of these fabrics are that, the commercial finish included.</p>
                 <span class="src">Source: 29 Jun 2026, contact angle videos (wca_baseline in the <a href="data/observations.csv">data file</a>). Per swatch: median angle 2 to 10 s after the drop lands, poor fits rejected. Dots are swatches; the rule marks their mean.</span>
               </div>
             </details>
           </figcaption>
         </figure>
-        <ul class="takeaways reveal" style="margin-top:1.8rem;">
-          <li><b>One limit of this test.</b> Static contact angle does not separate the two particle treatments, bare against silane treated. If the silane helps, it should show up in shedding and durability, not here.</li>
-          <li><b>A corrected control.</b> An early reading put uncoated cotton near 110&#176;, but that drop was resting on loose fibres across the weave rather than on the fabric. Measured again, uncoated cotton wets out at about 39&#176; (one swatch), so the coated fabrics sit roughly 95&#176; above their own baseline.</li>
-        </ul>
       </div>
     </section>
 
     <!-- ===================== SHEDDING (ROLL OFF) ===================== -->
-    <section class="section" id="shedding" style="border-top:1px solid var(--line);">
+    <section class="section" id="shedding">
       <div class="wrap">
-        <p class="eyebrow reveal">Shedding</p>
-        <h2 class="big reveal">Beading is not the same as shedding.</h2>
-        <p class="reveal" style="margin-top:1.1rem;max-width:60ch;">A high contact angle means a drop <em>sits</em> as a bead. Roll off angle asks the harder question: tilt the surface, and at what angle does the drop actually move? Both tests here were done before any washing, and on this one the commercial finish is well ahead of mine.</p>
+        <h2>Beading is not the same as shedding.</h2>
+        <p>Roll off angle asks the harder question: tilt the surface, and at what angle does the drop actually move? Both tests here were done before any washing, and on this one the commercial finish is well ahead of mine.</p>
       </div>
       <div class="wrap fig-block">
-        <figure class="figure reveal">
+        <figure class="figure">
           <div class="frame" data-chart="shedding"><img src="assets/figures/fig03_rolloff.png" width="2904" height="1219" loading="lazy" decoding="async" alt="Roll off angle before washing, first with a smaller drop, where only the commercial finish released, then with a larger drop, where every coating released." /></div>
           <figcaption>
             <p class="fig-take">Fresh coatings bead but hold on to a smaller drop. Only the commercial finish let one go.</p>
             <details class="more"><summary>More detail</summary>
-              <div class="more-body"><p>With a smaller drop, <b>only the commercial F-DWR released</b>: 8 of its 9 drops across three swatches moved, at 42 to 78&#176; (57&#176; on average for the drops that moved). Every drop on my coatings stayed pinned, even tilted to the 90&#176; limit. The next day, still before any washing, I repeated the test with a larger drop of about 33&#160;&#181;L and every coating released. Drop size is the only thing that changed between the two tests, and on the same fabric the commercial finish was still clearly the better shedder.</p>
+              <div class="more-body">
+                <p>With a smaller drop, <b>only the commercial F-DWR released</b>: 8 of its 9 drops across three swatches moved, at 42 to 78&#176; (57&#176; on average for the drops that moved). Every drop on my coatings stayed pinned, even tilted to the 90&#176; limit. The next day, still before any washing, I repeated the test with a larger drop of about 33&#160;&#181;L and every coating released. Drop size is the only thing that changed between the two tests, and on the same fabric the commercial finish was still clearly the better shedder.</p>
                 <span class="src">Source: RollOff_angles.csv and ROA_durability_long.csv, 1 and 2 Jul 2026. Smaller drop: 3 drops per swatch on F-DWR, 1 per swatch on the others. Larger drop: 1 per swatch, n = 3. Triangles are drops that had not moved by 90&#176;; they are never averaged in, and a mean marked * uses only the drops that moved.</span>
               </div>
             </details>
           </figcaption>
         </figure>
 
-        <div class="rtable-wrap reveal">
+        <div class="table-scroll">
           <table class="rtable">
             <caption>Mean roll off angle before washing, larger drop (about 33&#160;&#181;L), 3 swatches each. Lower is better.</caption>
             <thead>
               <tr><th>Sample</th><th>What it is</th><th>Roll off angle</th></tr>
             </thead>
             <tbody>
-              <tr class="best"><td>F-DWR</td><td>Commercial finish, Finisterre fabric</td><td class="num">~24&#176;</td></tr>
-              <tr><td>C-B3</td><td>Emulsion + bare anatase, cotton</td><td class="num">~37&#176;</td></tr>
-              <tr><td>C-A1</td><td>Emulsion only, cotton</td><td class="num">~43&#176;</td></tr>
-              <tr><td>C-C3</td><td>Emulsion + silane treated anatase, cotton</td><td class="num">~49&#176;</td></tr>
-              <tr><td>F-A1</td><td>Emulsion only, Finisterre fabric</td><td class="num">~59&#176;</td></tr>
+              <tr class="best"><td>F-DWR</td><td>Commercial finish, Finisterre fabric</td><td>~24&#176;</td></tr>
+              <tr><td>C-B3</td><td>Emulsion + bare anatase, cotton</td><td>~37&#176;</td></tr>
+              <tr><td>C-A1</td><td>Emulsion only, cotton</td><td>~43&#176;</td></tr>
+              <tr><td>C-C3</td><td>Emulsion + silane treated anatase, cotton</td><td>~49&#176;</td></tr>
+              <tr><td>F-A1</td><td>Emulsion only, Finisterre fabric</td><td>~59&#176;</td></tr>
             </tbody>
           </table>
         </div>
 
-        <div class="status reveal" style="margin-top:1.8rem;">
-          <p><b>What this means.</b> Fresh, my coatings bead like the commercial finish but do not shed like it. On the same fabric the gap is large: 24&#176; against 59&#176;. The difference is in how the drop lets go: on my coatings the back edge of the drop grips the fabric instead of releasing. What wear does to that gap is the next section.</p>
-        </div>
-
-        <div class="hero-cta reveal" style="margin-top:1.6rem;">
-          <a class="btn ghost" href="wetting.html">Why contact angle is not enough</a>
-        </div>
+        <p>On my coatings the back edge of the drop grips the fabric instead of releasing. <a href="wetting.html">Why contact angle is not enough</a></p>
       </div>
     </section>
 
     <!-- ===================== DURABILITY ===================== -->
-    <section class="section" id="durability" style="border-top:1px solid var(--line);">
+    <section class="section" id="durability">
       <div class="wrap">
-        <p class="eyebrow reveal">Durability</p>
-        <h2 class="big reveal">Abrasion and washing tell opposite stories.</h2>
-        <p class="reveal" style="margin-top:1.1rem;max-width:60ch;">A coating is only useful if it lasts. I put the whole sample set through 200 abrasion passes and 20 wash cycles, measuring roll off and contact angle on the same swatches at every stage, then put spare worn swatches under the electron microscope. Both wear tests are lab screening methods rather than textile standards; <a href="#methods">the methods</a> say exactly what a pass and a cycle were.</p>
+        <h2>Abrasion and washing tell opposite stories.</h2>
+        <p>I put the whole sample set through 200 abrasion passes and 20 wash cycles, measuring roll off and contact angle on the same swatches at every stage. Both wear tests are lab screening methods rather than textile standards.</p>
       </div>
       <div class="wrap fig-block">
         <div id="durability-controls" class="chart-controls-host"></div>
-        <figure class="figure reveal">
+        <figure class="figure">
           <div class="frame" data-chart="durability-rolloff"><img src="assets/figures/fig17_durability_rolloff.png" width="2897" height="1249" loading="lazy" decoding="async" alt="Roll off angle across abrasion passes (0 to 200) and wash cycles (0 to 20). Roll off mostly falls with abrasion; with washing it rises for every sample, the commercial finish most." /></div>
           <figcaption>
             <p class="fig-take">Washing makes every sample shed worse, the commercial finish most. With abrasion, roll off mostly fell.</p>
             <details class="more"><summary>More detail</summary>
-              <div class="more-body"><p>Washing is the clearest result. The commercial finish went from <b>24&#176; to 78&#176;</b> over 20 wash cycles, the steadiest trend in the whole dataset, and one of its three swatches stopped releasing the drop altogether. On the same fabric my emulsion went from 59&#176; to 79&#176;, so after 20 cycles the two sit in the same place. On cotton my coatings ended between 51 and 54&#176;: C-C3 barely moved (49&#176; to 51&#176;), C-A1 rose about 7&#176; and C-B3 about 17&#176;. Cotton is a different fabric, so those are not a head to head with the commercial finish.</p>
+              <div class="more-body">
+                <p>Washing is the clearest result. The commercial finish went from <b>24&#176; to 78&#176;</b> over 20 wash cycles, the steadiest trend in the whole dataset, and one of its three swatches stopped releasing the drop altogether. On the same fabric my emulsion went from 59&#176; to 79&#176;, so after 20 cycles the two sit in the same place. On cotton my coatings ended between 51 and 54&#176;: C-C3 barely moved (49&#176; to 51&#176;), C-A1 rose about 7&#176; and C-B3 about 17&#176;. Cotton is a different fabric, so those are not a head to head with the commercial finish.</p>
                 <p>Abrasion went the other way: roll off fell on my coatings, even though the microscope shows the cotton yarns frayed and snapped. I do not read that as the coating getting better. The samples that started worst improved most, which is what measurement noise alone would produce, and the cause is not settled. On the same fabric the commercial finish started well ahead (24&#176; against 59&#176;), and after 200 passes the two read about the same (31&#176; against 27&#176;).</p>
                 <span class="src">Source: ROA_durability_long.csv, 2 to 14 Jul 2026, larger drop (about 33&#160;&#181;L), the same 3 swatches at every stage. Lines join the mean of the swatches that released; small dots are single swatches. A swatch that stopped releasing (F-A1 at 10 cycles, F-DWR at 20) shows as a triangle and is left out of that mean, drawn as an open circle, so those two means look better than they were. That is why F-A1 appears to dip at 10 cycles. (Without JavaScript the static figure shows means with standard error bars.)</span>
               </div>
@@ -297,19 +184,20 @@
           </figcaption>
         </figure>
 
-        <figure class="figure reveal">
+        <figure class="figure">
           <div class="frame" data-chart="durability-wca"><img src="assets/figures/fig18_durability_wca.png" width="2895" height="1249" loading="lazy" decoding="async" alt="Water contact angle across wash cycles and abrasion passes. The cotton coatings and the commercial finish stay above 120 degrees throughout." /></div>
           <figcaption>
             <p class="fig-take">Contact angle moves far less than roll off does.</p>
             <details class="more"><summary>More detail</summary>
-              <div class="more-body"><p>On average the cotton coatings and the commercial finish stayed above 120&#176; through 20 wash cycles and 200 abrasion passes; my emulsion on Finisterre fabric sat between 108 and 131&#176;. Washing did lower the cotton coatings by 8 to 13&#176;, though with three swatches that is within the spread between them, and abrasion nudged the angles up. The contrast with roll off is the point. On the commercial finish, 20 wash cycles raised roll off by 53&#176; while contact angle moved by 3&#176;. Judged on contact angle alone, that finish would have looked unchanged.</p>
+              <div class="more-body">
+                <p>On average the cotton coatings and the commercial finish stayed above 120&#176; through 20 wash cycles and 200 abrasion passes; my emulsion on Finisterre fabric sat between 108 and 131&#176;. Washing did lower the cotton coatings by 8 to 13&#176;, though with three swatches that is within the spread between them, and abrasion nudged the angles up. The contrast with roll off is the point. On the commercial finish, 20 wash cycles raised roll off by 53&#176; while contact angle moved by 3&#176;. Judged on contact angle alone, that finish would have looked unchanged.</p>
                 <span class="src">Source: WCA_durability_long_median.csv, 29 Jun to 14 Jul 2026, same reduction as above. Lines join the mean of 3 swatches; small dots are single swatches. The before wear values here come from the durability file and differ from the chart above by 1.5&#176; at most. (Without JavaScript the static figure shows means with standard error bars.)</span>
               </div>
             </details>
           </figcaption>
         </figure>
 
-        <figure class="figure vid-row reveal">
+        <figure class="figure vid-row">
           <div class="frame">
             <video muted loop playsinline autoplay preload="metadata" poster="assets/video/rolloff-poster.jpg" aria-label="Tilt tests on worn swatches, each introduced by a title card: Finisterre's commercial finish, cotton C3 and Finisterre A1 after 200 abrasion passes, then Finisterre's commercial finish and Finisterre A1 after 20 wash cycles. A drop is placed on each swatch and the slide is tilted by hand.">
               <source src="assets/video/rolloff.webm" type="video/webm" />
@@ -319,71 +207,69 @@
           <figcaption>
             <p class="fig-take">The worn swatches, tilted by hand. An illustration, not a measurement.</p>
             <details class="more"><summary>More detail</summary>
-              <div class="more-body"><p>A drop placed on each end point swatch, then the slide tilted until the drop moves or stays put. In order: the commercial finish, cotton C3 and Finisterre A1 after 200 abrasion passes, then the commercial finish and Finisterre A1 after 20 wash cycles. These clips were filmed by hand after the test series had finished, so they show the behaviour rather than measure it. The measured values are in the charts: after 20 wash cycles the commercial finish needed about 78&#176; of tilt and one swatch never released, while after 200 abrasion passes every sample released below about 31&#176; on average.</p>
+              <div class="more-body">
+                <p>A drop placed on each end point swatch, then the slide tilted until the drop moves or stays put. In order: the commercial finish, cotton C3 and Finisterre A1 after 200 abrasion passes, then the commercial finish and Finisterre A1 after 20 wash cycles. These clips were filmed by hand after the test series had finished, so they show the behaviour rather than measure it. The measured values are in the charts: after 20 wash cycles the commercial finish needed about 78&#176; of tilt and one swatch never released, while after 200 abrasion passes every sample released below about 31&#176; on average.</p>
                 <span class="src">Roll off demonstration, filmed after testing ended, 14 Jul 2026. Illustrative only.</span>
               </div>
             </details>
           </figcaption>
         </figure>
 
-
-        <figure class="figure reveal">
+        <figure class="figure">
           <div class="frame"><img src="assets/figures/fig21_sem_durability_x100.jpg" width="2400" height="2936" loading="lazy" decoding="async" alt="Electron microscope survey of each coating at baseline, after 20 wash cycles and after 200 abrasion passes. Washing leaves the weave intact; abrasion frays the cotton yarns." /></div>
           <figcaption>
             <p class="fig-take">Under the microscope, washing leaves the weave intact. Abrasion frays the cotton.</p>
             <details class="more"><summary>More detail</summary>
-              <div class="more-body"><p>Twenty wash cycles leave every weave intact. Two hundred abrasion passes fray and snap the cotton yarns, while the synthetic Finisterre fabric keeps its structure; the bright specks on the abraded samples are grit from the abrasive paper. Worth noting: the cotton roll off numbers were still easing down on fabric this worn, which is another reason not to read the abrasion trend as the coating getting better.</p>
+              <div class="more-body">
+                <p>Twenty wash cycles leave every weave intact. Two hundred abrasion passes fray and snap the cotton yarns, while the synthetic Finisterre fabric keeps its structure; the bright specks on the abraded samples are grit from the abrasive paper. Worth noting: the cotton roll off numbers were still easing down on fabric this worn, which is another reason not to read the abrasion trend as the coating getting better.</p>
                 <span class="src">Source: fig21, SEM at x100 on spare worn swatches, 15 kV</span>
               </div>
             </details>
           </figcaption>
         </figure>
 
-        <figure class="figure reveal">
+        <figure class="figure">
           <div class="frame"><img src="assets/figures/fig23_edx_durability_track.png" width="3384" height="1434" loading="lazy" decoding="async" alt="Titanium and silicon content from EDX at baseline, after 20 wash cycles and after 200 abrasion passes, per coating." /></div>
           <figcaption>
             <p class="fig-take">Coating signals are still there on the worn swatches. The silane treated particles may hold on better through washing.</p>
             <details class="more"><summary>More detail</summary>
-              <div class="more-body"><p>EDX on the worn swatches tracks the coating's elements through the wear series. Silicon, which comes from both the silicone and the silane, was still detected on the cotton coatings after both tests, and in infrared the silicone bands sat at 100 to 124% of their starting level after 20 wash cycles and 200 abrasion passes. That shows coating material is still present in the areas sampled; it does not show the film is intact or bonded. The titanium is the interesting part: the bare particles lose about four fifths of their titanium signal to washing while the silane treated ones fall more gently. That is the first measurement where the two particle types look different, but it is one scan per point, so it is a hint that needs repeats. The commercial finish shows no silicone bands, so it uses a different chemistry, though that alone does not say what it is.</p>
+              <div class="more-body">
+                <p>EDX on the worn swatches tracks the coating's elements through the wear series. Silicon, which comes from both the silicone and the silane, was still detected on the cotton coatings after both tests, and in infrared the silicone bands sat at 100 to 124% of their starting level after 20 wash cycles and 200 abrasion passes. That shows coating material is still present in the areas sampled; it does not show the film is intact or bonded. The titanium is the interesting part: the bare particles lose about four fifths of their titanium signal to washing while the silane treated ones fall more gently. That is the first measurement where the two particle types look different, but it is one scan per point, so it is a hint that needs repeats. The commercial finish shows no silicone bands, so it uses a different chemistry, though that alone does not say what it is.</p>
                 <span class="src">Source: fig23 and FTIR band ratios, single area scans per stage</span>
               </div>
             </details>
           </figcaption>
         </figure>
-
-        <div class="status reveal" style="margin-top:1.8rem;">
-          <p><b>Where that leaves it.</b> Washing is the shared weakness for shedding, and it hit the commercial finish hardest, taking it from well ahead of my emulsion to level with it on the same fabric. Contact angle barely registered that, which is why roll off is the number to watch. Coating material was still detectable after both tests. With three swatches from one batch these are consistent trends rather than firm statistics.</p>
-        </div>
       </div>
     </section>
 
     <!-- ===================== COMPOSITION (EDX) ===================== -->
-    <section class="section" id="composition" style="border-top:1px solid var(--line);">
+    <section class="section" id="composition">
       <div class="wrap">
-        <p class="eyebrow reveal">Composition</p>
-        <h2 class="big reveal">What is actually on the fabric.</h2>
-        <p class="reveal" style="margin-top:1.1rem;max-width:60ch;">SEM-EDX reads the elements on the fibre surface. Titanium tracks the titanium dioxide I added, and silicon tracks the silicone and silane in the coating. Both show up where they should, and the commercial finish gives a different elemental picture to mine.</p>
+        <h2>What is actually on the fabric.</h2>
+        <p>SEM-EDX reads the elements on the fibre surface. Titanium tracks the titanium dioxide I added, and silicon tracks the silicone and silane in the coating.</p>
       </div>
       <div class="wrap fig-block">
-        <figure class="figure reveal">
+        <figure class="figure">
           <div class="frame"><img src="assets/figures/fig07_edx_quant.png" width="3444" height="1376" loading="lazy" decoding="async" alt="Titanium and silicon tracer bars plus full elemental composition per sample from SEM-EDX." /></div>
           <figcaption>
             <p class="fig-take">The titanium and silicon tracers confirm the particles and silane are on the fabric.</p>
             <details class="more"><summary>More detail</summary>
-              <div class="more-body"><p>On cotton, titanium is near zero on the uncoated and emulsion only samples, then rises to <b>28%</b> on the bare anatase C-B3 and <b>8.8%</b> on the silane treated C-C3. Silicon is zero uncoated and <b>1.7 to 2.9%</b> across the coatings, highest on C-C3 where the silane adds its own silicon. The commercial F-DWR shows almost nothing here: about 0.8% titanium and no silicon, so it is a different chemistry to mine. These are single area scans without standards, so read them as showing what is present rather than a precise loading.</p>
+              <div class="more-body">
+                <p>On cotton, titanium is near zero on the uncoated and emulsion only samples, then rises to <b>28%</b> on the bare anatase C-B3 and <b>8.8%</b> on the silane treated C-C3. Silicon is zero uncoated and <b>1.7 to 2.9%</b> across the coatings, highest on C-C3 where the silane adds its own silicon. The commercial F-DWR shows almost nothing here: about 0.8% titanium and no silicon, so it is a different chemistry to mine. These are single area scans without standards, so read them as showing what is present rather than a precise loading.</p>
                 <span class="src">Source: fig07, SEM-EDX at x2000, mass normalised %</span>
               </div>
             </details>
           </figcaption>
         </figure>
-      </div>
-      <div class="wrap fig-block">
-        <figure class="figure reveal">
+
+        <figure class="figure">
           <div class="frame"><img src="assets/figures/fig08_edx_maps.jpg" width="2400" height="878" loading="lazy" decoding="async" alt="SEM greyscale images with colour elemental overlays showing where titanium and silicon sit on the fibres." /></div>
           <figcaption>
             <p class="fig-take">The coating spreads across the fibres, not in clumps.</p>
             <details class="more"><summary>More detail</summary>
-              <div class="more-body"><p>Elemental maps put the titanium and silicon across the coated fibres rather than in isolated clumps, which is what I want for an even coating.</p>
+              <div class="more-body">
+                <p>Elemental maps put the titanium and silicon across the coated fibres rather than in isolated clumps, which is what I want for an even coating.</p>
                 <span class="src">Source: fig08, SEM-EDX elemental maps (B3, C3, F-A1)</span>
               </div>
             </details>
@@ -393,32 +279,32 @@
     </section>
 
     <!-- ===================== CHEMISTRY (FTIR) ===================== -->
-    <section class="section" id="chemistry" style="border-top:1px solid var(--line);">
+    <section class="section" id="chemistry">
       <div class="wrap">
-        <p class="eyebrow reveal">Chemistry</p>
-        <h2 class="big reveal">What the infrared shows.</h2>
-        <p class="reveal" style="margin-top:1.1rem;max-width:60ch;">Infrared spectroscopy checks the chemistry rather than the elements. On the fabric it confirms the coating chemistry is on the fibre, with siloxane bands from the silicone. On the titanium dioxide powder it is where the silane treatment shows up.</p>
+        <h2>What the infrared shows.</h2>
+        <p>Infrared spectroscopy checks the chemistry rather than the elements. On the titanium dioxide powder it is where the silane treatment shows up.</p>
       </div>
       <div class="wrap fig-block">
-        <figure class="figure reveal">
+        <figure class="figure">
           <div class="frame"><img src="assets/figures/fig04_ftir_textiles.png" width="3388" height="1395" loading="lazy" decoding="async" alt="Stacked ATR-FTIR spectra of the cotton and Finisterre sample series." /></div>
           <figcaption>
             <p class="fig-take">The coating chemistry is on the fibre.</p>
             <details class="more"><summary>More detail</summary>
-              <div class="more-body"><p>The carbon hydrogen bands grow with coating, and siloxane (Si-O-Si) bands show up most clearly on Finisterre fabric, where cotton's cellulose does not mask them. This method is semi quantitative, so it confirms the coating chemistry but cannot on its own separate bare from silane treated anatase.</p>
+              <div class="more-body">
+                <p>The carbon hydrogen bands grow with coating, and siloxane (Si-O-Si) bands show up most clearly on Finisterre fabric, where cotton's cellulose does not mask them. This method is semi quantitative, so it confirms the coating chemistry but cannot on its own separate bare from silane treated anatase.</p>
                 <span class="src">Source: fig04, ATR-FTIR, three spectra per sample, means shown</span>
               </div>
             </details>
           </figcaption>
         </figure>
-      </div>
-      <div class="wrap fig-block">
-        <figure class="figure reveal">
+
+        <figure class="figure">
           <div class="frame"><img src="assets/figures/fig05_ftir_tio2.png" width="3373" height="1454" loading="lazy" decoding="async" alt="ATR-FTIR of the T0 to T3 titanium dioxide treatment series with a normalised organic window." /></div>
           <figcaption>
             <p class="fig-take">Weak signs of silane on the particles.</p>
             <details class="more"><summary>More detail</summary>
-              <div class="more-body"><p>Bare anatase is flat through the organic region, while the silane treated powders pick up carbon hydrogen and siloxane bands. The signal is weak, and it shows silane is present rather than proving it is bonded to the particle surface, but it is the clearest evidence I have, and it is why I chose the vented reflux batch (T2) to carry into the C3 coating.</p>
+              <div class="more-body">
+                <p>Bare anatase is flat through the organic region, while the silane treated powders pick up carbon hydrogen and siloxane bands. The signal is weak, and it shows silane is present rather than proving it is bonded to the particle surface, but it is the clearest evidence I have, and it is why I chose the vented reflux batch (T2) to carry into the C3 coating.</p>
                 <span class="src">Source: fig05, ATR-FTIR of TiO2 powders, T0 to T3</span>
               </div>
             </details>
@@ -427,57 +313,41 @@
       </div>
     </section>
 
-    <!-- ===================== DIGGING DEEPER ===================== -->
-    <section class="section" id="deeper" style="border-top:1px solid var(--line);">
+    <!-- ===================== MORE MEASUREMENTS ===================== -->
+    <section class="section" id="deeper">
       <div class="wrap">
-        <p class="eyebrow reveal">Digging deeper</p>
-        <h2 class="mid reveal">The measurements behind the headline results.</h2>
-        <p class="reveal">These back up the main findings: an independent check on the titanium signal, the particle and coating texture under the microscope, and the smaller measurements behind the method choices.</p>
-      </div>
-      <div class="wrap">
+        <h2 class="small">The measurements behind the headline results.</h2>
         <div class="fig-grid">
-          <figure class="figure reveal">
+          <figure class="figure">
             <div class="frame"><img src="assets/figures/fig09_xrf.png" width="3133" height="1005" loading="lazy" decoding="async" alt="XRF survey spectra per sample; the titanium signal tracks added titanium dioxide." /></div>
-            <figcaption><span class="lead">XRF backs up the titanium.</span> A second, independent read that titanium tracks the added titanium dioxide on cotton. It cannot be used this way on Finisterre fabric, because that fibre already contains titanium dioxide as a matting agent.
-              <span class="src">Source: fig09, benchtop XRF</span>
-            </figcaption>
+            <figcaption><b>XRF backs up the titanium.</b> A second, independent read on cotton. It cannot be used this way on Finisterre fabric, because that fibre already contains titanium dioxide as a matting agent.</figcaption>
           </figure>
-          <figure class="figure reveal">
+          <figure class="figure">
             <div class="frame"><img src="assets/figures/fig12_sem_tio2.jpg" width="2400" height="1125" loading="lazy" decoding="async" alt="SEM of bare against silane treated anatase titanium dioxide powder." /></div>
-            <figcaption><span class="lead">Bare against treated particles.</span> Under the SEM the silane treated anatase shows smaller, more even clumps than the bare powder, which gathers into shards. This is part of why I chose the T2 batch.
-              <span class="src">Source: fig12, SEM of TiO2 powders</span>
-            </figcaption>
+            <figcaption><b>Bare against treated particles.</b> Under the SEM the silane treated anatase shows smaller, more even clumps than the bare powder, which gathers into shards.</figcaption>
           </figure>
-          <figure class="figure reveal">
+          <figure class="figure">
             <div class="frame"><img src="assets/figures/fig11_sem_textiles_x2000.jpg" width="2400" height="833" loading="lazy" decoding="async" alt="High magnification SEM of the coating on Finisterre fibre." /></div>
-            <figcaption><span class="lead">The coating on the fibre.</span> High magnification SEM of the coated Finisterre fabric, showing the coating's texture on the fibre surface.
-              <span class="src">Source: fig11, SEM at x2000</span>
-            </figcaption>
+            <figcaption><b>The coating on the fibre.</b> Coated Finisterre fabric under the SEM at x2000.</figcaption>
           </figure>
-          <figure class="figure reveal">
+          <figure class="figure">
             <div class="frame"><img src="assets/figures/fig01_wet_pickup_addon.png" width="2784" height="1161" loading="lazy" decoding="async" alt="Wet pickup after padding and dry mass add on after cure, per sample." /></div>
-            <figcaption><span class="lead">How much coating went on.</span> Wet pickup after padding and dry mass gain after cure. Pickup on cotton ran above the 70% target (about 96 to 131%), and the emulsion only swatches carried the most coating, so the loadings were close but not perfectly matched.
-              <span class="src">Source: fig01, wet pickup and dry add on</span>
-            </figcaption>
+            <figcaption><b>How much coating went on.</b> Pickup on cotton ran above the 70% target (about 96 to 131%), and the emulsion only swatches carried the most coating, so the loadings were close but not perfectly matched.</figcaption>
           </figure>
         </div>
-        <figure class="figure reveal fig-block">
+        <figure class="figure fig-block">
           <div class="frame"><img src="assets/figures/fig13_tga.png" width="3132" height="1255" loading="lazy" decoding="async" alt="Thermogravimetric mass loss curves for the titanium dioxide powder series." /></div>
-          <figcaption><span class="lead">A small thermal signal.</span> Thermogravimetry shows only a weak organic mass loss (around half a percent) on the treated powders, consistent with a thin silane layer rather than bulk material.
-            <span class="src">Source: fig13, TGA of TiO2 powders</span>
-          </figcaption>
+          <figcaption><b>A small thermal signal.</b> Thermogravimetry shows only a weak organic mass loss (around half a percent) on the treated powders, consistent with a thin silane layer rather than bulk material.</figcaption>
         </figure>
       </div>
     </section>
 
     <!-- ===================== METHODS ===================== -->
-    <section class="section" id="methods" style="border-top:1px solid var(--line);">
+    <section class="section" id="methods">
       <div class="wrap">
-        <p class="eyebrow reveal">Methods</p>
-        <h2 class="mid reveal">How it was measured.</h2>
-        <p class="reveal">The short version of the methods, so the numbers above can be read properly. The full detail, reagents and quantities are in <a href="assets/docs/brocklebank-2026-fluorine-free-dwr-dissertation.pdf">the dissertation</a>.</p>
+        <h2 class="small">How it was measured.</h2>
 
-        <figure class="figure reveal gon" id="goniometer">
+        <figure class="figure gon" id="goniometer">
           <div class="gon-row">
             <div class="frame gon-img"><img src="assets/img/goniometer-c-a1-1.jpg" width="640" height="400" loading="lazy" decoding="async" alt="Goniometer camera frame: a water drop sitting as a bead on coated cotton, with loose fibres at the base of the drop." /></div>
             <div class="frame gon-chart" data-chart="goniometer"><p class="gon-fallback">The frame by frame chart needs JavaScript. The numbers are in <a href="data/goniometer_example.csv">goniometer_example.csv</a>.</p></div>
@@ -485,43 +355,43 @@
           <figcaption>
             <p class="fig-take">How one drop becomes one number: bad fits are thrown out before averaging.</p>
             <details class="more"><summary>More detail</summary>
-              <div class="more-body"><p>The goniometer films the drop and fits its outline in every frame, giving a separate angle for the left and right edges. On this C-A1 swatch, loose fibres at the left edge made that side's fit jump about, to 140 to 150&#176; with a poor fit, while the right side held steady near 136&#176;. The instrument's own average of the two sides would have read about 139&#176;. Throwing out each side whenever its fit error (RMSE) is above 1.0, smoothing, and taking the median from 2 to 10 s gives 135.9&#176;, the value this swatch contributes to the results above. Every contact angle on this page went through the same steps.</p>
+              <div class="more-body">
+                <p>The goniometer films the drop and fits its outline in every frame, giving a separate angle for the left and right edges. On this C-A1 swatch, loose fibres at the left edge made that side's fit jump about, to 140 to 150&#176; with a poor fit, while the right side held steady near 136&#176;. The instrument's own average of the two sides would have read about 139&#176;. Throwing out each side whenever its fit error (RMSE) is above 1.0, smoothing, and taking the median from 2 to 10 s gives 135.9&#176;, the value this swatch contributes to the results above. Every contact angle on this page went through the same steps.</p>
                 <span class="src">Source: C-A1 swatch 1, 29 Jun 2026, 521 frames at 30 per second. Every other frame is plotted; the file <a href="data/goniometer_example.csv">goniometer_example.csv</a> has all of them.</span>
               </div>
             </details>
           </figcaption>
         </figure>
-        <ul class="methods-list reveal">
-          <li><b>Coating</b>Swatches dipped in the bath for 60 s, padded by hand with a weighted roller between lint free paper, and cured at 150&#176;C for 3 minutes. Cotton was scoured first; the Finisterre fabric was the same cloth as the commercial finish, supplied without a finish.</li>
-          <li><b>Samples</b>Three swatches per condition, all cut from one coated batch, so the spread shows swatch to swatch variation, not batch to batch. The durability series measured the same 1.5 cm swatches again at every stage; separate spare swatches went to the microscope.</li>
-          <li><b>Contact angle</b>Ossila contact angle goniometer. Each drop was filmed at 30 frames per second and fitted frame by frame by the software; frames with a poor fit were rejected. Each swatch's value is the median angle 2 to 10 s after the drop lands, and the reported value is the mean of three swatches.</li>
-          <li><b>Roll off angle</b>Tilting stage read from an angle gauge, up to 90&#176;. The first test used a smaller drop; the second test and the whole durability series used a drop of about 33&#160;&#181;L. A drop that had not moved by 90&#176; is recorded as pinned, marked on the charts, and left out of that average, which makes the affected average look better than it was.</li>
-          <li><b>Wash cycle</b>10 minutes in 500 mL of deionised water with 2.5 g of non ionic detergent (Alcojet) at 40&#176;C, on a magnetic stirrer at 300 rpm, whole sample set together, then rinsed and air dried overnight with no heat. A lab screening wash, not a domestic wash or ISO 6330.</li>
-          <li><b>Abrasion pass</b>One 10 cm stroke, about 3 s, of a 1.5 cm swatch on a microscope slide under 157 g (about 6.8 kPa), drawn by hand across 1000 grit sandpaper. A lab screening method, not Martindale.</li>
-          <li><b>Microscopy and composition</b>Hitachi TM4000Plus SEM at 15 kV after 10 nm of gold. EDX from single area scans without standards. ATR-FTIR on a Shimadzu IRSpirit with a QATR-S accessory, three spectra per sample. Benchtop XRF on a Fischerscope XAN 250.</li>
-          <li><b>Statistics</b>The charts show every swatch, with lines and rules at the mean. With one batch and three swatches, the trends are described rather than claimed as significant; the dissertation reports the tests and corrections.</li>
-          <li><b>Data</b>Every swatch value behind the charts is in <a href="data/observations.csv">observations.csv</a>, with column notes in <a href="data/README.md">the data README</a>. It is built straight from the lab exports, not read off the figures.</li>
-        </ul>
+
+        <details style="margin-top:2rem;"><summary>The methods in full</summary>
+          <ul class="plain">
+            <li><b>Coating.</b> Swatches dipped in the bath for 60 s, padded by hand with a weighted roller between lint free paper, and cured at 150&#176;C for 3 minutes. Cotton was scoured first; the Finisterre fabric was the same cloth as the commercial finish, supplied without a finish.</li>
+            <li><b>Samples.</b> Three swatches per condition, all cut from one coated batch, so the spread shows swatch to swatch variation, not batch to batch. The durability series measured the same 1.5 cm swatches again at every stage; separate spare swatches went to the microscope.</li>
+            <li><b>Contact angle.</b> Ossila contact angle goniometer. Each drop was filmed at 30 frames per second and fitted frame by frame by the software; frames with a poor fit were rejected. Each swatch's value is the median angle 2 to 10 s after the drop lands, and the reported value is the mean of three swatches.</li>
+            <li><b>Roll off angle.</b> Tilting stage read from an angle gauge, up to 90&#176;. The first test used a smaller drop; the second test and the whole durability series used a drop of about 33&#160;&#181;L. A drop that had not moved by 90&#176; is recorded as pinned, marked on the charts, and left out of that average, which makes the affected average look better than it was.</li>
+            <li><b>Wash cycle.</b> 10 minutes in 500 mL of deionised water with 2.5 g of non ionic detergent (Alcojet) at 40&#176;C, on a magnetic stirrer at 300 rpm, whole sample set together, then rinsed and air dried overnight with no heat. A lab screening wash, not a domestic wash or ISO 6330.</li>
+            <li><b>Abrasion pass.</b> One 10 cm stroke, about 3 s, of a 1.5 cm swatch on a microscope slide under 157 g (about 6.8 kPa), drawn by hand across 1000 grit sandpaper. A lab screening method, not Martindale.</li>
+            <li><b>Microscopy and composition.</b> Hitachi TM4000Plus SEM at 15 kV after 10 nm of gold. EDX from single area scans without standards. ATR-FTIR on a Shimadzu IRSpirit with a QATR-S accessory, three spectra per sample. Benchtop XRF on a Fischerscope XAN 250.</li>
+            <li><b>Statistics.</b> The charts show every swatch, with lines and rules at the mean. With one batch and three swatches, the trends are described rather than claimed as significant; the dissertation reports the tests and corrections.</li>
+            <li><b>Data.</b> Every swatch value behind the charts is in <a href="data/observations.csv">observations.csv</a>, with column notes in <a href="data/README.md">the data README</a>. It is built straight from the lab exports, not read off the figures.</li>
+          </ul>
+        </details>
       </div>
     </section>
 
     <!-- ===================== SUMMARY ===================== -->
-    <section class="section" id="next" style="border-top:1px solid var(--line);">
-      <div class="wrap narrow">
-        <p class="eyebrow reveal">In summary</p>
-        <h2 class="mid reveal">The short version.</h2>
-        <p class="reveal">On cotton my coatings bead water as well as Finisterre's finish does on its own fabric. Fresh, they do not shed as well: on the same fabric the commercial finish was far ahead. Washing took that lead away, and it did so while contact angle barely moved. The clearest lesson is about measurement: contact angle, the number most often reported, missed a change in shedding that roll off picked up easily.</p>
-        <p class="reveal" style="margin-top:1.1rem;">The lab work is finished, and the full writeup, with the statistics and caveats, is in <a href="assets/docs/brocklebank-2026-fluorine-free-dwr-dissertation.pdf">my dissertation (PDF, 17 MB)</a>. If the work were taken further, these would settle the open questions:</p>
-        <ul class="takeaways reveal">
-          <li><b>Fix the fresh shedding.</b> Make the emulsion again so a fresh drop releases as easily as it beads. A rinse test and a repeat at controlled coating weight would show whether leftover surfactant or an over thick film is doing the pinning.</li>
-          <li><b>Use standard tests.</b> A spray rating (ISO 4920) and a rain test (Bundesmann, ISO 9865), washing to a standard method, and a fixed drop volume for roll off would put the shedding numbers on terms other labs and brands can compare.</li>
-          <li><b>Measure what holds the drop.</b> Advancing and receding angles, measured on a tilting plate at one drop volume, would show directly why a drop pins, which the <a href="wetting.html">wetting concepts page</a> can only illustrate.</li>
-          <li><b>Separate drying from damage.</b> Washed swatches dried with and without heat. Some finishes recover their repellency after heat, and these swatches were only air dried, so some of the wash loss may be recoverable.</li>
+    <section class="section" id="next">
+      <div class="wrap">
+        <h2 class="small">The short version.</h2>
+        <p>On cotton my coatings bead water as well as Finisterre's finish does on its own fabric. Fresh, they do not shed as well: on the same fabric the commercial finish was far ahead. Washing took that lead away, and it did so while contact angle barely moved. The clearest lesson is about measurement: contact angle, the number most often reported, missed a change in shedding that roll off picked up easily.</p>
+        <p>The lab work is finished, and the full writeup is in <a href="assets/docs/brocklebank-2026-fluorine-free-dwr-dissertation.pdf">my dissertation (PDF, 17 MB)</a>. If the work were taken further, these would settle the open questions.</p>
+        <ul class="plain">
+          <li><b>Fix the fresh shedding.</b> A rinse test and a repeat at controlled coating weight would show whether leftover surfactant or an over thick film is doing the pinning.</li>
+          <li><b>Use standard tests.</b> A spray rating (ISO 4920), a rain test (Bundesmann, ISO 9865), washing to a standard method, and a fixed drop volume for roll off.</li>
+          <li><b>Measure what holds the drop.</b> Advancing and receding angles, on a tilting plate at one drop volume, would show directly why a drop pins.</li>
+          <li><b>Separate drying from damage.</b> Some finishes recover their repellency after heat, and these swatches were only air dried, so some of the wash loss may be recoverable.</li>
           <li><b>Repeat across batches.</b> A second coated batch, and repeat EDX and infrared scans on worn swatches, would show whether the silane treated particles really do hold on better.</li>
         </ul>
-        <div class="status reveal" style="margin-top:1.8rem;">
-          <p><b>A note on these numbers.</b> These are the final measured values. Three swatches per condition, cut from one coated batch, tested with lab screening methods, so the trends are read cautiously.</p>
-        </div>
       </div>
     </section>
 
@@ -529,14 +399,17 @@
 
   <footer class="foot">
     <div class="wrap">
-      <p class="foot-mark">Fluorine Free Water Repellent Coatings</p>
-      <p>A UCL masters project on replacing PFAS in water repellent textiles, tested on real outdoor fabric. By Jackson Brocklebank.</p>
-      <p><a href="index.html">Back to the project</a> &#183; <a href="mailto:jackson.brocklebank.25@ucl.ac.uk">Get in touch</a></p>
-      <p class="foot-meta">&#169; 2026 Jackson Brocklebank &#183; UCL Advanced Materials Science</p>
+      <p class="foot-name">Jackson Brocklebank</p>
+      <p>MSc Advanced Materials Science at UCL, 2026. The coating was tested on fabric supplied by Finisterre.</p>
+      <p class="foot-links">
+        <a href="index.html">Back to the project</a>
+        <a href="mailto:jacksontiger2004@icloud.com">Get in touch</a>
+        <a href="assets/docs/brocklebank-2026-fluorine-free-dwr-dissertation.pdf">Dissertation (PDF, 17 MB)</a>
+      </p>
     </div>
   </footer>
 
-  <script src="site.js?v=2026-09-13"></script>
-  <script src="charts.js?v=2026-09-13b"></script>
+  <script src="site.js?v=2026-11-12"></script>
+  <script src="charts.js?v=2026-11-12"></script>
 </body>
 </html>

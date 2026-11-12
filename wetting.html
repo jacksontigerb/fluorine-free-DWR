@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <!-- ============================================================
-  Fluorine Free DWR - wetting concepts (teaching model)
-  Wenzel / Cassie-Baxter + Furmidge, driven by four sliders.
-  Reuses styles.css + site.js; sim logic in wetting.js.
+  Fluorine free DWR, wetting concepts (teaching model).
+  Wenzel / Cassie-Baxter + Furmidge, driven by four sliders; logic in wetting.js.
+  Trimmed and restyled 12 November 2026.
   HOUSE STYLE: no em dashes, no hyphenated compounds in copy.
   Idealised pillars only: no sample presets, no claims about the lab samples.
 ============================================================ -->
@@ -10,88 +10,25 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Wetting concepts · Why contact angle is not enough · Fluorine Free DWR</title>
+  <title>Why contact angle is not enough, a wetting model</title>
   <meta name="description" content="An idealised teaching model of water on a textured surface: change the surface chemistry and the roughness, and see why the same contact angle can come with a drop that sticks or one that runs off. From a UCL masters project on fluorine free water repellent coatings." />
-  <meta property="og:title" content="Wetting concepts &#183; Why contact angle is not enough" />
+  <meta property="og:title" content="Why contact angle is not enough" />
   <meta property="og:description" content="An idealised model: change the surface, watch the drop bead, stick or roll." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://jacksontigerb.github.io/fluorine-free-DWR/wetting.html" />
   <meta property="og:image" content="https://jacksontigerb.github.io/fluorine-free-DWR/assets/img/og-c-a1-droplet.jpg" />
-  <meta name="theme-color" content="#f6f3ec" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 28'%3E%3Cpath d='M12 2C12 2 4 12.5 4 18a8 8 0 0 0 16 0C20 12.5 12 2 12 2Z' fill='%230e6e5c'/%3E%3C/svg%3E" />
-  <link rel="preload" href="assets/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="assets/fonts/geist-var.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="assets/fonts/geist-mono-var.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="styles.css?v=2026-09-13" />
-  <script>document.documentElement.className += " js";</script>
-
-  <style>
-    /* ---- wetting-page-only additions (tokens from styles.css) ---- */
-
-    .sim{display:grid;gap:clamp(1.4rem,3.5vw,2.4rem);}
-    @media (min-width:960px){
-      .sim{grid-template-columns:320px minmax(0,1fr);align-items:start;}
-      .sim-controls{grid-column:1;grid-row:1;position:sticky;top:calc(var(--nav-h) + 1.2rem);}
-      .sim-stage{grid-column:2;grid-row:1;}
-    }
-
-    /* sliders */
-    .ctrl{margin-bottom:1.4rem;}
-    .ctrl-top{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;}
-    .ctrl-name{font-weight:600;font-size:.95rem;letter-spacing:-.01em;cursor:pointer;}
-    .ctrl-val{font-family:var(--mono);font-size:.9rem;color:var(--teal-deep);}
-    .track{display:block;margin:.55rem 0 .2rem;}
-    .track input[type=range]{width:100%;margin:0;accent-color:var(--teal);height:1.2rem;display:block;}
-    .ctrl-ends{display:flex;justify-content:space-between;font-family:var(--mono);
-      font-size:.66rem;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-2);
-      opacity:.8;margin-bottom:.4rem;}
-    .ctrl-hint{font-size:.82rem;color:var(--ink-2);margin:0;max-width:none;}
-
-    /* stage */
-    .stage-frame{background:#fff;border:1px solid var(--line);border-radius:16px;
-      padding:.6rem;box-shadow:0 14px 36px rgba(14,110,92,.08);}
-    .stage-frame canvas{display:block;width:100%;border-radius:10px;background:var(--paper);}
-    .stage-actions{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;margin-top:1rem;}
-    .btn.small{font-size:.88rem;padding:.55rem 1.05rem;}
-    .stage-actions .hint{font-family:var(--mono);font-size:.72rem;letter-spacing:.04em;
-      text-transform:uppercase;color:var(--ink-2);margin:0;}
-
-    /* readouts */
-    .reads{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);
-      border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:1.2rem;}
-    .reads div{background:var(--paper);padding:.85rem 1rem;}
-    .reads dt{font-family:var(--mono);font-size:.66rem;letter-spacing:.09em;
-      text-transform:uppercase;color:var(--teal-deep);margin:0;}
-    .reads dd{margin:.3rem 0 0;font-family:var(--mono);font-size:1.15rem;color:var(--ink);}
-    @media (max-width:560px){.reads{grid-template-columns:1fr 1fr;}
-      .reads div:last-child{grid-column:1 / -1;}}
-    .read-note{margin:1rem 0 0;font-size:.95rem;color:var(--ink-2);max-width:62ch;}
-    .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
-
-    /* key takeaways list (same treatment as the results page) */
-    .takeaways{list-style:none;margin:1.6rem 0 0;padding:0;display:grid;gap:.9rem;max-width:64ch;}
-    .takeaways li{padding-left:1.1rem;border-left:2px solid var(--teal);color:var(--ink-2);}
-    .takeaways b{color:var(--ink);}
-
-    /* equations */
-    .eqs{list-style:none;margin:1.6rem 0 0;padding:0;display:grid;gap:1rem;max-width:68ch;}
-    .eqs li{padding-left:1.1rem;border-left:2px solid var(--teal-tint);}
-    .eqs b{display:block;font-size:.95rem;margin-bottom:.15rem;}
-    .eqs code{font-family:var(--mono);font-size:.88rem;color:var(--teal-deep);
-      background:var(--paper-2);border-radius:6px;padding:.12rem .4rem;}
-    .eqs p{margin:.4rem 0 0;font-size:.92rem;color:var(--ink-2);max-width:60ch;}
-  </style>
+  <meta name="theme-color" content="#f6f6f6" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 28'%3E%3Cpath d='M12 2C12 2 4 12.5 4 18a8 8 0 0 0 16 0C20 12.5 12 2 12 2Z' fill='%23384972'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css?v=2026-11-12" />
 </head>
 <body id="top">
   <a class="skip" href="#sim">Skip to the model</a>
 
-  <header class="nav" id="nav">
+  <header class="nav solid" id="nav">
     <div class="nav-in">
-      <a class="brand" href="index.html">Fluorine Free <b>DWR</b></a>
-      <nav aria-label="Sections">
-        <a href="index.html#concept">PFAS</a>
-        <a href="index.html#making">The coating</a>
-        <a href="finisterre.html">Finisterre</a>
+      <a class="brand" href="index.html">Fluorine free DWR</a>
+      <nav aria-label="Pages">
+        <a href="index.html">Project</a>
         <a href="results.html">Results</a>
         <a href="wetting.html" class="active">Wetting</a>
       </nav>
@@ -100,14 +37,11 @@
 
   <main>
 
-    <!-- ===================== HEADER ===================== -->
     <section class="rhead">
       <div class="wrap">
-        <a class="backlink" href="results.html#shedding">&larr; Back to the results</a>
-        <p class="eyebrow">Wetting concepts</p>
-        <h1 class="big">Why contact angle is not enough.</h1>
+        <h1>Why contact angle is not enough.</h1>
         <p class="lede">A drop on a rough surface can sit at a high contact angle and still refuse to move. Move the sliders to see how surface chemistry, roughness and drop size change the angle and the tilt a drop needs to run off.</p>
-        <p class="src" style="margin-top:1.1rem;">A teaching model on a regular array of square pillars. It does not describe my fabrics, and its numbers are not predictions for them. The measured results are on <a href="results.html">the results page</a>.</p>
+        <p class="note">A teaching model on a regular array of square pillars. It does not describe my fabrics, and its numbers are not predictions for them. The measured results are on <a href="results.html">the results page</a>.</p>
       </div>
     </section>
 
@@ -138,7 +72,7 @@
           </div>
 
           <div class="sim-controls">
-            <noscript><p style="color:var(--ink-2);">The model needs JavaScript. The equations are written out below.</p></noscript>
+            <noscript><p class="quiet">The model needs JavaScript. The equations are written out below.</p></noscript>
 
             <div class="ctrl">
               <div class="ctrl-top">
@@ -184,7 +118,7 @@
               <span class="track">
                 <input type="range" id="sVol" min="2" max="50" step="1" value="10" aria-describedby="hVol" />
               </span>
-              <div class="ctrl-ends" style="text-transform:none"><span>2 µL</span><span>50 µL</span></div>
+              <div class="ctrl-ends"><span>2 µL</span><span>50 µL</span></div>
               <p class="ctrl-hint" id="hVol">Weight helps a drop break free, so a bigger drop can roll off a surface that pins a smaller one. Above about 20&#160;&#181;L gravity also flattens the drop, which this model ignores.</p>
             </div>
           </div>
@@ -194,51 +128,43 @@
     </section>
 
     <!-- ===================== WHAT IT SHOWS ===================== -->
-    <section class="section" id="reading" style="border-top:1px solid var(--line);">
+    <section class="section" id="reading">
       <div class="wrap">
-        <p class="eyebrow reveal">What to look for</p>
-        <h2 class="mid reveal">Worth trying.</h2>
-        <ul class="takeaways reveal">
-          <li><b>Same angle, two explanations.</b> Set the smooth surface angle to 108&#176; and roughness to 2.2&#215;. With solid contact at 100% the drop fills the texture and sits at about 133&#176;. Drop solid contact to 48% and it rests on trapped air at about the same angle. The contact angle alone cannot tell you which one you are looking at.</li>
+        <h2 class="small">Worth trying.</h2>
+        <ul class="plain">
+          <li><b>Same angle, two explanations.</b> Set the smooth surface angle to 108&#176; and roughness to 2.2&#215;. With solid contact at 100% the drop fills the texture and sits at about 133&#176;. Drop solid contact to 48% and it rests on trapped air at about the same angle.</li>
           <li><b>Roughness cuts both ways.</b> Set the smooth surface angle below 90&#176; and turn the roughness up. The contact angle falls: texture makes a surface that already wets, wet more.</li>
           <li><b>Drop size changes the answer.</b> From the starting settings, a 5&#160;&#181;L drop stays pinned at 90&#176; while a 20&#160;&#181;L drop runs off at about 38&#176;. That is why roll off numbers are only comparable at the same drop volume.</li>
         </ul>
-        <div class="status reveal" style="margin-top:1.8rem;">
-          <p><b>Why this is here.</b> In my results, finishes with similar contact angles behaved very differently when tilted, and washing changed shedding a lot while contact angle barely moved. This page shows, on an idealised surface, why that is possible. It does not say which state my coatings or the commercial finish are in; that was not measured.</p>
-        </div>
-        <div class="hero-cta reveal" style="margin-top:1.6rem;">
+        <p style="margin-top:1.6rem;">In my results, finishes with similar contact angles behaved very differently when tilted, and washing changed shedding a lot while contact angle barely moved. This page shows, on an idealised surface, why that is possible. It does not say which state my coatings or the commercial finish are in; that was not measured.</p>
+        <div class="actions">
           <a class="btn" href="results.html#shedding">See the measured data</a>
         </div>
       </div>
     </section>
 
     <!-- ===================== THE MATHS ===================== -->
-    <section class="section" id="maths" style="border-top:1px solid var(--line);">
+    <section class="section" id="maths">
       <div class="wrap">
-        <p class="eyebrow reveal">Under the hood</p>
-        <h2 class="mid reveal">The equations behind it.</h2>
-        <ul class="eqs reveal">
+        <h2 class="small">The equations behind it.</h2>
+        <ul class="eqs">
           <li>
-            <b>Wenzel, 1936</b>
-            <code>cos&#920;* = r&#183;cos&#952;</code>
+            Wenzel, 1936
+            <span class="eq">cos&#920;* = r&#183;cos&#952;</span>
             <p>The drop sinks into the texture. Roughness multiplies whatever the flat surface already does, so it makes a repellent surface more repellent and a wetting surface wetter.</p>
           </li>
           <li>
-            <b>Cassie and Baxter, 1944</b>
-            <code>cos&#920;* = f<sub>s</sub>(cos&#952; + 1) &#8722; 1</code>
-            <p>The drop bridges the texture and rests partly on trapped air. In the ideal picture the lower energy state wins, and trapped air has the lower energy when <code>cos&#952; &lt; (f<sub>s</sub> &#8722; 1)/(r &#8722; f<sub>s</sub>)</code>. Real drops do not always reach the lower energy state: one can stay perched on air below that line, or stay sunk in above it, depending on how it arrived. This model only shows the lower energy state.</p>
+            Cassie and Baxter, 1944
+            <span class="eq">cos&#920;* = f<sub>s</sub>(cos&#952; + 1) &#8722; 1</span>
+            <p>The drop bridges the texture and rests partly on trapped air, which has the lower energy when cos&#952; &lt; (f<sub>s</sub> &#8722; 1)/(r &#8722; f<sub>s</sub>). Real drops do not always reach the lower energy state. This model only shows that one.</p>
           </li>
           <li>
-            <b>Furmidge, 1962</b>
-            <code>&#961;Vg&#183;sin&#945; = &#947;w(cos&#952;<sub>rec</sub> &#8722; cos&#952;<sub>adv</sub>)</code>
-            <p>Roll off is a force balance: gravity down the slope against the grip of the drop's edge, set by the gap between its receding and advancing angles. That gap has to be measured on a real surface. Here it is a simple stand in, scaled with how much solid the drop touches, so treat the roll off number as an illustration of the trend, not a calculation. Where the stand in breaks down the model says so.</p>
-          </li>
-          <li>
-            <b>The caveat</b>
-            <code>idealised</code>
-            <p>This is a regular array of square pillars, not a woven fabric. It ignores water soaking into fibres, the two scales of roughness in a weave (fibres and yarns), and gravity flattening the drop. It shows the ideas behind the measurements, not my samples.</p>
+            Furmidge, 1962
+            <span class="eq">&#961;Vg&#183;sin&#945; = &#947;w(cos&#952;<sub>rec</sub> &#8722; cos&#952;<sub>adv</sub>)</span>
+            <p>Roll off is a force balance: gravity down the slope against the grip of the drop's edge, set by the gap between its receding and advancing angles. That gap has to be measured on a real surface. Here it is a simple stand in, so treat the roll off number as an illustration of the trend, not a calculation.</p>
           </li>
         </ul>
+        <p class="note" style="margin-top:1.4rem;">This is a regular array of square pillars, not a woven fabric. It ignores water soaking into fibres, the two scales of roughness in a weave (fibres and yarns), and gravity flattening the drop.</p>
       </div>
     </section>
 
@@ -246,14 +172,17 @@
 
   <footer class="foot">
     <div class="wrap">
-      <p class="foot-mark">Fluorine Free Water Repellent Coatings</p>
-      <p>A UCL masters project on replacing PFAS in water repellent textiles, tested on real outdoor fabric. By Jackson Brocklebank.</p>
-      <p><a href="mailto:jackson.brocklebank.25@ucl.ac.uk">Get in touch</a></p>
-      <p class="foot-meta">&#169; 2026 Jackson Brocklebank &#183; UCL Advanced Materials Science</p>
+      <p class="foot-name">Jackson Brocklebank</p>
+      <p>MSc Advanced Materials Science at UCL, 2026. The coating was tested on fabric supplied by Finisterre.</p>
+      <p class="foot-links">
+        <a href="index.html">Back to the project</a>
+        <a href="mailto:jacksontiger2004@icloud.com">Get in touch</a>
+        <a href="assets/docs/brocklebank-2026-fluorine-free-dwr-dissertation.pdf">Dissertation (PDF, 17 MB)</a>
+      </p>
     </div>
   </footer>
 
-  <script src="site.js?v=2026-09-13"></script>
-  <script src="wetting.js?v=2026-09-14"></script>
+  <script src="site.js?v=2026-11-12"></script>
+  <script src="wetting.js?v=2026-11-12"></script>
 </body>
 </html>
